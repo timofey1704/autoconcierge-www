@@ -1,0 +1,32 @@
+servers:
+  hosts:
+    autoconcierge:
+      ansible_host: sbl-lising.by
+
+  vars:
+    ansible_user: root
+
+    app: prod
+
+    user: autoconcierge
+    timezone: Europe/Minsk
+    ssh_keys: |
+      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+igmEmZ9KzELTgYKLrW/LcFIclzj0m2enPp5Bm4QSz promo@vhome6
+      ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFIOJE+HAkS+l7kDMNsQAMsVxdBoKn6UKg1NwO/KJ5I+ timofey.syr17@gmail.com
+
+    docker_tag: prod
+    docker_network_prefix: "172.56.10"
+
+    db_user: admin
+    db_password: eF6tooshae3yaa2ohhih
+    db_name: autoconciergedb
+
+    registry_user: gitlab+deploy-token-10362831
+    registry_token: gldt-cjiHfJSZExVcvpkHgs3M
+
+    domain: sbl-lising.by
+    enable_https: true
+
+    http_user: autoconcierge
+    http_pass: welcome
+    http_auth: false

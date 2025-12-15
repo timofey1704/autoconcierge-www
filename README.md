@@ -1,93 +1,178 @@
-# autoconcierge-www
+# ОДО "Рестмарк"
 
+Добро пожаловать в репозиторий сайта СБЛ-Лизинг. Этот проект включает в себя фронтенд на Next.js и бэкенд на Django.py с базой данных PostgreSQL.
 
+## Описание
 
-## Getting started
+Сайт проекта СБЛ-Лизинг предоставляет информацию о наших услугах, ценах и контактные данные. Пользователи могут ознакомиться с каталогом товаров, оставлять заявки на них и связываться с менеджерами.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Технологии
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### Фронтенд
 
-## Add your files
+- **Next.js** - библиотека для создания пользовательских интерфейсов.
 
-* [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### Бэкенд
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/wedeving/autoconcierge-www.git
-git branch -M main
-git push -uf origin main
-```
+- **Django.py** - веб-фреймворк для Python.
+- **PostgreSQL** - реляционная база данных для хранения данных.
 
-## Integrate with your tools
+## Установка
 
-* [Set up project integrations](https://gitlab.com/wedeving/autoconcierge-www/-/settings/integrations)
+### Предварительные требования
 
-## Collaborate with your team
+Для запуска проекта вам потребуются:
 
-* [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+- Node.js (рекомендуется версия 23.x или выше)
+- Python (рекомендуется версия 3.14 или выше)
+- PostgreSQL (рекомендуется версия 17.x или выше)
 
-## Test and Deploy
+### Шаги для установки
 
-Use the built-in continuous integration in GitLab.
+1. **Клонирование репозитория:**
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+   ```sh
+   git clone https://gitlab.com/wedeving/autoconcierge-www.git
+   cd autoconcierge-www
+   ```
 
-***
+2. **Установка зависимостей для фронтенда и бэкенда:**
 
-# Editing this README
+   ```sh
+   cd frontend
+   npm install
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+   cd backend
+   pipenv install
+   ```
 
-## Suggestions for a good README
+3. **Настройка базы данных:**
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+   Создайте базу данных PostgreSQL и выполните миграции:
 
-## Name
-Choose a self-explaining name for your project.
+   ```sh
+   createdb autoconciergedb
+   # Выполните миграции, если они имеются. В проекте откройте директорию backend
+   cd backend
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+4. **Настройка переменных окружения:**
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+   Создайте файл `.env` в директории `backend` и добавьте необходимые переменные окружения:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+   ```env
+   #django settings
+   SECRET_KEY =
+   DEBUG_MODE=
+   BASE_URL=
+   CORS_ALLOWED_ORIGINS=
+   ALLOWED_HOSTS=
+   CSRF_TRUSTED_ORIGINS=
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+   # database connection
+   DB_USER
+   DB_HOST
+   DB_NAME
+   DB_PASSWORD
+   DB_PORT=5432
+   ```
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+5. **Локальная разработка:**
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+   Откройте три терминала или используйте вкладки в одном терминале.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+   В первом терминале запустите бэкенд:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+   ```
+   cd backend
+   python manage.py runserver
+   ```
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+   Во втором терминале запустите фронтенд:
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+   ```
+   cd frontend
+   npm run dev
+   ```
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Теперь проект будет доступен по адресу `http://localhost:3000`.
 
-## License
-For open source projects, say how it is licensed.
+### Инструкция по деплою.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+1. **Заходим в нужные директории:**
+
+   ```sh
+   cd backend
+   cd frontend
+   ```
+
+2. **Запускаем сборку контейнеров в каждом терминале:**
+
+   ```sh
+   just build-prod
+   ```
+
+3. **Добавляем ключ гитлаба (один раз на сессию терминала, нужно каждый раз делать заново):**
+
+   ```sh
+   export GITLAB_TOKEN={token} ;export GITLAB_USER={user}
+   ```
+
+4. **Проверяем, что ключи добавились:**
+
+   ```sh
+   env
+   ```
+   В консоли должны увидеть наш ключ и имя пользователя
+
+5. **Заливаем свежую сборку в GitLab (отдельно каждый контейнер):**
+
+   ```sh
+   just push-prod
+   ```
+
+6. **Собираем в продакшне:**
+
+   ```sh
+   cd ansible
+   ansible-playbook -i inventory/prod.yaml playbooks/autoconcierge.yaml 
+   ```
+   Эта создает и запускает все контейнеры, контейнеры должны быть до этого загружены в registry.
+
+### Миграции в продакшне.
+
+1. **После сборки заходим в контейнер:**
+
+   ```sh
+   ssh auto@stage.sbl-lising.by
+   docker exec -it autoconcierge-backend-1 sh
+   ```
+
+2. **Проводим миграции:**
+
+   ```sh
+   python manage.py migrate
+   ```
+
+### Логи в продакшне.
+
+1. **Логи фронтенда:**
+
+   ```sh
+   docker logs -f autoconcierge-frontend-1
+   ```
+
+2. **Логи бекенда:**
+
+   ```sh
+   docker logs -f autoconcierge-backend-1
+   ```
+
+3. **Логи сервера:**
+
+   ```sh
+   tail -f /var/log/angie/access.log
+   ```
+
