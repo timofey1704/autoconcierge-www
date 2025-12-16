@@ -16,6 +16,7 @@
           - ca-certificates
           - starship
           - fish
+          - prometheus-node-exporter
         state: present
     - name: Timezone
       community.general.timezone:
@@ -65,6 +66,8 @@
         path: "/home/{{ user }}/.config/fish/config.fish"
         line: "starship init fish | source"
         create: true
+        owner: "{{ user }}"
+        group: "{{ user }}"
         mode: "0644"
 
   handlers:
