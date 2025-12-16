@@ -1,36 +1,14 @@
 from django.contrib import admin
-from django.utils.html import format_html
-from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
+from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import path
-from django import forms
 from django.utils import timezone
 from sitemanagement.models import *
-
-class BatchQRCodeForm(forms.Form):
-    partner = forms.ModelChoiceField(
-        queryset=Partner.objects.all(),
-        label='Партнер',
-        help_text='Выберите партнера для генерации префикса QR кода',
-        required=True
-    )
-    account_type = forms.ChoiceField(
-        choices=[('L', 'Light'), ('M', 'Medium'), ('P', 'Premium')],
-        label='Тарифный план',
-        help_text='Тип тарифного плана (L/M/P) - влияет на генерацию кода',
-        initial='L',
-        required=True
-    )
-    amount = forms.IntegerField(
-        min_value=1,
-        max_value=100,
-        label='Количество QR-кодов',
-        help_text='Сколько QR-кодов создать (от 1 до 100)'
-    )
+from sitemanagement.forms.batchQRform import BatchQRCodeForm 
 
 @admin.register(QRCode)
 class QRCodeAdmin(admin.ModelAdmin):
-    list_display = ("code", "partner", "account_type", "user", "is_printed_timestamp", "is_deployed_timestamp",  "is_selled_timestamp", "is_active_timestamp", "created_at", "print_image_button")
+    list_display = ("code", "partner", "account_type", "user", "is_printed_timestamp", "is_deployed_timestamp",  "is_selled_timestamp", "is_active_timestamp", "created_at")
     list_filter = ("partner", "account_type", "is_active", "is_deployed", "is_selled", "created_at", "is_printed")
     search_fields = ("code", "user__username", "partner__partner_name")
     readonly_fields = ("code", "image", "created_at", "user", "is_active", "is_printed", "is_deployed", "is_selled", "is_selled_timestamp", "is_active_timestamp", "active_before", "is_printed_timestamp", "is_deployed_timestamp", "selled_by", "car", "status")
@@ -63,7 +41,6 @@ class QRCodeAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('batch-create/', self.admin_site.admin_view(self.batch_create_view), name='api_registerqrcode_batch-create'),
-            path('<int:qr_id>/mark-printed/', self.admin_site.admin_view(self.mark_as_printed), name='sitemanagement_qrcode_mark_printed'),
         ]
         return custom_urls + urls
 
@@ -115,115 +92,6 @@ class QRCodeAdmin(admin.ModelAdmin):
             **self.admin_site.each_context(request),
         }
         return TemplateResponse(request, 'admin/api/batch_create_form.html', context)
-
-    def print_image_button(self, obj):
-        if obj.image:
-            html_content = """
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>QR-код {1}</title>
-                    <style>
-                        @media print {{
-                            body {{ margin: 0; padding: 20px; }}
-                            .no-print {{ display: none; }}
-                        }}
-                        body {{
-                            font-family: Arial, sans-serif;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            min-height: 100vh;
-                        }}
-                        .qr-container {{ 
-                            border: 1px solid #333;
-                            border-radius: 8px;
-                            padding: 5px;
-                            text-align: center;
-                            background: white;
-                            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
-                        }}
-                        .qr-image {{
-                            display: block;
-                            margin: 0 auto 5px;
-                            width: 200px;
-                            height: 200px;
-                        }}
-                        .qr-code-text {{
-                            font-size: 16px;
-                            font-weight: bold;
-                            color: #333;
-                            letter-spacing: 1px;
-                            
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class="qr-container">
-                        <img src="{0}" class="qr-image" alt="QR код" />
-                        <div class="qr-code-text">{1}</div>
-                    </div>
-                    <div class="no-print" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
-                        <button onclick="window.print()" style="padding: 10px 20px; background: #417690; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
-                            🖨️ Печать
-                        </button>
-                        <button onclick="window.location.href='/admin/sitemanagement/qrcode/'" style="padding: 10px 20px; background: #999; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; font-size: 14px;">
-                            Вернуться в админку
-                        </button>
-                    </div>
-                </body>
-                </html>
-            """.format(
-                obj.image.url,
-                obj.code
-            )
-            
-            # JavaScript для отметки как распечатанного и открытия окна печати
-            js_code = f"""
-                fetch('/admin/sitemanagement/qrcode/{obj.pk}/mark-printed/', {{
-                    method: 'POST',
-                    headers: {{
-                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
-                    }}
-                }}).then(() => {{
-                    var w = window.open();
-                    w.document.write('{html_content.replace("'", "\\'").replace("\n", "")}');
-                    w.document.close();
-                    var img = w.document.querySelector('img');
-                    if(img) {{ img.onload = function() {{ w.print(); }}; }}
-                }}).catch(error => {{
-                    console.error('Ошибка при отметке QR как распечатанного:', error);
-                    alert('Произошла ошибка. Попробуйте перезагрузить страницу.');
-                }});
-            """
-            
-            # Меняем стиль и текст для уже распечатанных QR кодов
-            button_style = 'padding: 5px 10px; background: #999; color: white; border: none; border-radius: 3px; cursor: pointer;' if obj.is_printed else 'padding: 5px 10px; background: #417690; color: white; border: none; border-radius: 3px; cursor: pointer;'
-            button_text = '🖨️ Повторно' if obj.is_printed else '🖨️ Печать'
-            
-            return format_html(
-                '<button onclick="{}" '
-                'class="button" style="{}">'
-                '{}</button>',
-                js_code.replace('"', '&quot;'),
-                button_style,
-                button_text
-            )
-        return "Нет изображения"
-    
-    print_image_button.short_description = "Печать"
-
-    def mark_as_printed(self, request, qr_id):
-        """Отметить QR код как распечатанный"""
-        try:
-            qr_code = QRCode.objects.get(pk=qr_id)
-            if not qr_code.is_printed:
-                qr_code.is_printed = True
-                qr_code.is_printed_timestamp = timezone.now()
-                qr_code.save(update_fields=['is_printed', 'is_printed_timestamp'])
-            return JsonResponse({'success': True})
-        except QRCode.DoesNotExist:
-            return JsonResponse({'success': False, 'error': 'QR код не найден'}, status=404)
 
     def print_selected_qr_codes(self, request, queryset):
         # фильтруем только те объекты, у которых есть изображение и которые еще не распечатаны
@@ -339,10 +207,11 @@ class QRCodeAdmin(admin.ModelAdmin):
 @admin.register(Partner)
 class PartnerAdmin(admin.ModelAdmin):
     list_display = ("partner_name", "partner_prefix")
+    list_filter = ("partner_name", "partner_prefix")
     search_fields = ("partner_name", "partner_prefix")
     readonly_fields = ("partner_prefix",)
     
-    class Meta:
-        verbose_name = "Партнер"
-        verbose_name_plural = "Партнеры"
-
+@admin.register(Car)
+class CarAdmin(admin.ModelAdmin):
+    list_display = ("vin_code", )
+    search_fields = ("vin_code", )

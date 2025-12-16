@@ -37,6 +37,13 @@ class Partner(models.Model):
 class Car(models.Model):
     id = models.AutoField(primary_key=True)
     vin_code = models.CharField(max_length=17, verbose_name='VIN код автомобиля')
+    
+    class Meta:
+        verbose_name = "Автомобиль"
+        verbose_name_plural = "Автомобили"
+    
+    def __str__(self):
+        return f"{self.vin_code}"
 
 class QRCode(models.Model):
     id = models.AutoField(primary_key=True)
