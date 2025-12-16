@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.conf import settings
 from django.utils.html import format_html
 from django.http import HttpResponseRedirect
 from django.template.response import TemplateResponse
@@ -13,7 +12,7 @@ class BatchQRCodeForm(forms.Form):
 
 @admin.register(QRCode)
 class QRCodeAdmin(admin.ModelAdmin):
-    list_display = ("code", "partner", "account_type", "user", "is_active", "is_printed", "is_deployed", "is_selled", "created_at", "print_image_button")
+    list_display = ("code", "partner", "account_type", "user", "is_printed_timestamp", "is_deployed_timestamp",  "is_selled_timestamp", "is_active_timestamp", "created_at", "print_image_button")
     list_filter = ("partner", "account_type", "is_active", "is_deployed", "is_selled", "created_at", "is_printed")
     search_fields = ("code", "user__username", "partner__partner_name")
     readonly_fields = ("code", "image", "created_at", "user", "is_active", "is_printed", "is_deployed", "is_selled", "is_selled_timestamp", "is_active_timestamp", "active_before", "is_printed_timestamp", "is_deployed_timestamp", "selled_by", "car", "status")
