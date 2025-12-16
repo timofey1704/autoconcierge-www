@@ -119,7 +119,7 @@ class QRCodeAdmin(admin.ModelAdmin):
                         <button onclick="window.print()" style="padding: 10px 20px; background: #417690; color: white; border: none; cursor: pointer;">
                             🖨️ Печать
                         </button>
-                        <button onclick="window.location.href='/admin/api/registerqrcode/'" style="padding: 10px 20px; background: #999; color: white; border: none; cursor: pointer; margin-left: 10px;">
+                        <button onclick="window.location.href='/admin/sitemanagement/qrcode/'" style="padding: 10px 20px; background: #999; color: white; border: none; cursor: pointer; margin-left: 10px;">
                             Вернуться в админку
                         </button>
                     </div>
@@ -219,7 +219,7 @@ class QRCodeAdmin(admin.ModelAdmin):
                 <button onclick="window.print()" style="padding: 15px 25px; background: #417690; color: white; border: none; cursor: pointer; font-size: 16px;">
                     🖨️ Печать всех QR-кодов
                 </button>
-                <button onclick="window.location.href='/admin/api/registerqrcode/'" style="padding: 15px 25px; background: #999; color: white; border: none; cursor: pointer; margin-left: 10px; font-size: 16px;">
+                <button onclick="window.location.href='/admin/sitemanagement/qrcode/'" style="padding: 15px 25px; background: #999; color: white; border: none; cursor: pointer; margin-left: 10px; font-size: 16px;">
                      Вернуться в админку
                 </button>
             </div>
