@@ -8,7 +8,25 @@ from sitemanagement.models import *
 from django.http import HttpResponse
 
 class BatchQRCodeForm(forms.Form):
-    amount = forms.IntegerField(min_value=1, max_value=100, label='Количество QR-кодов')
+    partner = forms.ModelChoiceField(
+        queryset=Partner.objects.all(),
+        label='Партнер',
+        help_text='Выберите партнера для генерации префикса QR кода',
+        required=True
+    )
+    account_type = forms.ChoiceField(
+        choices=[('L', 'Light'), ('M', 'Medium'), ('P', 'Premium')],
+        label='Тарифный план',
+        help_text='Тип тарифного плана (L/M/P) - влияет на генерацию кода',
+        initial='L',
+        required=True
+    )
+    amount = forms.IntegerField(
+        min_value=1,
+        max_value=100,
+        label='Количество QR-кодов',
+        help_text='Сколько QR-кодов создать (от 1 до 100)'
+    )
 
 @admin.register(QRCode)
 class QRCodeAdmin(admin.ModelAdmin):
@@ -52,19 +70,39 @@ class QRCodeAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             form = BatchQRCodeForm(request.POST)
             if form.is_valid():
+                partner = form.cleaned_data['partner']
+                account_type = form.cleaned_data['account_type']
                 amount = form.cleaned_data['amount']
                 created_count = 0
+                errors = []
                 
-                for _ in range(amount):
+                for i in range(amount):
                     try:
-                        QRCode.objects.create()
+                        QRCode.objects.create(
+                            partner=partner,
+                            account_type=account_type
+                        )
                         created_count += 1
                     except Exception as e:
-                        self.message_user(request, f'Ошибка при создании QR-кодов: {str(e)}', level='error')
-                        break
+                        errors.append(f'QR #{i+1}: {str(e)}')
+                        if len(errors) >= 5:  # показываем только первые 5 ошибок
+                            errors.append(f'... и еще {amount - i - 1} ошибок')
+                            break
                 
                 if created_count > 0:
-                    self.message_user(request, f'Успешно создано {created_count} QR-кодов')
+                    self.message_user(
+                        request, 
+                        f'Успешно создано {created_count} QR-кодов для партнера "{partner.partner_name}" с тарифом "{account_type}"',
+                        level='success'
+                    )
+                
+                if errors:
+                    self.message_user(
+                        request,
+                        f'Ошибки при создании: ' + '; '.join(errors[:5]),
+                        level='error'
+                    )
+                
                 return HttpResponseRedirect('../')
         else:
             form = BatchQRCodeForm()
