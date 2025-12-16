@@ -27,8 +27,15 @@
     - name: Pgpass
       ansible.builtin.lineinfile:
         path: "/home/{{ user }}/.pgpass"
-        line: "{{ docker_network_prefix }}.20:5432:{{ db_name }}:{{ db_user }}:{{ db_password }}"
+        line: "pg-{{ app }}:5432:{{ db_name }}:{{ db_user }}:{{ db_password }}"
         create: true
         owner: "{{ user }}"
         group: "{{ user }}"
         mode: "0600"
+
+    - name: Host
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        state: present
+        search_string: "{{ docker_network_prefix }}.20"
+        line: "{{ docker_network_prefix }}.20 pg-{{ app }}"
