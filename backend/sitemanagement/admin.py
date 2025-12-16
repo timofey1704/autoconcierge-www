@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.template.response import TemplateResponse
 from django.urls import path
 from django import forms
+from django.utils import timezone
 from sitemanagement.models import *
-from django.http import HttpResponse
 
 class BatchQRCodeForm(forms.Form):
     partner = forms.ModelChoiceField(
@@ -63,6 +63,7 @@ class QRCodeAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('batch-create/', self.admin_site.admin_view(self.batch_create_view), name='api_registerqrcode_batch-create'),
+            path('<int:qr_id>/mark-printed/', self.admin_site.admin_view(self.mark_as_printed), name='sitemanagement_qrcode_mark_printed'),
         ]
         return custom_urls + urls
 
@@ -116,7 +117,7 @@ class QRCodeAdmin(admin.ModelAdmin):
         return TemplateResponse(request, 'admin/api/batch_create_form.html', context)
 
     def print_image_button(self, obj):
-        if obj.image and not obj.is_printed:
+        if obj.image:
             html_content = """
                 <!DOCTYPE html>
                 <html>
@@ -177,23 +178,67 @@ class QRCodeAdmin(admin.ModelAdmin):
                 obj.code
             )
             
+            # JavaScript для отметки как распечатанного и открытия окна печати
+            js_code = f"""
+                fetch('/admin/sitemanagement/qrcode/{obj.pk}/mark-printed/', {{
+                    method: 'POST',
+                    headers: {{
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    }}
+                }}).then(() => {{
+                    var w = window.open();
+                    w.document.write('{html_content.replace("'", "\\'").replace("\n", "")}');
+                    w.document.close();
+                    var img = w.document.querySelector('img');
+                    if(img) {{ img.onload = function() {{ w.print(); }}; }}
+                }}).catch(error => {{
+                    console.error('Ошибка при отметке QR как распечатанного:', error);
+                    alert('Произошла ошибка. Попробуйте перезагрузить страницу.');
+                }});
+            """
+            
+            # Меняем стиль и текст для уже распечатанных QR кодов
+            button_style = 'padding: 5px 10px; background: #999; color: white; border: none; border-radius: 3px; cursor: pointer;' if obj.is_printed else 'padding: 5px 10px; background: #417690; color: white; border: none; border-radius: 3px; cursor: pointer;'
+            button_text = '🖨️ Повторно' if obj.is_printed else '🖨️ Печать'
+            
             return format_html(
-                '<button onclick="var w = window.open(); w.document.write(\'{0}\'); w.document.close(); var img = w.document.querySelector(\'img\'); if(img) {{ img.onload = function() {{ w.print(); }}; }}" '
-                'class="button" style="padding: 5px 10px; background: #417690; color: white; border: none; border-radius: 3px; cursor: pointer;">'
-                'Печать</button>',
-                html_content.replace("'", "\\'").replace("\n", "")
+                '<button onclick="{}" '
+                'class="button" style="{}">'
+                '{}</button>',
+                js_code.replace('"', '&quot;'),
+                button_style,
+                button_text
             )
-        return None if obj.is_printed else "Нет изображения"
+        return "Нет изображения"
     
     print_image_button.short_description = "Печать"
 
+    def mark_as_printed(self, request, qr_id):
+        """Отметить QR код как распечатанный"""
+        try:
+            qr_code = QRCode.objects.get(pk=qr_id)
+            if not qr_code.is_printed:
+                qr_code.is_printed = True
+                qr_code.is_printed_timestamp = timezone.now()
+                qr_code.save(update_fields=['is_printed', 'is_printed_timestamp'])
+            return JsonResponse({'success': True})
+        except QRCode.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'QR код не найден'}, status=404)
+
     def print_selected_qr_codes(self, request, queryset):
         # фильтруем только те объекты, у которых есть изображение и которые еще не распечатаны
-        qr_codes_with_images = queryset.exclude(image__isnull=True).exclude(image='').filter(is_printed=False)
+        qr_codes_queryset = queryset.exclude(image__isnull=True).exclude(image='').filter(is_printed=False)
         
-        if not qr_codes_with_images:
+        if not qr_codes_queryset.exists():
             self.message_user(request, "Нет QR-кодов доступных для печати (QR коды должны иметь изображение и не быть распечатанными)", level='warning')
             return
+        
+        # ВАЖНО: сначала преобразуем в список, чтобы сохранить данные
+        qr_codes_list = list(qr_codes_queryset)
+        
+        # отмечаем все выбранные QR коды как распечатанные
+        now = timezone.now()
+        qr_codes_queryset.update(is_printed=True, is_printed_timestamp=now)
         
         # создаем HTML страницу для печати
         html_content = """
@@ -257,9 +302,9 @@ class QRCodeAdmin(admin.ModelAdmin):
                 <p>Всего кодов: {count}</p>
             </div>
             <div class="qr-grid">
-        """.format(count=qr_codes_with_images.count())
+        """.format(count=len(qr_codes_list))
         
-        for qr_code in qr_codes_with_images:
+        for qr_code in qr_codes_list:
             html_content += """
                 <div class="qr-container">
                     <img src="{image_url}" class="qr-image" alt="QR код" />
