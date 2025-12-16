@@ -6,6 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import path
 from django import forms
 from sitemanagement.models import *
+from django.http import HttpResponse
 
 class BatchQRCodeForm(forms.Form):
     amount = forms.IntegerField(min_value=1, max_value=100, label='Количество QR-кодов')
@@ -83,43 +84,52 @@ class QRCodeAdmin(admin.ModelAdmin):
                 <!DOCTYPE html>
                 <html>
                 <head>
-                    <title>QR-код</title>
+                    <title>QR-код {1}</title>
                     <style>
                         @media print {{
                             body {{ margin: 0; padding: 20px; }}
                             .no-print {{ display: none; }}
                         }}
-                        .qr-container {{ 
-                            margin: 30px; 
-                            text-align: center;
-                            display: inline-block;
-                            width: 200px;
+                        body {{
+                            font-family: Arial, sans-serif;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            min-height: 100vh;
                         }}
-                        svg {{
-                            display: block;
-                            margin: 0 auto;
+                        .qr-container {{ 
+                            border: 1px solid #333;
+                            border-radius: 8px;
+                            padding: 5px;
+                            text-align: center;
                             background: white;
+                            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+                        }}
+                        .qr-image {{
+                            display: block;
+                            margin: 0 auto 5px;
+                            width: 200px;
+                            height: 200px;
+                        }}
+                        .qr-code-text {{
+                            font-size: 16px;
+                            font-weight: bold;
+                            color: #333;
+                            letter-spacing: 1px;
+                            
                         }}
                     </style>
                 </head>
                 <body>
                     <div class="qr-container">
-                        <div style="position: relative; width: 200px; height: 200px;">
-                            <!-- Шаблон с текстом по кругу -->
-                            <img src="{2}api/img/round.png" style="width: 200px; height: 200px;" />
-                            <!-- QR код в центре -->
-                            <img src="{0}" style="position: absolute; left: 50px; top: 49px; width: 100px; height: 100px;" />
-                            <!-- Текст кода внизу -->
-                            <div style="position: absolute; left: 0; right: 0; bottom: 35px; text-align: center; font-size: 15px; font-weight: bold;">
-                                {1}
-                            </div>
-                        </div>
+                        <img src="{0}" class="qr-image" alt="QR код" />
+                        <div class="qr-code-text">{1}</div>
                     </div>
-                    <div class="no-print" style="text-align: center; margin: 20px;">
-                        <button onclick="window.print()" style="padding: 10px 20px; background: #417690; color: white; border: none; cursor: pointer;">
+                    <div class="no-print" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; background: #417690; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;">
                             🖨️ Печать
                         </button>
-                        <button onclick="window.location.href='/admin/sitemanagement/qrcode/'" style="padding: 10px 20px; background: #999; color: white; border: none; cursor: pointer; margin-left: 10px;">
+                        <button onclick="window.location.href='/admin/sitemanagement/qrcode/'" style="padding: 10px 20px; background: #999; color: white; border: none; border-radius: 5px; cursor: pointer; margin-left: 10px; font-size: 14px;">
                             Вернуться в админку
                         </button>
                     </div>
@@ -127,8 +137,7 @@ class QRCodeAdmin(admin.ModelAdmin):
                 </html>
             """.format(
                 obj.image.url,
-                obj.code,
-                settings.STATIC_URL
+                obj.code
             )
             
             return format_html(
@@ -161,32 +170,52 @@ class QRCodeAdmin(admin.ModelAdmin):
                     .no-print {{ display: none; }}
                     .qr-container {{ 
                         page-break-inside: avoid; 
-                        margin-bottom: 20px;
                     }}
                 }}
+                body {{
+                    font-family: Arial, sans-serif;
+                }}
                 .qr-grid {{
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: center;
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(210px, 210px));
                     gap: 20px;
                     padding: 20px;
+                    justify-content: center;
                 }}
                 .qr-container {{ 
-                    margin: 0;
+                    border: 1px solid #333;
+                    border-radius: 8px;
+                    padding: 5px;
                     text-align: center;
-                    display: inline-block;
-                    width: 200px;
-                }}
-                svg {{
-                    display: block;
-                    margin: 0 auto;
                     background: white;
+                    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
                 }}
-                .print-header {{ text-align: center; margin-bottom: 30px; }}
+                .qr-image {{
+                    display: block;
+                    margin: 0 auto 5px;
+                    width: 200px;
+                    height: 200px;
+                }}
+                .qr-code-text {{
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #333;
+                    letter-spacing: 1px;
+                    
+                }}
+                .print-header {{ 
+                    text-align: center; 
+                    margin-bottom: 30px;
+                    padding: 20px;
+                }}
+                .print-header h1 {{
+                    color: #333;
+                    margin-bottom: 10px;
+                }}
             </style>
         </head>
         <body>
-            <div class="print-header">
+            <div class="print-header no-print">
                 <h1>QR-коды для печати</h1>
                 <p>Всего кодов: {count}</p>
             </div>
@@ -196,21 +225,12 @@ class QRCodeAdmin(admin.ModelAdmin):
         for qr_code in qr_codes_with_images:
             html_content += """
                 <div class="qr-container">
-                    <div style="position: relative; width: 200px; height: 200px;">
-                        <!-- Шаблон с текстом по кругу -->
-                        <img src="{static_url}api/img/round.png" style="width: 200px; height: 200px;" />
-                        <!-- QR код в центре -->
-                        <img src="{image_url}" style="position: absolute; left: 50px; top: 49px; width: 100px; height: 100px;" />
-                        <!-- Текст кода внизу -->
-                        <div style="position: absolute; left: 0; right: 0; bottom: 35px; text-align: center; font-size: 15px; font-weight: bold;">
-                            {code}
-                        </div>
-                    </div>
+                    <img src="{image_url}" class="qr-image" alt="QR код" />
+                    <div class="qr-code-text">{code}</div>
                 </div>
             """.format(
                 code=qr_code.code,
-                image_url=request.build_absolute_uri(qr_code.image.url),
-                static_url=settings.STATIC_URL
+                image_url=request.build_absolute_uri(qr_code.image.url)
             )
         
         html_content += """
@@ -228,7 +248,6 @@ class QRCodeAdmin(admin.ModelAdmin):
         """
         
         # создаем response с HTML содержимым
-        from django.http import HttpResponse
         response = HttpResponse(html_content)
         return response
     

@@ -58,7 +58,7 @@ class QRCode(models.Model):
         Partner,
         on_delete=models.PROTECT,
         verbose_name='Партнер',
-        help_text='Выберите партнера для использования префикса в QR коде'
+        help_text='Партнер для использования префикса в QR коде'
     )
     code = models.CharField(max_length=255, verbose_name="Код", unique=True)
     image = models.ImageField(upload_to=qr_upload_path, verbose_name="Фото QR кода")
