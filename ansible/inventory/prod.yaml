@@ -29,8 +29,11 @@ servers:
     registry_token: gldt-FY7JGssBzRdxNXVfthRn
 
     domain: ids-help.by
-    enable_https: true
+    enable_https: false
 
     http_user: autoconcierge
     http_pass: welcome
     http_auth: false
+
+    metrics_user: metrics
+    metrics_pass: metrics
