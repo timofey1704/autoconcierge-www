@@ -1,7 +1,6 @@
 services:
   backend:
     image: "registry.gitlab.com/wedeving/autoconcierge-www/backend:{{ docker_tag }}"
-    user: "${USER}:${USER}"
     volumes:
       - "static:/static"
       - "media:/media"
@@ -41,7 +40,6 @@ services:
 
   frontend:
     image: "registry.gitlab.com/wedeving/autoconcierge-www/frontend:{{ docker_tag }}"
-    user: "${USER}:${USER}"
     environment:
       NEXT_PUBLIC_API_URL: https://{{ domain }}/api/v1
     networks:
@@ -53,9 +51,6 @@ services:
 
   postgres:
     image: postgres:18-alpine
-    user: "${USER}:${USER}"
-    ports:
-      - "127.0.0.1:15432:5432"
     volumes:
       - "postgres:/var/lib/postgresql/data"
     environment:
