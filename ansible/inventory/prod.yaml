@@ -1,14 +1,14 @@
 servers:
   hosts:
     autoconcierge:
-      ansible_host: sbl-lising.by
+      ansible_host: 45.87.219.194
 
   vars:
     ansible_user: root
 
     app: prod
 
-    user: autoconcierge
+    user: ids
     timezone: Europe/Minsk
     ssh_keys: |
       ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP+igmEmZ9KzELTgYKLrW/LcFIclzj0m2enPp5Bm4QSz promo@vhome6
@@ -17,16 +17,23 @@ servers:
     docker_tag: prod
     docker_network_prefix: "172.56.10"
 
-    db_user: admin
-    db_password: eF6tooshae3yaa2ohhih
-    db_name: autoconciergedb
+    db_admin_user: admin
+    db_admin_password: yei8chaShahJ6eijal0o
+    db_admin_name: admin
 
-    registry_user: gitlab+deploy-token-10362831
-    registry_token: gldt-cjiHfJSZExVcvpkHgs3M
+    db_user: ids
+    db_password: caThahcheijihoh4Eela
+    db_name: autoconcierge
 
-    domain: sbl-lising.by
+    registry_user: gitlab+deploy-token-10438306
+    registry_token: gldt-FY7JGssBzRdxNXVfthRn
+
+    domain: ids-help.by
     enable_https: true
 
-    http_user: autoconcierge
+    http_user: ids
     http_pass: welcome
-    http_auth: false
+    http_auth: true
+
+    metrics_user: metrics
+    metrics_pass: metrics

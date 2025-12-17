@@ -1,0 +1,41 @@
+- name: Postgresql config
+  hosts: servers
+  tasks:
+    - name: Preinstall packages
+      ansible.builtin.package:
+        name:
+          - postgresql-client
+          - python3-psycopg2
+
+    - name: Create db user
+      community.postgresql.postgresql_user:
+        name: "{{ db_user }}"
+        password: "{{ db_password }}"
+        login_host: "{{ docker_network_prefix }}.20"
+        login_user: "{{ db_admin_user }}"
+        login_password: "{{ db_admin_password }}"
+        login_db: "{{ db_admin_name }}"
+
+    - name: Create database
+      community.postgresql.postgresql_db:
+        name: "{{ db_name }}"
+        owner: "{{ db_user }}"
+        login_host: "{{ docker_network_prefix }}.20"
+        login_user: "{{ db_admin_user }}"
+        login_password: "{{ db_admin_password }}"
+
+    - name: Pgpass
+      ansible.builtin.lineinfile:
+        path: "/home/{{ user }}/.pgpass"
+        line: "pg-{{ app }}:5432:{{ db_name }}:{{ db_user }}:{{ db_password }}"
+        create: true
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: "0600"
+
+    - name: Host
+      ansible.builtin.lineinfile:
+        path: /etc/hosts
+        state: present
+        search_string: "{{ docker_network_prefix }}.20"
+        line: "{{ docker_network_prefix }}.20 pg-{{ app }}"

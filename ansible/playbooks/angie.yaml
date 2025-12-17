@@ -37,6 +37,15 @@
         group: angie
         mode: "0640"
 
+    - name: Add metrics user to password file
+      community.general.htpasswd:
+        path: /etc/angie/passwdfile
+        name: "{{ metrics_user }}"
+        password: "{{ metrics_pass }}"
+        owner: angie
+        group: angie
+        mode: "0640"
+
   handlers:
     - name: Restart angie
       ansible.builtin.service:

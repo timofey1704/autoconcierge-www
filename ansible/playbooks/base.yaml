@@ -14,6 +14,9 @@
           - gpg
           - gnupg
           - ca-certificates
+          - starship
+          - fish
+          - prometheus-node-exporter
         state: present
     - name: Timezone
       community.general.timezone:
@@ -24,7 +27,7 @@
     - name: Create user
       ansible.builtin.user:
         name: "{{ user }}"
-        shell: /usr/bin/bash
+        shell: /usr/bin/fish
         groups: sudo
         append: true
     - name: Sudo config
@@ -38,6 +41,11 @@
         path: "/home/{{ user }}/.ssh"
         state: directory
         mode: "0755"
+    - name: Ssh dir
+      ansible.builtin.file:
+        path: "/home/{{ user }}/.ssh"
+        state: directory
+        mode: "0755"
     - name: Ssh keys
       ansible.builtin.copy:
         dest: "/home/{{ user }}/.ssh/authorized_keys"
@@ -45,4 +53,25 @@
         owner: "{{ user }}"
         group: "{{ user }}"
         mode: "0600"
-        force: true
+
+    - name: Configure prometheus node exporter
+      ansible.builtin.copy:
+        dest: /etc/default/prometheus-node-exporter
+        content: 'ARGS="--web.listen-address=127.0.0.1:9100"'
+        mode: "0644"
+      notify: Restart prometheus-node-exporter
+
+    - name: Configure starship
+      ansible.builtin.lineinfile:
+        path: "/home/{{ user }}/.config/fish/config.fish"
+        line: "starship init fish | source"
+        create: true
+        owner: "{{ user }}"
+        group: "{{ user }}"
+        mode: "0644"
+
+  handlers:
+    - name: Restart prometheus-node-exporter
+      ansible.builtin.service:
+        name: prometheus-node-exporter
+        state: restarted
