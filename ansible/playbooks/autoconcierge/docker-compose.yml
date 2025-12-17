@@ -25,9 +25,9 @@ services:
 
     healthcheck:
       test: ["CMD", "sh", "-c", "ss -nltp | grep '0.0.0.0:8000'"]
-      interval: 5s
+      interval: 2s
       timeout: 1s
-      retries: 10
+      retries: 40
       start_period: 1s
 
     networks:

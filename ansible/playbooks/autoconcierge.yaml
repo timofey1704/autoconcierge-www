@@ -52,6 +52,10 @@
       become_user: "{{ user }}"
       community.docker.docker_compose_v2_pull:
         project_src: "/etc/docker/compose/{{ app }}"
+        policy: always
+        services:
+          - backend
+          - frontend
       notify:
         - Restart app
         - Prune docker
