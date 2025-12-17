@@ -77,6 +77,10 @@
    DB_NAME
    DB_PASSWORD
    DB_PORT=5432
+
+   #sms provider
+   SMS_USER=
+   SMS_API_KEY=
    ```
 
 5. **Локальная разработка:**
@@ -146,8 +150,8 @@
 1. **После сборки заходим в контейнер:**
 
    ```sh
-   ssh auto@stage.sbl-lising.by
-   docker exec -it autoconcierge-backend-1 sh
+   ssh ids@ids-help.by
+   docker exec -it prod-backend-1 sh
    ```
 
 2. **Проводим миграции:**
@@ -161,13 +165,13 @@
 1. **Логи фронтенда:**
 
    ```sh
-   docker logs -f autoconcierge-frontend-1
+   docker logs -f prod-frontend-1
    ```
 
 2. **Логи бекенда:**
 
    ```sh
-   docker logs -f autoconcierge-backend-1
+   docker logs -f prod-backend-1
    ```
 
 3. **Логи сервера:**
