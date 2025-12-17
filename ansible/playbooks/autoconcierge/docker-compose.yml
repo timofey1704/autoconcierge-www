@@ -7,7 +7,7 @@ services:
     environment:
       # django settings
       ALLOWED_HOSTS: "{{domain}},backend"
-      SECRET_KEY: ""
+      SECRET_KEY: "django-insecure-=a^u2d6yc22l-&*#h04x*ek6si5i8%%uxe($a9uat5v0(np&e%"
       DEBUG_MODE: true
       BASE_URL: "https://{{ domain }}"
       MEDIA_ROOT: /media
