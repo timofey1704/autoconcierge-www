@@ -1,7 +1,7 @@
 servers:
   hosts:
     autoconcierge:
-      ansible_host: 45.87.219.194
+      ansible_host: ids-help.by
 
   vars:
     ansible_user: root
