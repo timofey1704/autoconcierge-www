@@ -47,15 +47,22 @@
         mode: "0644"
       notify: Restart compose service
 
-    - name: Pull images
+    - name: Pull backend image
       become: true
       become_user: "{{ user }}"
-      community.docker.docker_compose_v2_pull:
-        project_src: "/etc/docker/compose/{{ app }}"
-        policy: always
-        services:
-          - backend
-          - frontend
+      community.docker.docker_image_pull:
+        name: registry.gitlab.com/wedeving/autoconcierge-www/backend:{{ docker_tag }}
+        pull: always
+      notify:
+        - Restart app
+        - Prune docker
+
+    - name: Pull frontend image
+      become: true
+      become_user: "{{ user }}"
+      community.docker.docker_image_pull:
+        name: registry.gitlab.com/wedeving/autoconcierge-www/frontend:{{ docker_tag }}
+        pull: always
       notify:
         - Restart app
         - Prune docker

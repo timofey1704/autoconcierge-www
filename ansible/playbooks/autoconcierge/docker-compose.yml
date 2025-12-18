@@ -23,7 +23,7 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
 
-      #activation url
+      # activation url
       ACTIVATION_URL: "https://{{ domain }}/activation/"
 
     healthcheck:
