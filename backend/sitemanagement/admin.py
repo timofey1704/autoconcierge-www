@@ -215,3 +215,15 @@ class PartnerAdmin(admin.ModelAdmin):
 class CarAdmin(admin.ModelAdmin):
     list_display = ("vin_code", )
     search_fields = ("vin_code", )
+    
+@admin.register(Membership)
+class MembershipAdmin(admin.ModelAdmin):
+    list_display = ("plan", "price")
+    search_fields = ("plan", "price")
+    list_filter = ("plan", "is_recommended")
+    
+@admin.register(Feature)
+class FeatureAdmin(admin.ModelAdmin):
+    list_display = ("name", )
+    search_fields = ("name", )
+    list_filter = ("name", )
