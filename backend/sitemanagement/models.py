@@ -5,6 +5,7 @@ from django.db import models
 from django.core.files.base import ContentFile
 
 from sitemanagement.constants.image_save_path import qr_upload_path
+from sitemanagement.constants.account_types import account_types
 
 from api.utils.generate_qrcode import generate_qrcode
 from api.utils.prefix_transliteration import transliterate_to_latin
@@ -130,3 +131,27 @@ class QRCode(models.Model):
             self.image.save(f"{unique_code}.png", ContentFile(image_io.getvalue()), save=False)
             
         super().save(*args, **kwargs)
+        
+class Membership(models.Model):
+    id = models.AutoField(primary_key=True)
+    plan = models.CharField(max_length=10, choices=account_types, verbose_name='Название тарифного плана')
+    price = models.IntegerField(verbose_name='Стоимость тарифного плана / месяц', null=True, blank=True)
+    is_recommended = models.BooleanField(default=False, verbose_name='Рекомендуемость')
+    features = models.ManyToManyField('Feature', related_name='membership_plans', verbose_name='Свойства')
+    class Meta:
+        verbose_name = 'Тарифный план'
+        verbose_name_plural = 'Тарифные планы'
+        ordering = ['id']
+        
+    def __str__(self):
+        return self.plan
+    
+class Feature(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название свойства')
+    
+    class Meta:
+        verbose_name = 'Свойство'
+        verbose_name_plural = 'Свойства'
+        
+    def __str__(self):
+        return self.name
