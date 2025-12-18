@@ -227,3 +227,8 @@ class FeatureAdmin(admin.ModelAdmin):
     list_display = ("name", )
     search_fields = ("name", )
     list_filter = ("name", )
+    
+@admin.register(FAQ)
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ("title", )
+    search_fields = ("name", )

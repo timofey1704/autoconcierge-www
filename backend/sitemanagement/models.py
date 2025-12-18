@@ -155,3 +155,15 @@ class Feature(models.Model):
         
     def __str__(self):
         return self.name
+    
+class FAQ (models.Model):
+    title = models.CharField(max_length=250)
+    content = models.CharField(max_length=800)
+    
+    class Meta:
+        verbose_name = 'FAQ'
+        verbose_name_plural = 'FAQs'
+        ordering = ['id']
+
+    def __str__(self):
+        return self.title

@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from sitemanagement.constants.account_types import account_types
 from sitemanagement.models import Feature, Membership
-from django.conf import settings
 
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
