@@ -43,7 +43,10 @@
    npm install
 
    cd backend
-   pipenv install
+   uv init
+   uv venv
+   source .venv/bin/activate
+   uv sync --locked
    ```
 
 3. **Настройка базы данных:**
