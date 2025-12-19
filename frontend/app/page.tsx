@@ -1,11 +1,13 @@
 import { getFAQs } from '@/lib/main/fetchFAQ'
 import { getMemberships } from '@/lib/main/fetchMembershipData'
 import FAQ from '@/components/FAQ'
+import UButton from '@/components/ui/UButton'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
   return (
     <div className="mx-auto flex flex-col items-center justify-center space-y-24 overflow-x-hidden">
+      <UButton text="Кнопка" />
       <FAQ faqs={faqs} id="faq" />
     </div>
   )

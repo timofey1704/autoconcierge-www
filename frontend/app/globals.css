@@ -150,6 +150,15 @@ p {
   }
 }
 
+.bg-gradient {
+  background: var(--color-gradient);
+  transition: background 0.6s ease-in-out;
+}
+
+.bg-gradient:active {
+  background: linear-gradient(90deg, #6aafbf 0%, #88ecce 100%);
+}
+
 .text-gradient {
   background: var(--color-gradient);
   background-clip: text;
