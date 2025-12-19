@@ -64,3 +64,12 @@ export interface Membership {
 export interface PricingCardProps {
   memberships: Membership[]
 }
+
+export interface ButtonProps {
+  onClick?: () => void
+  className?: string
+  text?: string
+  type?: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  loading?: boolean
+}
