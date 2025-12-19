@@ -9,8 +9,8 @@ import React from 'react'
 
 const Footer = () => {
   return (
-    <footer className="w-full h-[866px] lg:h-[407px] bg-black text-white pt-10 px-5 pb-5 lg:pt-15 lg:px-28 lg:pb-10">
-      <div className="flex justify-between flex-wrap gap-10 pb-10">
+    <footer className="w-full h-[866px] md:h-[636px] xl:h-[407px] bg-black text-white pt-10 px-5 pb-5 lg:pt-15 lg:px-28 lg:pb-10">
+      <div className="flex justify-between flex-wrap gap-10 xl:gap-0 pb-10">
         <div className="w-[601px]"> 
           <div>
             <div className="flex items-end gap-2">
@@ -23,11 +23,11 @@ const Footer = () => {
             «ИнДиЭс Бай», зарегистрированное по адресу Республика
             Беларусь, 220034, г. Минск, Войсковый пер., д, 12, каб. 4</p>
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="w-full xl:w-auto flex flex-col justify-between">
           <div className="flex items-center justify-between flex-wrap gap-5 lg:gap-10">
             <div>
               <div className="flex items-center">
-                <hr className="w-[32px] h-[2px] border-0 gradient-line" />
+                <hr className="h-[2px] border-0 gradient-line" />
                 <h5 className="lg:pl-3">ТЕЛЕФОН</h5>
               </div>
               <div className="flex items-center pt-4">
@@ -42,7 +42,7 @@ const Footer = () => {
             </div>
             <div>
               <div className="flex items-center">
-                <hr className="w-[32px] h-[2px] border-0 gradient-line" />
+                <hr className="h-[2px] border-0 gradient-line" />
                 <h5 className="lg:pl-3">СОЦИАЛЬНЫЕ СЕТИ</h5>
               </div>
               <div className="flex items-center gap-5 pt-4">
@@ -101,10 +101,10 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col lg:flex-row justify-start lg:justify-end flex-wrap gap-5 lg:gap-10 pt-10 lg:pt-24">
-            <Link href="/service-packages">Пакеты услуг</Link>
-            <Link href="/how-it-works">Как это работает</Link>
-            <Link href="/partners">Партнеры</Link>
+          <div className="flex flex-col md:flex-row lg:flex-row justify-start md:justify-between lg:justify-between xl:justify-end flex-wrap gap-5 lg:gap-10 pt-10 xl:pt-24">
+            <Link href="/service-packages" className="internal-link">Пакеты услуг</Link>
+            <Link href="/how-it-works" className="internal-link">Как это работает</Link>
+            <Link href="/partners" className="internal-link">Партнеры</Link>
           </div>
         </div>
       </div>
