@@ -1,13 +1,12 @@
-import Footer from '@/components/Footer'
-import Image from 'next/image'
+import { getFAQs } from '@/lib/main/fetchFAQ'
+import { getMemberships } from '@/lib/main/fetchMembershipData'
+import FAQ from '@/components/FAQ'
 
-export default function Home() {
+export default async function Home() {
+  const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
   return (
-
-    // Не забыть убрать ненужную разметку
-
-    <div className="w-full min-h-screen bg-white pt-10 flex items-end"> 
-        <Footer/>
+    <div className="mx-auto flex flex-col items-center justify-center space-y-24 overflow-x-hidden">
+      <FAQ faqs={faqs} id="faq" />
     </div>
     
     // <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">

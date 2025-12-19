@@ -30,3 +30,37 @@ export type ToastProps = {
   }
   duration?: number
 }
+
+export interface FAQ {
+  id: number
+  title: string
+  content: string | React.ReactNode
+}
+
+export interface FAQProps {
+  faqs: FAQ[]
+  id: string
+}
+
+export interface AccordionProps {
+  title: string
+  content: string | React.ReactNode
+}
+
+interface MembershipFeature {
+  id: number
+  name: string
+}
+
+export interface Membership {
+  id: number
+  plan: string
+  price?: number
+  description: string
+  is_popular: boolean
+  features: MembershipFeature[]
+}
+
+export interface PricingCardProps {
+  memberships: Membership[]
+}
