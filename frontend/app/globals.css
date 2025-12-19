@@ -8,7 +8,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-gradient: linear-gradient(135deg, #44747f 0%, #6abaa2 100%);
+  --color-gradient: linear-gradient(135deg, #107f8c 0%, #6abaa2 100%);
   --color-dark-green: #0c3227;
   --color-white: #fafafa;
   --color-light-gray: #f1f1f1;
@@ -32,78 +32,95 @@ body {
 }
 
 h1 {
-  font-size: 64px;
-  line-height: 78px;
+  font-size: 36px;
+  line-height: 44px;
   font-weight: 700;
   font-style: bold;
 
   @media (min-width: 640px) {
-    font-size: 32px;
-    line-height: 40px;
+    font-size: 48px;
+    line-height: 56px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 36px;
-    line-height: 48px;
+    font-size: 64px;
+    line-height: 72px;
   }
 }
 
 h2 {
-  font-size: 56px;
-  line-height: 70px;
-  font-weight: 700;
-  font-style: bold;
-
-  @media (min-width: 640px) {
-    font-size: 32px;
-    line-height: 40px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 32px;
-    line-height: 40px;
-  }
-}
-
-h3 {
-  font-size: 48px;
-  line-height: 60px;
-  font-weight: 700;
-  font-style: bold;
-
-  @media (min-width: 640px) {
-    font-size: 32px;
-    line-height: 40px;
-  }
-
-  @media (min-width: 1024px) {
-    font-size: 32px;
-    line-height: 40px;
-  }
-}
-
-h4 {
   font-size: 32px;
   line-height: 40px;
   font-weight: 700;
   font-style: bold;
 
   @media (min-width: 640px) {
-    font-size: 20px;
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 48px;
+    line-height: 56px;
+  }
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  font-style: bold;
+
+  @media (min-width: 640px) {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  font-style: bold;
+
+  @media (min-width: 640px) {
+    font-size: 24px;
     line-height: 32px;
   }
 
   @media (min-width: 1024px) {
-    font-size: 20px;
-    line-height: 32px;
+    font-size: 28px;
+    line-height: 36px;
   }
 }
 
 h5 {
-  font-size: 26px;
-  line-height: 38px;
+  font-size: 18px;
+  line-height: 26px;
   font-weight: 700;
   font-style: bold;
+
+  @media (min-width: 640px) {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 22px;
+    line-height: 30px;
+  }
+}
+
+h6 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  font-style: normal;
 
   @media (min-width: 640px) {
     font-size: 18px;
@@ -112,13 +129,13 @@ h5 {
 
   @media (min-width: 1024px) {
     font-size: 20px;
-    line-height: 26px;
+    line-height: 28px;
   }
 }
 
-h6 {
-  font-size: 24px;
-  line-height: 30px;
+p {
+  font-size: 14px;
+  line-height: 22px;
   font-weight: 500;
   font-style: normal;
 
@@ -129,23 +146,31 @@ h6 {
 
   @media (min-width: 1024px) {
     font-size: 18px;
-    line-height: 24px;
+    line-height: 28px;
   }
 }
 
-p {
-  font-size: 18px;
-  line-height: 30px;
-  font-weight: 500;
-  font-style: normal;
+.text-gradient {
+  background: var(--color-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
 
-  @media (min-width: 640px) {
-    font-size: 14px;
-    line-height: 24px;
-  }
+.gradient-line {
+  position: relative;
+  padding-left: 40px;
+}
 
-  @media (min-width: 1024px) {
-    font-size: 18px;
-    line-height: 24px;
-  }
+.gradient-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 4px;
+  background: linear-gradient(90deg, #107f8c 0%, #31c2a7 100%);
+  border-radius: 2px;
 }
