@@ -30,12 +30,12 @@ const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
   }
 
   return (
-    <div className="bg-text relative my-3 rounded-[20px] sm:my-4 sm:rounded-[30px]">
+    <div className="bg-text relative my-3 border-y-2 border-[#F1F1F1] sm:my-4">
       <button
-        className="flex w-full items-center justify-between px-4 py-3 sm:px-6 sm:py-4 lg:px-8 lg:py-5"
+        className="flex w-full items-center justify-between py-5 sm:py-4 lg:py-8"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <h5 className="pr-4 text-left text-sm text-black sm:text-base lg:text-lg">{title}</h5>
+        <h5 className="text-left text-sm text-black sm:text-base lg:text-lg">{title}</h5>
         <div className="relative flex h-6 w-6 shrink-0 items-center justify-center sm:h-7 sm:w-7 lg:h-8 lg:w-8">
           <Image
             src={openFAQ}
@@ -66,7 +66,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, content }) => {
         } `}
       >
         <div className="overflow-hidden">
-          <div className="px-4 pb-3 sm:px-6 sm:pb-4 lg:px-8 lg:pb-5">
+          <div className="pr-4 pb-3 sm:pr-6 sm:pb-4 lg:pr-8 lg:pb-5">
             <div className="text-black">{renderContent()}</div>
           </div>
         </div>
