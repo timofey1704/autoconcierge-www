@@ -3,6 +3,7 @@ import { getMemberships } from '@/lib/main/fetchMembershipData'
 import FAQ from '@/components/FAQ'
 import UButton from '@/components/ui/UButton'
 import UTextInput from '@/components/ui/UTextInput'
+import ProtectYourCar from '@/components/ProtectYourCar'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
@@ -16,6 +17,7 @@ export default async function Home() {
         label="Название"
         helper_text="helper text"
       />
+      <ProtectYourCar />
       <FAQ faqs={faqs} id="faq" />
     </div>
   )
