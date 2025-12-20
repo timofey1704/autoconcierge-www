@@ -4,6 +4,7 @@ import FAQ from '@/components/FAQ'
 import UButton from '@/components/ui/UButton'
 import UTextInput from '@/components/ui/UTextInput'
 import ProtectYourCar from '@/components/ProtectYourCar'
+import GetSubscription from '@/components/GetSubscription'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
@@ -18,6 +19,7 @@ export default async function Home() {
         helper_text="helper text"
       />
       <ProtectYourCar />
+      <GetSubscription />
       <FAQ faqs={faqs} id="faq" />
     </div>
   )

@@ -183,3 +183,7 @@ p {
   background: linear-gradient(90deg, #107f8c 0%, #31c2a7 100%);
   border-radius: 2px;
 }
+
+.phone-input input {
+  min-width: 300px;
+}
