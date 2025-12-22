@@ -6,6 +6,7 @@ import { AboutUsData } from './constants/aboutUs'
 import AboutUsCard from '@/components/AboutUsCard'
 import ProtectYourCar from '@/components/ProtectYourCar'
 import GetSubscription from '@/components/GetSubscription'
+import Services from '@/components/Services'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
@@ -36,6 +37,7 @@ export default async function Home() {
         </div>
       </section>
 
+      <Services />
       <ProtectYourCar />
       <GetSubscription />
       <FAQ faqs={faqs} id="faq" />
