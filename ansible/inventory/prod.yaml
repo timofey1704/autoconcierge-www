@@ -33,7 +33,7 @@ servers:
 
     http_user: ids
     http_pass: welcome
-    http_auth: true
+    http_auth: false
 
     metrics_user: metrics
     metrics_pass: metrics
