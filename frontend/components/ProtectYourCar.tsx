@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 const ProtectYourCar = () => {
   return (
-    <div className="relative w-full xl:w-304 h-102 xl:h-108 rounded-[40px] overflow-hidden">
+    <div className="relative w-full lg:w-216 xl:w-304 h-102 xl:h-108 rounded-[40px] overflow-hidden">
         <div className="absolute w-full h-full inset-0 bg-[url(/images/ProtectYourCarBackground.jpg)] bg-cover bg-no-repeat xl:bg-size-[150%] xl:bg-position-[5%_45%]" />
 
         <div className="absolute inset-0

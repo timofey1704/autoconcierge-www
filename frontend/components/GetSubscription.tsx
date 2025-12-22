@@ -5,8 +5,9 @@ import UTextInput from './ui/UTextInput'
 
 const GetSubscription = () => {
   return (
-    <div id="get-subscription" className="relative w-full xl:w-304 h-114 xl:h-[475px] rounded-[40px] overflow-hidden">
-        <div className="absolute w-full h-full inset-0 bg-[url(/images/GetSubscriptionBackground.jpg)] bg-cover bg-no-repeat bg-position-[50%_center] xl:bg-size-[162%] xl:bg-position-[43%_72%]" />
+    <div id="get-subscription" className="relative w-full lg:w-216 xl:w-304 h-114 xl:h-[475px] rounded-[40px] overflow-hidden">
+        <div className="absolute w-full h-full inset-0 bg-[url(/images/GetSubscriptionBackground.jpg)] bg-cover bg-no-repeat 
+            bg-position-[50%_center] xl:bg-size-[162%] xl:bg-position-[43%_72%]" />
 
         <div className="absolute inset-0
             bg-[linear-gradient(90deg,rgba(14,17,13,0.9)_50%,rgba(14,17,13,0)_100%)]
@@ -27,7 +28,7 @@ const GetSubscription = () => {
                     <UButton text="Защитить автомобиль" className="min-w-75" />
                 </Link>
             </div>
-            <div className="w-70 xl:w-full flex items-center gap-[10px]">
+            <div className="w-70 md:w-full lg:w-full xl:w-full flex items-center gap-[10px]">
                 {/* Пока вместо UCheckbox */}
                 <div className="min-w-6 min-h-6 rounded-lg bg-white" />
                 <span className="text-xs font-normal">Ознакомлен (на) и согласен (на) на обработку моих <span className="underline underline-offset-2">персональных данных</span></span>
