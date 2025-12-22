@@ -1,5 +1,5 @@
 import Image from "next/image"
-import CallIcon from '../public/icons/Сall.svg'
+import CallIcon from '../public/icons/Call.svg'
 import NameYourVINIcon from '../public/icons/NameYourVIN.svg'
 import GetHelpIcon from '../public/icons/GetHelp.svg'
 import VectorIcon from '../public/icons/Vector.svg'
