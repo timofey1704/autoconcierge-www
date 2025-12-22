@@ -232,3 +232,8 @@ class FeatureAdmin(admin.ModelAdmin):
 class FAQAdmin(admin.ModelAdmin):
     list_display = ("title", )
     search_fields = ("name", )
+    
+@admin.register(Leads)
+class LeadsAdmin(admin.ModelAdmin):
+    list_display = ("phone_number", )
+    readonly_fields = ("phone_number", )

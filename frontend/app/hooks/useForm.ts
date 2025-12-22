@@ -85,6 +85,7 @@ export function useForm<T extends Record<string, FormValue>>(
     phone_number: 'Номер телефона',
     password: 'Пароль',
     privacy_accepted: 'Политика конфиденциальности',
+    privacy_policy: 'Согласие на обработку персональных данных',
     vin_code: 'VIN код',
     qr_code: 'QR код',
   }
