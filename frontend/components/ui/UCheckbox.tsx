@@ -3,14 +3,28 @@ import React, { InputHTMLAttributes, forwardRef, ReactNode } from 'react'
 interface UCheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string
   children?: ReactNode
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  name: string
 }
 
 const UCheckbox = forwardRef<HTMLInputElement, UCheckboxProps>(
-  ({ label, children, className = '', ...props }, ref) => {
+  ({ label, children, handleChange, name, className = '', ...props }, ref) => {
+    // есть ли checked в props??
+    const isControlled = 'checked' in props
+
     return (
       <div className={`flex items-center gap-3 ${className}`}>
         <label className="relative cursor-pointer">
-          <input ref={ref} type="checkbox" className="peer sr-only" {...props} />
+          <input
+            ref={ref}
+            type="checkbox"
+            className="peer sr-only"
+            {...props}
+            onChange={handleChange}
+            id={name}
+            name={name}
+            {...(isControlled ? {} : { defaultChecked: false })}
+          />
 
           <div className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 bg-white transition-all duration-300 ease-in-out peer-checked:border-transparent peer-checked:bg-linear-to-br peer-checked:from-[#107f8c] peer-checked:to-[#6abaa2] peer-hover:border-[#107f8c] peer-focus:ring-2 peer-focus:ring-[#107f8c]/20 peer-disabled:cursor-not-allowed peer-disabled:opacity-50">
             <svg

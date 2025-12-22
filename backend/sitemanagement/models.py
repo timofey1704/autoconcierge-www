@@ -167,3 +167,12 @@ class FAQ (models.Model):
 
     def __str__(self):
         return self.title
+    
+class Leads(models.Model):
+    phone_number = models.CharField(max_length=17)
+    
+    class Meta:
+        verbose_name = 'Лид на главной'
+        verbose_name_plural = 'Лиды на главной'
+    def __str__(self):
+        return self.phone_number
