@@ -6,6 +6,10 @@ import { AboutUsData } from './constants/aboutUs'
 import AboutUsCard from '@/components/AboutUsCard'
 import UCheckbox from '@/components/ui/UCheckbox'
 import Link from 'next/link'
+import UButton from '@/components/ui/UButton'
+import UTextInput from '@/components/ui/UTextInput'
+import ProtectYourCar from '@/components/ProtectYourCar'
+import GetSubscription from '@/components/GetSubscription'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
@@ -45,6 +49,17 @@ export default async function Home() {
           политикой конфиденциальности
         </Link>
       </UCheckbox>
+
+      <UButton text="Кнопка" />
+      <UTextInput
+        value=""
+        name="qwe"
+        placeholder="8 последних цифр"
+        label="Название"
+        helper_text="helper text"
+      />
+      <ProtectYourCar />
+      <GetSubscription />
       <FAQ faqs={faqs} id="faq" />
       <PricingTab memberships={memberships} id="pricing" />
     </div>

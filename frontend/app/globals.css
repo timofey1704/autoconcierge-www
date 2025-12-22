@@ -219,3 +219,7 @@ p {
     }
   }
 }
+
+.phone-input input {
+  min-width: 300px;
+}
