@@ -13,7 +13,7 @@ const validationRules = {
 }
 
 const GetSubscription = () => {
-  const { values, handleChange, handleSubmit, FormProvider } = useForm(
+  const { values, handleChange, handleSubmit, FormProvider, resetField } = useForm(
     {
       phone_number: '',
       privacy_policy: false,
@@ -38,6 +38,9 @@ const GetSubscription = () => {
         }
 
         showToast({ type: 'success', message: 'Заявка успешно создана!' })
+
+        resetField('phone_number', '')
+        resetField('privacy_policy', false)
       } catch (error) {
         showToast({
           type: 'error',
