@@ -2,6 +2,7 @@ import React from 'react'
 import UButton from './ui/UButton'
 import Link from 'next/link'
 import UTextInput from './ui/UTextInput'
+import UCheckbox from './ui/UCheckbox'
 
 const GetSubscription = () => {
   return (
@@ -29,9 +30,9 @@ const GetSubscription = () => {
                 </Link>
             </div>
             <div className="w-70 md:w-full lg:w-full xl:w-full flex items-center gap-[10px]">
-                {/* Пока вместо UCheckbox */}
-                <div className="min-w-6 min-h-6 rounded-lg bg-white" />
-                <span className="text-xs font-normal">Ознакомлен (на) и согласен (на) на обработку моих <span className="underline underline-offset-2">персональных данных</span></span>
+                <UCheckbox>
+                    <span className="text-xs font-normal text-white">Ознакомлен (на) и согласен (на) на обработку моих <span className="underline underline-offset-2">персональных данных</span></span>
+                </UCheckbox>
             </div>
         </div>
     </div>
