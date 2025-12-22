@@ -4,10 +4,6 @@ import FAQ from '@/components/FAQ'
 import PricingTab from '@/components/PricingTab'
 import { AboutUsData } from './constants/aboutUs'
 import AboutUsCard from '@/components/AboutUsCard'
-import UCheckbox from '@/components/ui/UCheckbox'
-import Link from 'next/link'
-import UButton from '@/components/ui/UButton'
-import UTextInput from '@/components/ui/UTextInput'
 import ProtectYourCar from '@/components/ProtectYourCar'
 import GetSubscription from '@/components/GetSubscription'
 
@@ -39,25 +35,7 @@ export default async function Home() {
           ))}
         </div>
       </section>
-      <UCheckbox>
-        Я согласен с{' '}
-        <Link href="/terms" className="text-gradient font-semibold">
-          условиями использования
-        </Link>{' '}
-        и{' '}
-        <Link href="/privacy" className="text-gradient font-semibold">
-          политикой конфиденциальности
-        </Link>
-      </UCheckbox>
 
-      <UButton text="Кнопка" />
-      <UTextInput
-        value=""
-        name="qwe"
-        placeholder="8 последних цифр"
-        label="Название"
-        helper_text="helper text"
-      />
       <ProtectYourCar />
       <GetSubscription />
       <FAQ faqs={faqs} id="faq" />

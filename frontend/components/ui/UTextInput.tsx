@@ -21,7 +21,7 @@ const UTextInput = ({
     <div className={className}>
       {label && (
         <div className="my-2">
-          <label className="text-base font-medium" htmlFor={name}>
+          <label className="text-base font-medium text-white" htmlFor={name}>
             {label}
           </label>
         </div>
