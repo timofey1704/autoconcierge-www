@@ -21,7 +21,8 @@ export default function RootLayout({
         <Providers>
           <Header />
           <Toaster />
-          <main className="grow bg-white">{children}</main>
+          {/* Убрать bg-white */}
+          <main className="grow bg-white">{children}</main> 
           <Footer />
         </Providers>
       </body>
