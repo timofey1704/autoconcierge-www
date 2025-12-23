@@ -191,6 +191,7 @@ p {
   font-weight: 500;
   font-style: normal;
   text-decoration: none;
+  cursor: pointer;
 
   @media (min-width: 640px) {
     font-size: 18px;

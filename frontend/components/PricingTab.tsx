@@ -5,8 +5,8 @@ interface PricingTabProps {
   id: string
 }
 
-const PricingTab: React.FC<PricingTabProps> = ({ memberships }) => {
-  return <div>PricingTab</div>
+const PricingTab: React.FC<PricingTabProps> = ({ memberships, id }) => {
+  return <div id={id}>PricingTab</div>
 }
 
 export default PricingTab
