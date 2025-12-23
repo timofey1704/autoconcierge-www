@@ -10,7 +10,7 @@
   font-style: normal;
   font-weight: 200 700;
   font-display: swap;
-  src: url('/fonts/Exo2-VariableFont_wght.ttf') format('truetype');
+  src: url('/fonts/Exo_2/Exo2-VariableFont_wght.ttf') format('truetype');
 }
 
 @font-face {
@@ -18,7 +18,7 @@
   font-style: normal;
   font-weight: 200 700;
   font-display: swap;
-  src: url('/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+  src: url('/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
 }
 
 @theme inline {
@@ -32,8 +32,6 @@
   --color-light-gray: #f1f1f1;
   --color-dark-gray: #4b504a;
   --color-black: #0e110d;
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
 @media (prefers-color-scheme: dark) {

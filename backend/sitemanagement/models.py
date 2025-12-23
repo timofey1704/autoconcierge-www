@@ -38,6 +38,13 @@ class Partner(models.Model):
 class Car(models.Model):
     id = models.AutoField(primary_key=True)
     vin_code = models.CharField(max_length=17, verbose_name='VIN код автомобиля')
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        null=True,
+        blank=True
+    )
     
     class Meta:
         verbose_name = "Автомобиль"
