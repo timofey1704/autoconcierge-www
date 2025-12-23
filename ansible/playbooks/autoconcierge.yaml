@@ -54,7 +54,7 @@
         name: registry.gitlab.com/wedeving/autoconcierge-www/backend:{{ docker_tag }}
         pull: always
       notify:
-        - Restart app
+        - Restart compose service
         - Prune docker
 
     - name: Pull frontend image
@@ -64,7 +64,7 @@
         name: registry.gitlab.com/wedeving/autoconcierge-www/frontend:{{ docker_tag }}
         pull: always
       notify:
-        - Restart app
+        - Restart compose service
         - Prune docker
 
     - name: Systemd service
@@ -86,14 +86,6 @@
       ansible.builtin.service:
         name: "compose@{{ app }}"
         state: restarted
-
-    - name: Restart app
-      community.docker.docker_compose_v2:
-        project_src: "/etc/docker/compose/{{ app }}"
-        state: restarted
-        services:
-          - backend
-          - frontend
 
     - name: Prune docker
       community.docker.docker_prune:
