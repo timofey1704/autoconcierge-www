@@ -11,7 +11,9 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
-    <div className={`transition-colors duration-300 ${isOpen ? 'bg-light-gray' : 'bg-gray'}`}>
+    <div
+      className={`relative z-50 pt-4 transition-colors duration-300 md:pt-6 ${isOpen ? 'bg-light-gray' : 'bg-gray'}`}
+    >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between py-4">
           <div>
@@ -19,30 +21,30 @@ const Header = () => {
               href="/"
               className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
             >
-              <h4>СБЛ</h4>
-              <span className="text-lg">Лизинг</span>
+              <h4 className={`${isOpen ? 'text-black' : 'text-white'}`}>СБЛ</h4>
+              <span className={`${isOpen ? 'text-black' : 'text-white'}`}>Лизинг</span>
             </Link>
           </div>
           <div className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center space-x-10 text-xl font-medium lg:flex">
-            <Scroll moveTo="services" className="internal-link">
+            <Scroll moveTo="services" className="internal-link text-white">
               Услуги
             </Scroll>
 
-            <Scroll moveTo="how-it-works" className="internal-link">
+            <Scroll moveTo="how-it-works" className="internal-link text-white">
               Как это работает?
             </Scroll>
 
-            <Scroll moveTo="pricing" className="internal-link">
+            <Scroll moveTo="pricing" className="internal-link text-white">
               Тарифы
             </Scroll>
 
-            <Scroll moveTo="faq" className="internal-link">
+            <Scroll moveTo="faq" className="internal-link text-white">
               FAQ
             </Scroll>
           </div>
           <div className="hidden lg:block">
             <div className="text-xs">
-              <span className="mr-1 animate-pulse bg-linear-to-r from-black to-emerald-600 bg-clip-text text-transparent">
+              <span className="mr-1 animate-pulse bg-linear-to-r from-white to-emerald-400 bg-clip-text text-transparent">
                 Онлайн 24/7
               </span>
               <span className="text-gradient">*</span>
@@ -50,7 +52,7 @@ const Header = () => {
             <a href="tel:88011008080">
               <div className="flex items-center">
                 <Image src={PhoneIcon} width={20} height={20} alt="Телефон" />
-                <div className="pl-2.5 text-sm">8 (801) 100-80-80</div>
+                <div className="pl-2.5 text-sm text-white">8 (801) 100-80-80</div>
               </div>
             </a>
           </div>
