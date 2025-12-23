@@ -12,11 +12,14 @@ const Footer = () => {
       <div className="flex flex-wrap justify-between gap-10 pb-10 xl:gap-0">
         <div className="w-150.25">
           <div>
-            <div className="flex items-end gap-2">
-              <h4>СБЛ</h4>
-              <span className="text-[16px] leading-6 font-normal lg:text-[22px] lg:leading-7.5">
-                Лизинг
-              </span>
+            <div>
+              <Link
+                href="/"
+                className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
+              >
+                <h4>СБЛ</h4>
+                <span className="text-lg">Лизинг</span>
+              </Link>
             </div>
             <p className="pt-2.5">
               Круглосуточная помощь на дорогах

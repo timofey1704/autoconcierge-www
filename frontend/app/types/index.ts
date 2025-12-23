@@ -1,3 +1,5 @@
+import { ReactNode } from 'react'
+
 export interface ValidationRules {
   required?: boolean
   minLength?: number
@@ -91,4 +93,16 @@ export interface TextInputProps {
   error?: string
   min?: string
   max?: string
+}
+
+export interface DialogProps {
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  description: ReactNode
+  submitText?: string
+  onSubmit?: () => void
+  showCancel?: boolean
+  showSubmit?: boolean
+  cancelText?: string
 }

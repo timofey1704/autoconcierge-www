@@ -29,7 +29,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <Toaster />
-          <main className="grow bg-white">{children}</main> 
+          <main className="-mt-24 grow">{children}</main>
           <Footer />
         </Providers>
       </body>
