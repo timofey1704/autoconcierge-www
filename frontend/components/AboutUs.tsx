@@ -3,7 +3,7 @@ import { AboutUsData } from '@/app/constants/aboutUs'
 
 const AboutUs = () => {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8" id="about-us">
+    <section id="about-us" className="px-4 sm:px-6 lg:px-8">
       <h5 className="gradient-line text-gradient">НАШЕ ДЕЛО</h5>
       <div className="mt-4 mb-12 flex flex-col gap-6 sm:mb-16 lg:flex-row lg:items-start lg:justify-between lg:gap-8">
         <h2 className="flex w-2/3 flex-col font-bold text-gray-900">

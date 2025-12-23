@@ -18,18 +18,18 @@ const Burger = ({ isOpen, setIsOpen }: BurgerProps) => {
       >
         <div className="relative h-8 w-8">
           <span
-            className={`absolute h-0.5 bg-black transition-all duration-300 ease-in-out ${
-              isOpen ? 'top-4 w-8 rotate-45' : 'top-2 w-8'
+            className={`absolute h-0.5 transition-all duration-300 ease-in-out ${
+              isOpen ? 'top-4 w-8 rotate-45 bg-black' : 'top-2 w-8 bg-white'
             }`}
           />
           <span
-            className={`absolute h-0.5 bg-black transition-all duration-300 ease-in-out ${
-              isOpen ? 'top-4 w-0 opacity-0' : 'top-4 w-8'
+            className={`absolute h-0.5 transition-all duration-300 ease-in-out ${
+              isOpen ? 'top-4 w-0 bg-black opacity-0' : 'top-4 w-8 bg-white'
             }`}
           />
           <span
-            className={`absolute h-0.5 bg-black transition-all duration-300 ease-in-out ${
-              isOpen ? 'top-4 w-8 -rotate-45' : 'top-6 w-8'
+            className={`absolute h-0.5 transition-all duration-300 ease-in-out ${
+              isOpen ? 'top-4 w-8 -rotate-45 bg-black' : 'top-6 w-8 bg-white'
             }`}
           />
         </div>
