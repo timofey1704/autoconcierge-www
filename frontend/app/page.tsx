@@ -7,6 +7,7 @@ import AboutUsCard from '@/components/AboutUsCard'
 import ProtectYourCar from '@/components/ProtectYourCar'
 import GetSubscription from '@/components/GetSubscription'
 import Services from '@/components/Services'
+import HowItWorks from '@/components/HowItWorks'
 
 export default async function Home() {
   const [faqs, memberships] = await Promise.all([getFAQs(), getMemberships()])
@@ -38,6 +39,7 @@ export default async function Home() {
       </section>
 
       <Services />
+      <HowItWorks />
       <ProtectYourCar />
       <GetSubscription />
       <FAQ faqs={faqs} id="faq" />
