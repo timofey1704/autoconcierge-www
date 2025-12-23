@@ -59,37 +59,43 @@ const MainForm = () => {
   )
 
   return (
-    <div className="mb-24 w-full">
-      <Image src={CarImage} alt="car" className="w-full" loading="eager" />
+    <div className="relative mb-16 w-full sm:mb-20 lg:mb-24">
+      <div className="absolute inset-0 z-0">
+        <Image
+          src={CarImage}
+          alt="car"
+          fill
+          className="rounded-b-[40px] object-cover object-center"
+          loading="eager"
+        />
+      </div>
 
-      <div className="mx-auto flex w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* preferences */}
-        <div className="w-1/2">
+      <div className="relative z-10 mx-auto mt-5 flex w-full max-w-7xl flex-col justify-between gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:gap-0 lg:px-8 lg:py-24">
+        <div className="w-full lg:w-1/2 lg:pr-8">
           <h1 className="text-white">Круглосуточная помощь на дорогах по всей РБ</h1>
-          <div className="text-white">
+          <div className="mt-4 text-base text-white sm:text-lg">
             Вызовите эвакуатор или техпомощь за 1 звонок по единому номеру телефона 8 (801)
             100-80-80 и назовите последние 8 цифр VIN номера.
           </div>
-          <div className="flex flex-col gap-4">
+          <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:gap-4">
             {advantages.map(advantage => (
-              <div key={advantage.id} className="flex items-center gap-2">
-                <Image src={CheckIcon} alt={advantage.title} />
-                <div>{advantage.title}</div>
+              <div key={advantage.id} className="flex items-center gap-3">
+                <Image src={CheckIcon} alt={advantage.title} width={24} height={24} />
+                <div className="text-sm text-white sm:text-base">{advantage.title}</div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* form */}
-        <div className="flex w-1/3 items-center justify-center">
+        <div className="flex w-full items-start justify-center lg:w-1/3">
           <FormProvider>
             <form
               onSubmit={handleSubmit}
-              className="flex flex-col gap-4 rounded-2xl bg-gray-500 p-4"
+              className="flex w-full flex-col gap-3 rounded-2xl border border-[#E7E7E7] bg-white/50 p-5 shadow-lg backdrop-blur-[10px] sm:gap-4 sm:p-6"
             >
-              <h5>Активировать тариф</h5>
-              <div className="text-dark-gray text-sm">
-                Наш оператор свяжется свами в течении 5 минут
+              <h5 className=" ">Активировать тариф</h5>
+              <div className="text-xs text-gray-700 sm:text-sm">
+                Наш оператор свяжется с вами в течение 5 минут
               </div>
               <UTextInput
                 name="phone_number"
@@ -97,7 +103,7 @@ const MainForm = () => {
                 label="Телефон"
                 value={values.phone_number}
                 handleChange={handleChange}
-                className="phone-input"
+                className="w-full"
               />
               <UTextInput
                 name="vin_code"
@@ -105,7 +111,7 @@ const MainForm = () => {
                 label="VIN номер"
                 value={values.vin_code}
                 handleChange={handleChange}
-                className="phone-input"
+                className="w-full"
               />
               <UTextInput
                 name="qr_code"
@@ -113,7 +119,7 @@ const MainForm = () => {
                 label="QR код"
                 value={values.qr_code}
                 handleChange={handleChange}
-                className="phone-input"
+                className="w-full"
               />
               <UTextInput
                 name="password"
@@ -121,17 +127,18 @@ const MainForm = () => {
                 label="Пароль"
                 value={values.password}
                 handleChange={handleChange}
-                className="phone-input"
+                className="w-full"
               />
-              <UButton text="Защитить автомобиль" className="min-w-75" type="submit" />
+              <UButton text="Защитить автомобиль" type="submit" className="w-full" />
               <UCheckbox
                 name="privacy_policy"
                 handleChange={handleChange}
                 checked={Boolean(values.privacy_policy)}
+                className="w-full"
               >
-                <span className="text-xs font-normal text-white">
-                  Ознакомлен (на) и согласен (на) на обработку моих
-                  <Link className="text-gradient ml-1 text-xs" href="/privacy-policy">
+                <span className="text-xs font-normal text-gray-700">
+                  Ознакомлен(а) и согласен(а) на обработку моих
+                  <Link className="text-gradient ml-1 text-xs font-medium" href="/privacy-policy">
                     персональных данных
                   </Link>
                 </span>

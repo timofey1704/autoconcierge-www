@@ -21,7 +21,7 @@ const UTextInput = ({
     <div className={className}>
       {label && (
         <div className="my-2">
-          <label className="text-base font-medium text-white" htmlFor={name}>
+          <label className="text-base font-medium text-black" htmlFor={name}>
             {label}
           </label>
         </div>
@@ -34,7 +34,7 @@ const UTextInput = ({
           placeholder={placeholder}
           value={value || ''}
           onChange={handleChange}
-          className={`border bg-white px-3 py-2 ${
+          className={`w-full border bg-white px-3 py-2 ${
             error ? 'border-red-500' : 'border-gray-300'
           } rounded-[20px] text-black focus:ring-1 focus:outline-none ${
             error ? 'focus:ring-red-400' : 'focus:ring-blue-400'

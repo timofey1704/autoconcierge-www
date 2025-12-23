@@ -14,7 +14,7 @@ const UButton = ({
   return (
     <button
       onClick={onClick}
-      className={`group bg-gradient flex w-full max-w-35 cursor-pointer items-center justify-between rounded-[20px] px-2 py-3 transition-all duration-500 ${disabled || loading ? 'cursor-not-allowed opacity-50' : ''} ${className}`}
+      className={`group bg-gradient flex cursor-pointer items-center justify-between rounded-[20px] px-2 py-3 transition-all duration-500 ${disabled || loading ? 'cursor-not-allowed opacity-50' : ''} ${className}`}
       type={type}
       disabled={disabled || loading}
     >
