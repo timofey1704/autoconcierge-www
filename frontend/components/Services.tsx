@@ -5,7 +5,7 @@ const Services = () => {
     const EmptyCard = () => <div className="hidden lg:block lg:w-[225px] xl:w-[289px]" />
 
   return (
-    <div className="max-w-7xl flex flex-wrap gap-5 px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl flex flex-wrap justify-between gap-5 px-4 sm:px-6 lg:px-8">
         <div className="lg:max-w-117 xl:max-w-[598px]">
             <h5 className="gradient-line text-gradient">УСЛУГИ</h5>
             <div className="w-full flex flex-col pt-[10px]">

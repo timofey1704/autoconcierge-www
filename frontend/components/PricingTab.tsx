@@ -1,4 +1,5 @@
 import { Membership } from '@/app/types'
+import PricingCard from './PricingCard'
 
 interface PricingTabProps {
   memberships: Membership[]
@@ -15,11 +16,11 @@ const PricingTab: React.FC<PricingTabProps> = ({ memberships }) => {
                 <span className="w-full pt-5 text-4 leading-[30px] text-dark-gray">От базовой помощи до максимального комфорта в любой ситуации.</span>
             </div>
         </div>
-        <div className="flex gap-5">
-          {/* {memberships.map(item => (
-
+        <PricingCard memberships={memberships} />
+          {/* {memberships.map(membership => (
+          // Логику отрисовки перенести в PricingCard, передав memberships и там создать div grid и заполнять
+            <PricingCard 
           ))} */}
-        </div>
         {/* {ServicesData.slice(0, 2).map(item => (
             <ServiceCard 
                 key={item.id}
