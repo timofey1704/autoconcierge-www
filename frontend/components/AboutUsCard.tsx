@@ -11,7 +11,7 @@ const AboutUsCard: React.FC<CardProps> = ({ title, description }) => {
   const parts = titleStr.split(specialChars)
 
   return (
-    <div className="rounded-[20px] bg-black p-6 shadow-lg transition-shadow hover:shadow-xl">
+    <div className="rounded-[20px] bg-black p-6 shadow-lg transition-shadow duration-300 hover:cursor-pointer hover:shadow-xl">
       <div className="text-center text-4xl font-bold text-white sm:text-4xl">
         {parts.map((part, index) => {
           // если часть - спецсимвол, красим в другой цвет
