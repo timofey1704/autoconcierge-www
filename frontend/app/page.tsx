@@ -13,8 +13,8 @@ export default async function Home() {
   return (
     <div className="mx-auto flex flex-col items-center justify-center space-y-32 overflow-x-hidden">
       <AboutUs />
-      <Services />
-      <HowItWorks />
+      <Services id="services" />
+      <HowItWorks id="how-it-works" />
       <ProtectYourCar />
       <GetSubscription />
       <FAQ faqs={faqs} id="faq" />

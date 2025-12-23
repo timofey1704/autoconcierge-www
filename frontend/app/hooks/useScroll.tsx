@@ -6,9 +6,10 @@ interface ScrollProps {
   moveTo: string
   children: React.ReactNode
   onClick?: () => void
+  className?: string
 }
 
-const Scroll = ({ moveTo, children, onClick }: ScrollProps) => {
+const Scroll = ({ moveTo, children, onClick, className }: ScrollProps) => {
   const ref = useRef<HTMLElement | null>(null)
 
   useEffect(() => {
@@ -31,7 +32,11 @@ const Scroll = ({ moveTo, children, onClick }: ScrollProps) => {
     if (onClick) onClick()
   }
 
-  return <div onClick={handleClick}>{children}</div>
+  return (
+    <div onClick={handleClick} className={`${className}`}>
+      {children}
+    </div>
+  )
 }
 
 export default Scroll
