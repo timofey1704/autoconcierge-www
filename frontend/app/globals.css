@@ -5,9 +5,27 @@
   --foreground: #171717;
 }
 
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('/fonts/Exo2-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('/fonts/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --font-exo: 'Exo 2', 'sans-serif';
+  --font-sans: 'Open Sans', 'sans-serif';
   --color-gradient: linear-gradient(135deg, #107f8c 0%, #6abaa2 100%);
   --color-dark-green: #0c3227;
   --color-white: #fafafa;
@@ -36,6 +54,7 @@ h1 {
   line-height: 44px;
   font-weight: 700;
   font-style: bold;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 48px;
@@ -53,6 +72,7 @@ h2 {
   line-height: 40px;
   font-weight: 700;
   font-style: bold;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 40px;
@@ -70,6 +90,7 @@ h3 {
   line-height: 32px;
   font-weight: 700;
   font-style: bold;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 32px;
@@ -87,6 +108,7 @@ h4 {
   line-height: 28px;
   font-weight: 700;
   font-style: bold;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 24px;
@@ -104,6 +126,7 @@ h5 {
   line-height: 26px;
   font-weight: 700;
   font-style: bold;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 20px;
@@ -121,6 +144,7 @@ h6 {
   line-height: 24px;
   font-weight: 500;
   font-style: normal;
+  font-family: var(--font-exo);
 
   @media (min-width: 640px) {
     font-size: 18px;
@@ -138,6 +162,7 @@ p {
   line-height: 22px;
   font-weight: 500;
   font-style: normal;
+  font-family: var(--font-sans);
 
   @media (min-width: 640px) {
     font-size: 16px;
@@ -148,6 +173,14 @@ p {
     font-size: 18px;
     line-height: 28px;
   }
+}
+
+div {
+  font-family: var(--font-sans);
+}
+
+span {
+  font-family: var(--font-sans);
 }
 
 .bg-gradient {
@@ -238,7 +271,7 @@ p {
 .phone-input input {
   min-width: 256px;
 
-    @media (min-width: 640px) {
-      min-width: 300px;
+  @media (min-width: 640px) {
+    min-width: 300px;
   }
 }

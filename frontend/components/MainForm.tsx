@@ -93,7 +93,7 @@ const MainForm = () => {
               onSubmit={handleSubmit}
               className="flex w-full flex-col gap-3 rounded-2xl border border-[#E7E7E7] bg-white/50 p-5 shadow-lg backdrop-blur-[10px] sm:gap-4 sm:p-6"
             >
-              <h5 className=" ">Активировать тариф</h5>
+              <h5 className="text-black">Активировать тариф</h5>
               <div className="text-xs text-gray-700 sm:text-sm">
                 Наш оператор свяжется с вами в течение 5 минут
               </div>
