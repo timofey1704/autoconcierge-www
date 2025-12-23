@@ -6,6 +6,7 @@ import { AboutUsData } from './constants/aboutUs'
 import AboutUsCard from '@/components/AboutUsCard'
 import ProtectYourCar from '@/components/ProtectYourCar'
 import GetSubscription from '@/components/GetSubscription'
+import Services from '@/components/Services'
 import HowItWorks from '@/components/HowItWorks'
 
 export default async function Home() {
@@ -37,6 +38,7 @@ export default async function Home() {
         </div>
       </section>
 
+      <Services />
       <HowItWorks />
       <ProtectYourCar />
       <GetSubscription />
