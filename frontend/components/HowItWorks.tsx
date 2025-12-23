@@ -1,3 +1,4 @@
+import React from 'react'
 import Image from 'next/image'
 import CallIcon from '../public/icons/Call.svg'
 import NameYourVINIcon from '../public/icons/NameYourVIN.svg'
@@ -5,9 +6,13 @@ import GetHelpIcon from '../public/icons/GetHelp.svg'
 import VectorIcon from '../public/icons/Vector.svg'
 import VectorSMIcon from '../public/icons/VectorSM.svg'
 
-const HowItWorks = () => {
+interface HotItWorksProps {
+  id: string
+}
+
+const HowItWorks: React.FC<HotItWorksProps> = ({ id }) => {
   return (
-    <div className="px-4 sm:px-6 lg:px-8">
+    <section className="px-4 sm:px-6 lg:px-8" id={id}>
       <h5 className="gradient-line text-gradient">КАК ЭТО РАБОТАЕТ?</h5>
       <div className="flex flex-col items-end pt-2.5 pb-10 lg:flex-row lg:pb-15">
         <h2 className="w-full text-black lg:max-w-140 xl:max-w-175">
@@ -94,7 +99,7 @@ const HowItWorks = () => {
           </span>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
