@@ -51,7 +51,7 @@ const GetSubscription = () => {
   )
 
   return (
-    <div id="get-subscription" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div id="get-subscription" className="mx-auto mb-10 max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative h-120 overflow-hidden rounded-[40px] md:w-180 lg:w-240 xl:h-118.75 xl:w-304">
         <div className="absolute inset-0 h-full w-full bg-[url(/images/GetSubscriptionBackground.jpg)] bg-cover bg-position-[50%_center] bg-no-repeat xl:bg-size-[162%] xl:bg-position-[43%_72%]" />
 

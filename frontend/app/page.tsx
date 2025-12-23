@@ -19,9 +19,9 @@ export default async function Home() {
         <Services id="services" />
         <HowItWorks id="how-it-works" />
         <ProtectYourCar />
-        <GetSubscription />
-        <FAQ faqs={faqs} id="faq" />
         <PricingTab memberships={memberships} id="pricing" />
+        <FAQ faqs={faqs} id="faq" />
+        <GetSubscription />
       </div>
     </div>
   )

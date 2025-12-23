@@ -16,47 +16,48 @@ const validationRules = {
   vin_code: { required: true },
   qr_code: { required: true },
   password: { required: true },
-  privacy_policy: { required: true },
+  privacy_accepted: { required: true },
 }
 
 const MainForm = () => {
-  const { values, handleChange, handleSubmit, FormProvider } = useForm(
-    {
-      phone_number: '',
-      vin_code: '',
-      qr_code: '',
-      password: '',
-      privacy_policy: false,
-    },
-    validationRules,
-    async values => {
-      try {
-        const response = await fetch('/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            phone_number: values.phone_number,
-            vin_code: values.vin_code,
-            qr_code: values.qr_code,
-            password: values.password,
-            privacy_policy: values.privacy_policy,
-          }),
-        })
-        if (!response.ok) {
-          const error = await response.json()
-          throw new Error(error.error || 'Ошибка при отправке данных')
+  const { values, handleChange, handleSubmit, FormProvider, togglePasswordVisibility, isVisible } =
+    useForm(
+      {
+        phone_number: '',
+        vin_code: '',
+        qr_code: '',
+        password: '',
+        privacy_accepted: false,
+      },
+      validationRules,
+      async values => {
+        try {
+          const response = await fetch('/api/register/verify', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              phone_number: values.phone_number,
+              vin_code: values.vin_code,
+              qr_code: values.qr_code,
+              password: values.password,
+              privacy_accepted: values.privacy_accepted,
+            }),
+          })
+          if (!response.ok) {
+            const error = await response.json()
+            throw new Error(error.error || 'Ошибка при отправке данных')
+          }
+          showToast({ type: 'success', message: 'Заявка успешно создана!' })
+        } catch (error) {
+          showToast({
+            type: 'error',
+            message: error instanceof Error ? error.message : 'Ой, что то пошло не так..',
+          })
         }
-        showToast({ type: 'success', message: 'Заявка успешно создана!' })
-      } catch (error) {
-        showToast({
-          type: 'error',
-          message: error instanceof Error ? error.message : 'Ой, что то пошло не так..',
-        })
       }
-    }
-  )
+    )
 
   return (
     <div className="relative mb-16 w-full sm:mb-20 lg:mb-24">
@@ -115,7 +116,7 @@ const MainForm = () => {
               />
               <UTextInput
                 name="qr_code"
-                placeholder="Введите iD QR-кода"
+                placeholder="Введите ID QR-кода"
                 label="QR код"
                 value={values.qr_code}
                 handleChange={handleChange}
@@ -128,12 +129,15 @@ const MainForm = () => {
                 value={values.password}
                 handleChange={handleChange}
                 className="w-full"
+                isPassword={true}
+                isVisible={isVisible}
+                togglePasswordVisibility={togglePasswordVisibility}
               />
               <UButton text="Защитить автомобиль" type="submit" className="w-full" />
               <UCheckbox
-                name="privacy_policy"
+                name="privacy_accepted"
                 handleChange={handleChange}
-                checked={Boolean(values.privacy_policy)}
+                checked={Boolean(values.privacy_accepted)}
                 className="w-full"
               >
                 <span className="text-xs font-normal text-gray-700">
