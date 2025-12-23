@@ -1,10 +1,17 @@
+'use client'
+
 import Link from 'next/link'
 import Burger from './Burger'
 import Scroll from '@/app/hooks/useScroll'
+import { useState } from 'react'
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false)
+
   return (
-    <div className="bg-gray flex items-center justify-between p-4">
+    <div
+      className={`flex items-center justify-between p-4 transition-colors duration-300 ${isOpen ? 'bg-light-gray' : 'bg-gray'}`}
+    >
       <div className="pl-4 sm:pl-8 lg:pl-23">
         <Link
           href="/"
@@ -33,7 +40,7 @@ const Header = () => {
       </div>
 
       <div className="flex items-center space-x-4 pr-4 sm:pr-8 lg:hidden">
-        <Burger />
+        <Burger isOpen={isOpen} setIsOpen={setIsOpen} />
       </div>
     </div>
   )

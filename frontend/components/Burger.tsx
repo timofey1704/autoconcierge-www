@@ -1,11 +1,13 @@
 'use client'
 
-import { useState } from 'react'
 import Scroll from '@/app/hooks/useScroll'
 
-const Burger = () => {
-  const [isOpen, setIsOpen] = useState(false)
+interface BurgerProps {
+  isOpen: boolean
+  setIsOpen: (isOpen: boolean) => void
+}
 
+const Burger = ({ isOpen, setIsOpen }: BurgerProps) => {
   const handleClose = () => setIsOpen(false)
 
   return (
@@ -35,10 +37,10 @@ const Burger = () => {
 
       {/* меню */}
       <div
-        className={`bg-light-gray fixed left-0 z-50 w-full origin-top shadow-lg transition-all duration-300 ease-in-out ${
+        className={`bg-light-gray fixed left-0 z-40 w-full origin-top shadow-lg transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'top-20 h-[calc(100vh-80px)] scale-y-100 opacity-100'
-            : 'top-20 h-0 scale-y-0 opacity-0'
+            ? 'top-15 h-[calc(100vh-60px)] scale-y-100 opacity-100'
+            : 'top-15 h-0 scale-y-0 opacity-0'
         } ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
       >
         <div
