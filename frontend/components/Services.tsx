@@ -10,7 +10,7 @@ const Services: React.FC<ServicesProps> = ({ id }) => {
   const EmptyCard = () => <div className="hidden lg:block lg:w-56.25 xl:w-72.25" />
 
   return (
-    <section className="flex max-w-7xl flex-wrap gap-5 px-4 sm:px-6 lg:px-8" id={id}>
+    <section className="flex max-w-7xl flex-wrap justify-between gap-5 px-4 sm:px-6 lg:px-8" id={id}>
       <div className="lg:max-w-117 xl:max-w-149.5">
         <h5 className="gradient-line text-gradient">УСЛУГИ</h5>
         <div className="flex w-full flex-col pt-2.5">

@@ -236,5 +236,9 @@ p {
 }
 
 .phone-input input {
-  min-width: 300px;
+  min-width: 256px;
+
+    @media (min-width: 640px) {
+      min-width: 300px;
+  }
 }
