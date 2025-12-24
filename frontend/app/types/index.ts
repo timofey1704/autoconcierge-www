@@ -93,6 +93,7 @@ export interface TextInputProps {
   error?: string
   min?: string
   max?: string
+  labelClassName?: string
 }
 
 export interface DialogProps {

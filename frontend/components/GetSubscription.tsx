@@ -73,6 +73,7 @@ const GetSubscription = () => {
                   value={values.phone_number}
                   handleChange={handleChange}
                   className="w-full lg:w-1/4"
+                  labelClassName="text-white"
                 />
 
                 <UButton text="Защитить автомобиль" className="w-full lg:w-1/4" type="submit" />

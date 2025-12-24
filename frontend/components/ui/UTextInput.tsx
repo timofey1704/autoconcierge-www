@@ -16,12 +16,13 @@ const UTextInput = ({
   togglePasswordVisibility,
   isVisible,
   error,
+  labelClassName = '',
 }: TextInputProps) => {
   return (
     <div className={className}>
       {label && (
         <div className="my-2">
-          <label className="text-base font-medium text-black" htmlFor={name}>
+          <label className={`text-base font-medium text-black ${labelClassName}`} htmlFor={name}>
             {label}
           </label>
         </div>

@@ -9,6 +9,14 @@ export const metadata: Metadata = {
   title: 'СБЛ-Лизинг',
   description:
     'Мы работаем круглосуточно, чтобы вы были спокойны за свой автомобиль в любой ситуации. Наша команда профессиональных мастеров на выезде быстро придет на помощь и решит проблему.',
+  openGraph: {
+    title: 'СБЛ-Лизинг',
+    description: 'Ваш спасательный круг на дороге.',
+    url: 'https://ids-help.by/',
+    siteName: 'СБЛ-Лизинг',
+    locale: 'ru_RU',
+    type: 'website',
+  },
   alternates: {
     canonical: 'https://ids-help.by/',
   },
@@ -24,7 +32,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <body className="flex min-h-screen flex-col">
         <Providers>
           <Header />
