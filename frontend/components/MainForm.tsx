@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import { useForm } from '@/app/hooks/useForm'
 import UButton from './ui/UButton'
@@ -10,6 +11,7 @@ import CheckIcon from '../public/icons/Check Circle Icon.svg'
 import { advantages } from '@/app/constants/advantages'
 import Link from 'next/link'
 import showToast from './ui/showToast'
+import ThankYouPopup from './popups/ThankYouPopup'
 
 const validationRules = {
   phone_number: { required: true },
@@ -20,44 +22,62 @@ const validationRules = {
 }
 
 const MainForm = () => {
-  const { values, handleChange, handleSubmit, FormProvider, togglePasswordVisibility, isVisible } =
-    useForm(
-      {
-        phone_number: '',
-        vin_code: '',
-        qr_code: '',
-        password: '',
-        privacy_accepted: false,
-      },
-      validationRules,
-      async values => {
-        try {
-          const response = await fetch('/api/register/verify', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              phone_number: values.phone_number,
-              vin_code: values.vin_code,
-              qr_code: values.qr_code,
-              password: values.password,
-              privacy_accepted: values.privacy_accepted,
-            }),
-          })
-          if (!response.ok) {
-            const error = await response.json()
-            throw new Error(error.error || 'Ошибка при отправке данных')
-          }
-          showToast({ type: 'success', message: 'Заявка успешно создана!' })
-        } catch (error) {
-          showToast({
-            type: 'error',
-            message: error instanceof Error ? error.message : 'Ой, что то пошло не так..',
-          })
+  const [isThankYouPopupOpen, setIsThankYouPopupOpen] = useState(false)
+
+  const {
+    values,
+    handleChange,
+    handleSubmit,
+    FormProvider,
+    togglePasswordVisibility,
+    isVisible,
+    resetField,
+  } = useForm(
+    {
+      phone_number: '',
+      vin_code: '',
+      qr_code: '',
+      password: '',
+      privacy_accepted: false,
+    },
+    validationRules,
+    async values => {
+      try {
+        const response = await fetch('/api/register/verify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone_number: values.phone_number,
+            vin_code: values.vin_code,
+            qr_code: values.qr_code,
+            password: values.password,
+            privacy_accepted: values.privacy_accepted,
+          }),
+        })
+        if (!response.ok) {
+          const error = await response.json()
+          throw new Error(error.error || 'Ошибка при отправке данных')
         }
+        setIsThankYouPopupOpen(true)
+        resetField('phone_number', '')
+        resetField('vin_code', '')
+        resetField('qr_code', '')
+        resetField('password', '')
+        resetField('privacy_accepted', false)
+      } catch (error) {
+        showToast({
+          type: 'error',
+          message: error instanceof Error ? error.message : 'Ой, что то пошло не так..',
+        })
       }
-    )
+    }
+  )
+
+  const handleCloseThankYouPopup = () => {
+    setIsThankYouPopupOpen(false)
+  }
 
   return (
     <div className="relative mb-16 w-full sm:mb-20 lg:mb-24">
@@ -151,6 +171,7 @@ const MainForm = () => {
           </FormProvider>
         </div>
       </div>
+      <ThankYouPopup isOpen={isThankYouPopupOpen} onClose={handleCloseThankYouPopup} />
     </div>
   )
 }

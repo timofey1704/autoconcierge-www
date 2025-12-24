@@ -61,7 +61,7 @@ export const Dialog = ({
             <UButton
               text={submitText}
               onClick={onSubmit || onClose}
-              className="from-orange flex-1 rounded-xl bg-linear-to-r to-orange-600 py-3 text-white hover:opacity-90"
+              className="flex-1 py-3 text-white"
             />
           )}
         </div>

@@ -3,7 +3,6 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.db.utils import IntegrityError
 from api.models import UserProfile
-from sitemanagement.models import QRCode
 
 class ClientRegisterSerializer(serializers.ModelSerializer):
     phone_number = serializers.CharField(required=True)
@@ -37,10 +36,6 @@ class ClientRegisterSerializer(serializers.ModelSerializer):
         privacy_accepted = validated_data.pop('privacy_accepted')
         phone_number = validated_data.pop('phone_number')
         password = validated_data.pop('password')
-        
-        # Удаляем qr_code и vin_code, они обрабатываются во view
-        qr_code = validated_data.pop('qr_code', None)
-        vin_code = validated_data.pop('vin_code', None)
         
         try:
             user = User.objects.create_user(
