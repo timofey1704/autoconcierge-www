@@ -1,9 +1,31 @@
+'use client'
+
 import { PricingCardProps } from '@/app/types'
 import Image from 'next/image'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import CheckCircleIcon from '@/public/icons/CheckCircle.svg'
+import CardSlider from './ui/CardSlider'
 
 const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // только на мобилке показываем слайдер
+  if (isMobile) {
+    return <CardSlider memberships={memberships} />
+  }
+
+  // на десктопе показываем grid
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {memberships.map((membership, index) => {

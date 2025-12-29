@@ -107,3 +107,9 @@ export interface DialogProps {
   showSubmit?: boolean
   cancelText?: string
 }
+
+export interface CardSliderProps {
+  memberships: Membership[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sliderRef?: React.RefObject<any>
+}

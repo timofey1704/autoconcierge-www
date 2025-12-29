@@ -1,4 +1,6 @@
 @import 'tailwindcss';
+@import 'slick-carousel/slick/slick.css';
+@import 'slick-carousel/slick/slick-theme.css';
 
 :root {
   --background: #ffffff;
@@ -271,5 +273,41 @@ span {
 
   @media (min-width: 640px) {
     min-width: 300px;
+  }
+}
+
+/* Pricing Slider Styles */
+.pricing-slider {
+  padding-bottom: 20px;
+}
+
+.pricing-slider .slick-track {
+  display: flex !important;
+}
+
+.pricing-slider .slick-slide {
+  height: auto !important;
+  display: flex !important;
+  padding: 0 4px;
+}
+
+.pricing-slider .slick-slide > div {
+  display: flex;
+  width: 100%;
+}
+
+.pricing-slider .slick-slide > div > div {
+  display: flex;
+  width: 100%;
+}
+
+.pricing-slider .slick-list {
+  overflow: visible;
+  padding: 10px 0 !important;
+}
+
+@media (min-width: 640px) {
+  .pricing-slider .slick-slide {
+    padding: 0 8px;
   }
 }
