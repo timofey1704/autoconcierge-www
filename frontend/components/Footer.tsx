@@ -5,6 +5,7 @@ import FacebookIcon from '../public/icons/footer/Facebook.svg'
 import LinkedInIcon from '../public/icons/footer/LinkedIn.svg'
 import InstagramIcon from '../public/icons/footer/Instagram.svg'
 import DribbbleIcon from '../public/icons/footer/Dribbble.svg'
+import Scroll from '@/app/hooks/useScroll'
 
 const Footer = () => {
   return (
@@ -88,15 +89,16 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col flex-wrap justify-start gap-5 pt-10 md:flex-row md:justify-between lg:flex-row lg:justify-between lg:gap-10 xl:justify-end xl:pt-24">
-            <Link href="/service-packages" className="internal-link">
+            <Scroll moveTo="services" className="internal-link text-white">
               Пакеты услуг
-            </Link>
-            <Link href="/how-it-works" className="internal-link">
+            </Scroll>
+            <Scroll moveTo="how-it-works" className="internal-link text-white">
               Как это работает
-            </Link>
-            <Link href="/partners" className="internal-link">
+            </Scroll>
+            {/* Вернуть ссылку, когда появится отдельная страница */}
+            {/* <Link href="/partners" className="internal-link">
               Партнеры
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
@@ -105,9 +107,10 @@ const Footer = () => {
 
       <div className="flex flex-wrap justify-between gap-2.5 pt-10 lg:pt-5">
         <p>Все права защищены © 2025</p>
-        <Link href="/privacy-policy" className="internal-link">
+        {/* Вернуть ссылку, когда появится отдельная страница */}
+        {/* <Link href="/privacy-policy" className="internal-link">
           Политика конфиденциальности
-        </Link>
+        </Link> */}
       </div>
     </footer>
   )
