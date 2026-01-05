@@ -4,6 +4,7 @@ from django.conf import settings
 import io
 import base64
 import random
+import string
 from typing import Tuple
 from PIL import Image as PILImage
 from django.apps import apps
@@ -38,9 +39,14 @@ def generate_unique_qr_code(partner_prefix: str, account_type: str) -> str:
     # формируем базу кода из префикса партнера и типа аккаунта
     code_base = partner_prefix.upper() + account_type.upper()
     
+    # определяем допустимые символы: A-Z и 1-9
+    letters = string.ascii_uppercase.replace('O', '') #fix - remove letter O
+    digits = '123456789'
+    all_chars = letters + digits
+    
     while True:
         # генерируем 5 случайных цифр
-        random_digits = ''.join(random.choice('0123456789') for _ in range(5))
+        random_digits = ''.join(random.choice(all_chars) for _ in range(5))
         
         # формируем полный код
         code = code_base + random_digits
