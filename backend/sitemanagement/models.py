@@ -25,14 +25,34 @@ class Partner(models.Model):
         if not self.partner_prefix:
             # транслитерируем название
             transliterated = transliterate_to_latin(self.partner_name)
-            # берем первые две буквы (только латинские буквы)
-            prefix_chars = [char for char in transliterated if char.isalpha()]
-            if len(prefix_chars) >= 2:
-                self.partner_prefix = ''.join(prefix_chars[:2]).upper()
-            elif len(prefix_chars) == 1:
-                self.partner_prefix = prefix_chars[0].upper() * 2
+            
+            # берем только буквы
+            letters = [char for char in transliterated if char.isalpha()]
+            
+            if len(letters) == 0:
+                self.partner_prefix = 'XX'
+            elif len(letters) == 1:
+                self.partner_prefix = letters[0].upper() * 2
             else:
-                self.partner_prefix = 'XX'  # фолбек если нет букв
+                first_letter = letters[0].upper()
+                
+                # пробуем разные комбинации пока не найдем уникальную
+                for i in range(1, min(len(letters), 5)):  # пробуем до 5 буквы
+                    candidate = first_letter + letters[i].upper()
+                    
+                    # проверяем, есть ли уже такой префикс
+                    exists = Partner.objects.filter(
+                        partner_prefix=candidate
+                    ).exclude(
+                        pk=self.pk if self.pk else None
+                    ).exists()
+                    
+                    if not exists:
+                        self.partner_prefix = candidate
+                        break
+                else:
+                    # если все комбинации заняты, используем первую+последнюю букву
+                    self.partner_prefix = first_letter + letters[-1].upper()
         super().save(*args, **kwargs)
     
 class Car(models.Model):
