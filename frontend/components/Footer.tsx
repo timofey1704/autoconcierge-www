@@ -10,7 +10,7 @@ const Footer = () => {
   return (
     <footer className="h-216.5 w-full bg-black px-5 pt-10 pb-5 text-white md:h-159 lg:px-28 lg:pt-15 lg:pb-10 xl:h-101.75">
       <div className="flex flex-wrap justify-between gap-10 pb-10 xl:gap-0">
-        <div className="w-150.25">
+        <div className="w-150.25 lg:w-155">
           <div>
             <div>
               <Link
