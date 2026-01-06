@@ -4,6 +4,8 @@ import Link from 'next/link'
 import Burger from './Burger'
 import Scroll from '@/app/hooks/useScroll'
 import { useState } from 'react'
+import LogoWhite from '../public/icons/LogoWhite.svg'
+import LogoBlack from '../public/icons/LogoBlack.svg'
 import PhoneIcon from '../public/icons/telephone.svg'
 import Image from 'next/image'
 
@@ -21,8 +23,13 @@ const Header = () => {
               href="/"
               className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
             >
-              <h4 className={`${isOpen ? 'text-black' : 'text-white'}`}>СБЛ</h4>
-              <span className={`${isOpen ? 'text-black' : 'text-white'}`}>Лизинг</span>
+              <Image
+                  src={isOpen ? LogoBlack : LogoWhite}
+                  width={145}
+                  height={26}
+                  alt="СБЛ Лизинг"
+                  priority
+                />
             </Link>
           </div>
           <div className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center space-x-10 text-xl font-medium lg:flex">

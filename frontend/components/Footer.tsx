@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import LogoWhite from '../public/icons/LogoWhite.svg'
 import PhoneIcon from '../public/icons/footer/Phone.svg'
 import FacebookIcon from '../public/icons/footer/Facebook.svg'
 import LinkedInIcon from '../public/icons/footer/LinkedIn.svg'
@@ -18,8 +19,12 @@ const Footer = () => {
                 href="/"
                 className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
               >
-                <h4>СБЛ</h4>
-                <span className="text-lg">Лизинг</span>
+                <Image
+                  src={LogoWhite}
+                  width={145}
+                  height={26}
+                  alt="СБЛ Лизинг"
+                />
               </Link>
             </div>
             <p className="pt-2.5">
