@@ -16,7 +16,7 @@ const HowItWorks: React.FC<HotItWorksProps> = ({ id }) => {
       <h5 className="gradient-line text-gradient">КАК ЭТО РАБОТАЕТ?</h5>
       <div className="flex flex-col items-end pt-2.5 pb-10 lg:flex-row lg:pb-15">
         <h2 className="w-full text-black lg:max-w-140 xl:max-w-175">
-          3 простых шага чтобы защитить себя
+          3 простых шага, чтобы защитить себя
         </h2>
         <span className="text-4 text-dark-gray w-full pt-5 leading-7.5 lg:max-w-100 lg:pt-0 lg:text-right xl:max-w-129">
           Просто выполните эти три простых шага для быстрого решения любой проблемы

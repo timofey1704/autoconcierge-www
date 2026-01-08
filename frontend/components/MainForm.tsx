@@ -92,7 +92,7 @@ const MainForm = () => {
       </div>
 
       <div className="relative z-10 mx-auto mt-5 flex w-full max-w-7xl flex-col justify-between gap-8 px-4 py-16 sm:px-6 lg:flex-row lg:gap-0 lg:px-8 lg:py-24">
-        <div className="w-full lg:w-1/2 lg:pr-8">
+        <div className="w-full lg:w-164 lg:pr-8">
           <h1 className="text-white">Круглосуточная помощь на дорогах по всей РБ</h1>
           <div className="mt-4 text-base text-white sm:text-lg">
             Вызовите эвакуатор или техпомощь за 1 звонок по единому номеру телефона 8 (801)
