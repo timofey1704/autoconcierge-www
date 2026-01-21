@@ -143,11 +143,11 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          const res = await fetch(`${process.env.BACKEND_URL}/login/`, {
+          const res = await fetch(`${process.env.BACKEND_URL}/auth/login/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              phone_number: credentials?.email,
+              email: credentials?.email,
               password: credentials?.password,
             }),
           })

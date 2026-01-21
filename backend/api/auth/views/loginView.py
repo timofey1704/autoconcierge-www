@@ -2,10 +2,11 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.contrib.auth.models import User
 
 from api.auth.serializers.userResponseSerializer import UserResponseSerializer
 from api.utils.cookiesSetter import AuthBaseViewSet
-from api.models import UserProfile
+
 
 class LoginViewSet(AuthBaseViewSet):
     """Логин для клиента"""
@@ -13,19 +14,18 @@ class LoginViewSet(AuthBaseViewSet):
     @action(detail=False, methods=['post'], url_path="login")
     def login_client(self, request):
         try:
-            phone_number = request.data.get("phone_number")
+            email = request.data.get("email")
             password = request.data.get("password")
             
-            if not phone_number or not password:
+            if not email or not password:
                 return Response(
                     {"error": "Номер телефона и пароль обязательны"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
             try:
-                user_profile = UserProfile.objects.get(phone_number=phone_number)
-                user = user_profile.user
-            except UserProfile.DoesNotExist:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
                 return Response(
                     {"error": "Пользователь не найден"},
                     status=status.HTTP_404_NOT_FOUND
