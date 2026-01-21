@@ -6,8 +6,8 @@ declare module 'next-auth' {
   interface Session {
     user: {
       phone_number?: string | null
-      vin_code?: string
-      qr_code?: string
+      firstName?: string | null
+      surname?: string | null
     }
     accessToken?: string
     refreshToken?: string
@@ -17,7 +17,7 @@ declare module 'next-auth' {
   interface User {
     id: string
     phone_number?: string
-    name?: string
+    firstName?: string
     accessToken?: string
     refreshToken?: string
   }
@@ -138,7 +138,7 @@ export const authOptions: NextAuthOptions = {
       id: 'credentials',
       name: 'Credentials',
       credentials: {
-        phone_number: { label: 'Phone number', type: 'tel' },
+        email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
@@ -147,7 +147,7 @@ export const authOptions: NextAuthOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              phone_number: credentials?.phone_number,
+              phone_number: credentials?.email,
               password: credentials?.password,
             }),
           })
@@ -160,7 +160,6 @@ export const authOptions: NextAuthOptions = {
 
           return {
             id: data.user.id.toString(),
-            phone_number: data.user.phone_number,
             name: data.user.firstName,
             accessToken: data.access,
             refreshToken: data.refresh,

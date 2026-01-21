@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Providers } from './providers/Providers'
 import { Toaster } from 'react-hot-toast'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'СБЛ-Лизинг',
@@ -35,10 +33,8 @@ export default function RootLayout({
     <html lang="ru">
       <body className="flex min-h-screen flex-col">
         <Providers>
-          <Header />
           <Toaster />
-          <main className="-mt-24 grow">{children}</main>
-          <Footer />
+          {children}
         </Providers>
       </body>
     </html>

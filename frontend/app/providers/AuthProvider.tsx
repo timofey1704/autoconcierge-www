@@ -37,9 +37,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser({
           id: userData.id,
           uuid: userData.uuid,
-          phone_number: userData.phone_number,
-          vin_code: userData.vin_code,
-          qr_code: userData.qr_code,
+          firstName: userData.firstName,
+          surname: userData.surname,
+          account_type: userData.account_type,
         })
         setAuthenticated(true)
       } catch (error) {

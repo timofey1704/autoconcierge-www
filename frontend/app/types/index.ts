@@ -13,9 +13,9 @@ export interface ValidationErrors {
 export interface User {
   id?: number | undefined | string
   uuid?: string
-  phone_number: string
-  vin_code: string
-  qr_code: string
+  firstName: string
+  surname: string
+  account_type: string
 }
 
 export interface UserState {
