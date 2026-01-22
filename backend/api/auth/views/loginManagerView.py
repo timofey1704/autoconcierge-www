@@ -7,12 +7,13 @@ from api.models import UserProfile
 from api.auth.serializers.userResponseSerializer import UserResponseSerializer
 from api.utils.cookiesSetter import AuthBaseViewSet
 from api.utils.decorators import handle_exceptions
-class LoginViewSet(AuthBaseViewSet):
-    """Логин для клиента"""
+
+class LoginManagerViewSet(AuthBaseViewSet):
+    """Логин для менеджера"""
     
-    @action(detail=False, methods=['post'], url_path="login")
+    @action(detail=False, methods=['post'], url_path="login-manager")
     @handle_exceptions
-    def login_client(self, request):
+    def login_manager(self, request):
         try:
             phone_number = request.data.get("phone_number")
             password = request.data.get("password")
@@ -28,14 +29,14 @@ class LoginViewSet(AuthBaseViewSet):
                 user = user_profile.user
             except UserProfile.DoesNotExist:
                 return Response(
-                    {"error": "Пользователь не найден"},
+                    {"error": "Менеджер не найден"},
                     status=status.HTTP_404_NOT_FOUND
                 )
             
-            # Проверяем, что это клиент, а не менеджер
-            if user_profile.user_type != 'client':
+            # Проверяем, что это менеджер, а не клиент
+            if user_profile.user_type != 'manager':
                 return Response(
-                    {"error": "Неверные учетные данные"},
+                    {"error": "Доступ запрещен. Только для менеджеров."},
                     status=status.HTTP_403_FORBIDDEN
                 )
             
@@ -50,7 +51,7 @@ class LoginViewSet(AuthBaseViewSet):
             user_data = UserResponseSerializer(user).data
             
             response = Response({
-                "message": "Успешная авторизация",
+                "message": "Успешная авторизация менеджера",
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
                 "user": user_data

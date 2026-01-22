@@ -123,10 +123,10 @@ class RegisterViewSet(AuthBaseViewSet):
                         qr_code_obj.user = user  # type: ignore
                         qr_code_obj.save()
                         
-                        # устанавливаем тип аккаунта из QR кода
+                        # устанавливаем тип аккаунта из QR кода (для клиента)
                         user_profile = user.userprofile  # type: ignore
                         account_type = account_type_mapping.get(qr_code_obj.account_type, 'light')
-                        user_profile.account_type = account_type
+                        user_profile.client_account_type = account_type
                         user_profile.save()
                     
                     # создаем машину если указан VIN код        
