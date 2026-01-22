@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { AccountSidebarProps } from '@/app/types'
 import Logout from './Logout'
 import { accountTypeToDisplayName, getAccountTypeStyles } from '@/app/constants/accountTypes'
-import noPhoto from '../public/images/no-photo.png'
+// import noPhoto from '../public/images/no-photo.png'
 import { TbPhotoUp } from 'react-icons/tb'
 import showToast from './ui/showToast'
 import { uploadImage } from '@/lib/imageUpload'
@@ -94,8 +94,9 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
               className="hidden"
               accept="image/*"
             />
+            {/*  || user.image || noPhoto */}
             <Image
-              src={previewUrl || user.image || noPhoto}
+              src={previewUrl} 
               alt="profile image"
               height={84}
               width={84}
