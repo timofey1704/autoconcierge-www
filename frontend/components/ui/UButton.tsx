@@ -8,6 +8,7 @@ const UButton = ({
   className,
   text,
   type,
+  leftIcon,
   loading = false,
   disabled = false,
 }: ButtonProps) => {
@@ -18,6 +19,7 @@ const UButton = ({
       type={type}
       disabled={disabled || loading}
     >
+      {leftIcon && <span className="mr-2 flex items-center">{leftIcon}</span>}
       <span className="pl-3 text-left text-base font-normal text-white">{text}</span>
       <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white transition-transform duration-600 ease-in-out">
         <Image

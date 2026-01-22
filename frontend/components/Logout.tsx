@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import UButton from './ui/UButton'
 import { IoExitOutline } from 'react-icons/io5'
 import useUserStore from '@/app/store/userStore'
 
@@ -27,14 +26,13 @@ const Logout = () => {
   }
 
   return (
-    <UButton
-      text="Выйти из аккаунта"
-      leftIcon={<IoExitOutline className="mr-1 h-5 w-5" />}
-      className="flex w-full items-center rounded-lg px-4 py-4 font-medium text-gray-600 transition-colors hover:bg-gray-100"
-      size="sm"
-      variant="text"
+    <button
       onClick={handleLogout}
-    />
+      className="flex w-full items-center rounded-lg p-4 text-sm font-medium text-gray-600 transition-all duration-200 hover:cursor-pointer hover:bg-gray-100"
+    >
+      <IoExitOutline className="mr-2 h-5 w-5" />
+      Выйти из аккаунта
+    </button>
   )
 }
 

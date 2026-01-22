@@ -16,6 +16,7 @@ export interface User {
   firstName: string
   surname: string
   account_type: string
+  image?: string
 }
 
 export interface UserState {
@@ -74,6 +75,7 @@ export interface ButtonProps {
   type?: 'button' | 'submit' | 'reset'
   disabled?: boolean
   loading?: boolean
+  leftIcon?: React.ReactNode
 }
 
 export interface TextInputProps {
@@ -112,4 +114,15 @@ export interface CardSliderProps {
   memberships: Membership[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sliderRef?: React.RefObject<any>
+}
+
+export interface NavigationItem {
+  name: string
+  href: string
+  icon: string
+}
+
+export interface AccountSidebarProps {
+  user: User
+  navigation: NavigationItem[]
 }

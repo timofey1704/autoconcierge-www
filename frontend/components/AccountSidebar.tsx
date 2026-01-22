@@ -95,7 +95,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
               accept="image/*"
             />
             <Image
-              src={previewUrl || user.image || noPhoto} 
+              src={previewUrl || user.image || noPhoto}
               alt="profile image"
               height={84}
               width={84}
@@ -110,7 +110,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
         <div>
           <div className="flex flex-row gap-2 md:flex-col md:gap-0">
             <div className="text-sm font-bold">{user.surname || null}</div>
-            <div className="text-sm font-bold">{user.name || 'Пользователь'}</div>
+            <div className="text-sm font-bold">{user.firstName || 'Пользователь'}</div>
           </div>
           <div className="mt-4 flex items-center gap-5">
             {user.uuid && <div className="text-xs font-medium text-gray-500">ID: {user.uuid}</div>}
@@ -142,12 +142,12 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
                 href={item.href}
                 className={`${
                   isActive
-                    ? 'border-orange translate-x-2 rounded-l-lg border-r-4 bg-gray-100 text-black'
+                    ? 'translate-x-2 rounded-l-lg border-r-4 border-blue-700 bg-gray-100 text-black'
                     : 'rounded-lg text-gray-600 hover:bg-gray-100'
                 } flex items-center p-4 text-sm font-medium transition-all duration-200`}
               >
                 <Image
-                  src={`/icons/${item.icon}.svg`}
+                  src={`/icons/accountSidebar/${item.icon}.svg`}
                   alt={item.name}
                   width={20}
                   height={20}
@@ -169,13 +169,13 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
           } flex items-center p-4 text-sm font-medium transition-all duration-200`}
         >
           <Image
-            src={`/icons/support.svg`}
+            src={`/icons/accountSidebar/support.svg`}
             alt={'support'}
             width={20}
             height={20}
             className="mr-2"
           />
-          Поддержка
+          Поддержка (24/7)
         </a>
         <Logout />
       </div>
