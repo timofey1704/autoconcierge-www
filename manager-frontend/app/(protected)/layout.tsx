@@ -24,20 +24,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   const userNavigation = [
     { name: 'Главная', href: '/main', icon: 'main' },
-    { name: 'Профиль', href: '/profile', icon: 'profile' },
-    { name: 'Услуги', href: '/services', icon: 'services' },
-    { name: 'Подписка', href: '/membership', icon: 'membership' },
-    { name: 'Карта', href: '/map', icon: 'map' },
-    {
-      name: 'Устройства',
-      href: '/devices',
-      icon: 'devices',
-    },
-    {
-      name: 'Скидки и бонусы',
-      href: '/bonuses',
-      icon: 'bonuses',
-    },
+    { name: 'Статистика', href: '/dashboard', icon: 'dashboard' },
   ]
 
   return (

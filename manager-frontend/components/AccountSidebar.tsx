@@ -107,19 +107,28 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
             </div>
           </div>
         </div>
-        <div className="space-y-1">
-          <p className="text-xl font-bold">{user.name || 'Пользователь'}</p>{' '}
-          {user.uuid && <p className="text-sm font-medium text-gray-500">ID: {user.uuid}</p>}
-          {user.account_type && (
-            <Link
-              href="/membership"
-              className={`${getAccountTypeStyles(
-                user.account_type
-              )} flex items-center justify-center rounded-lg px-3 py-1 text-sm`}
-            >
-              {accountTypeToDisplayName[user.account_type as keyof typeof accountTypeToDisplayName]}
-            </Link>
-          )}
+        <div>
+          <div className="flex flex-row gap-2 md:flex-col md:gap-0">
+            <div className="text-sm font-bold">{user.surname || null}</div>
+            <div className="text-sm font-bold">{user.name || 'Пользователь'}</div>
+          </div>
+          <div className="mt-4 flex items-center gap-5">
+            {user.uuid && <div className="text-xs font-medium text-gray-500">ID: {user.uuid}</div>}
+            {user.account_type && (
+              <Link
+                href="/account/membership"
+                className={`${getAccountTypeStyles(
+                  user.account_type
+                )} flex items-center justify-center rounded-lg px-2 py-0.5 text-xs`}
+              >
+                {
+                  accountTypeToDisplayName[
+                    user.account_type as keyof typeof accountTypeToDisplayName
+                  ]
+                }
+              </Link>
+            )}
+          </div>
         </div>
       </div>
 

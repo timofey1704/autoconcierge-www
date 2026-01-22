@@ -1,5 +1,4 @@
 import { useRouter } from 'next/navigation'
-import UButton from './ui/UButton'
 import { IoExitOutline } from 'react-icons/io5'
 import useUserStore from '@/app/store/userStore'
 
