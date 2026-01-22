@@ -32,7 +32,7 @@ class LoginManagerViewSet(AuthBaseViewSet):
                     status=status.HTTP_404_NOT_FOUND
                 )
             
-            # Проверяем наличие профиля
+            # проверяем наличие профиля
             if not hasattr(user, 'userprofile'):
                 return Response(
                     {"error": "Профиль пользователя не найден"},
@@ -41,7 +41,7 @@ class LoginManagerViewSet(AuthBaseViewSet):
             
             user_profile = user.userprofile  # type: ignore
             
-            # Проверяем, что это менеджер, а не клиент
+            # проверяем, что это менеджер, а не клиент
             if user_profile.user_type != 'manager':
                 return Response(
                     {"error": "Доступ запрещен. Только для менеджеров."},

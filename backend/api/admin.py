@@ -3,7 +3,6 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .models import UserProfile
 from django.contrib.auth.models import User
 
-
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
     can_delete = False
@@ -19,12 +18,12 @@ class UserProfileInline(admin.StackedInline):
         if obj and hasattr(obj, 'userprofile'):
             profile = obj.userprofile
             if profile.user_type == 'manager':
-                fields.append('manager_account_type')
+                fields.extend(['manager_account_type', 'partner'])
             else:
                 fields.append('client_account_type')
         else:
             # при создании показываем оба поля (можно выбрать любое)
-            fields.extend(['client_account_type', 'manager_account_type'])
+            fields.extend(['client_account_type', 'manager_account_type', 'partner'])
         
         fields.extend(['uuid', 'privacy_accepted', 'image'])
         return fields
@@ -34,21 +33,36 @@ class UserProfileInline(admin.StackedInline):
         if obj and hasattr(obj, 'userprofile'):
             profile = obj.userprofile
             if profile.user_type == 'manager':
-                account_field = ('manager_account_type',)
+                account_field = ('manager_account_type', )
+                # для менеджеров показываем партнера
+                return (
+                    ('Основная информация', {
+                        'fields': ('user_type', 'phone_number', 'uuid')
+                    }),
+                    ('Тип аккаунта', {
+                        'fields': account_field
+                    }),
+                    ('Партнер', {
+                        'fields': ('partner',)
+                    }),
+                    ('Дополнительно', {
+                        'fields': ('privacy_accepted', 'image')
+                    }),
+                )
             else:
                 account_field = ('client_account_type',)
-            
-            return (
-                ('Основная информация', {
-                    'fields': ('user_type', 'phone_number', 'uuid')
-                }),
-                ('Тип аккаунта', {
-                    'fields': account_field
-                }),
-                ('Дополнительно', {
-                    'fields': ('privacy_accepted', 'image')
-                }),
-            )
+                # для клиентов не показываем партнера
+                return (
+                    ('Основная информация', {
+                        'fields': ('user_type', 'phone_number', 'uuid')
+                    }),
+                    ('Тип аккаунта', {
+                        'fields': account_field
+                    }),
+                    ('Дополнительно', {
+                        'fields': ('privacy_accepted', 'image')
+                    }),
+                )
         else:
             # при создании
             return (
@@ -58,6 +72,10 @@ class UserProfileInline(admin.StackedInline):
                 ('Тип аккаунта', {
                     'fields': ('client_account_type', 'manager_account_type'),
                     'description': 'Выберите тип аккаунта в зависимости от типа пользователя'
+                }),
+                ('Партнер', {
+                    'fields': ('partner',),
+                    'description': 'Укажите партнера для менеджера'
                 }),
                 ('Дополнительно', {
                     'fields': ('privacy_accepted', 'image')

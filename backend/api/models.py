@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 
 from sitemanagement.constants.account_types import account_types, manager_account_types
 from sitemanagement.constants.image_save_path import user_image_upload_path
+from sitemanagement.models import Partner
 
 USER_TYPE_CHOICES = [
     ('client', 'Клиент'),
@@ -35,6 +36,15 @@ class UserProfile(models.Model):
         blank=True,
         null=True
     )
+    partner = models.ForeignKey(
+        Partner,
+        on_delete=models.PROTECT,
+        verbose_name='Партнер',
+        help_text='Компания, в которой работает менеджер',
+        null=True,
+        blank=True
+    )
+    
     privacy_accepted = models.BooleanField(default=False, verbose_name="Принятие политики конфиденциальности")
     image = models.ImageField(
         upload_to=user_image_upload_path,
@@ -67,13 +77,19 @@ class UserProfile(models.Model):
                 raise ValidationError({
                     'client_account_type': 'Это поле обязательно для клиентов'
                 })
-            # очищаем manager поле
+            # очищаем manager поля
             self.manager_account_type = None
+            self.partner = None
         
         if self.user_type == 'manager':
             if not self.manager_account_type:
                 raise ValidationError({
                     'manager_account_type': 'Это поле обязательно для менеджеров'
+                })
+            
+            if not self.partner:
+                raise ValidationError({
+                    'partner': 'Это поле обязательно для менеджеров'
                 })
             # очищаем client поле
             self.client_account_type = None
