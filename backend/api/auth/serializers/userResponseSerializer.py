@@ -6,7 +6,7 @@ class UserResponseSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     email = serializers.EmailField()
     account_type = serializers.CharField(source='userprofile.account_type')
-    name = serializers.CharField(source='first_name')
+    firstName = serializers.CharField(source='first_name')
     surname = serializers.CharField(source='last_name')
     phone_number = serializers.CharField(source='userprofile.phone_number')
     image = serializers.SerializerMethodField()

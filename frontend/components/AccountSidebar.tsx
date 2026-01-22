@@ -1,0 +1,186 @@
+'use client'
+
+import React, { useState, useRef, useCallback } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+import { AccountSidebarProps } from '@/app/types'
+import Logout from './Logout'
+import { accountTypeToDisplayName, getAccountTypeStyles } from '@/app/constants/accountTypes'
+import noPhoto from '../public/images/no-photo.png'
+import { TbPhotoUp } from 'react-icons/tb'
+import showToast from './ui/showToast'
+import { uploadImage } from '@/lib/imageUpload'
+
+type ProfileImageResponse = {
+  user: {
+    image: string
+    [key: string]: string
+  }
+  message: string
+}
+
+const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => {
+  const pathname = usePathname()
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewUrl, setPreviewUrl] = useState<string>(user?.image || '')
+
+  const handlePhotoChange = () => {
+    fileInputRef.current?.click()
+  }
+
+  const handleFileChange = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files
+    if (!files || files.length === 0) return
+
+    try {
+      const file = files[0]
+
+      if (!file.type.startsWith('image/')) {
+        showToast({
+          type: 'error',
+          message: 'Пожалуйста, выберите изображение',
+        })
+        return
+      }
+
+      // создаем превью
+      const previewUrl = URL.createObjectURL(file)
+      setPreviewUrl(previewUrl)
+
+      // загружаем на сервер
+      const response = await uploadImage<ProfileImageResponse>(
+        file,
+        '/api/profile/update-userimage',
+        'PATCH'
+      )
+
+      if (response.user?.image) {
+        setPreviewUrl(response.user.image)
+      }
+
+      showToast({
+        type: 'success',
+        message: 'Фотография успешно обновлена',
+      })
+
+      // очищаем инпут
+      e.target.value = ''
+    } catch (error) {
+      showToast({
+        type: 'error',
+        message: 'Ошибка при загрузке фотографии',
+      })
+      console.error('Error handling file:', error)
+    }
+  }, [])
+
+  if (!user) {
+    return null
+  }
+
+  const navigationItems = navigation
+
+  return (
+    <div className="space-y-3">
+      <div className="flex w-full items-center space-x-4 rounded-2xl bg-white p-4 shadow">
+        <div className="flex items-center justify-center">
+          <div className="group relative w-full cursor-pointer" onClick={handlePhotoChange}>
+            <input
+              type="file"
+              id="image"
+              ref={fileInputRef}
+              onChange={handleFileChange}
+              className="hidden"
+              accept="image/*"
+            />
+            <Image
+              src={previewUrl || user.image || noPhoto}
+              alt="profile image"
+              height={84}
+              width={84}
+              priority
+              className="aspect-square rounded-3xl object-cover md:w-21"
+            />
+            <div className="bg-opacity-40 absolute inset-0 flex items-center justify-center rounded-2xl bg-black opacity-0 transition-opacity group-hover:opacity-100">
+              <TbPhotoUp className="text-3xl text-white" />
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="flex flex-row gap-2 md:flex-col md:gap-0">
+            <div className="text-sm font-bold">{user.surname || null}</div>
+            <div className="text-sm font-bold">{user.firstName || 'Пользователь'}</div>
+          </div>
+          <div className="mt-4 flex items-center gap-5">
+            {user.uuid && <div className="text-xs font-medium text-gray-500">ID: {user.uuid}</div>}
+            {user.account_type && (
+              <Link
+                href="/account/membership"
+                className={`${getAccountTypeStyles(
+                  user.account_type
+                )} flex items-center justify-center rounded-lg px-2 py-0.5 text-xs`}
+              >
+                {
+                  accountTypeToDisplayName[
+                    user.account_type as keyof typeof accountTypeToDisplayName
+                  ]
+                }
+              </Link>
+            )}
+          </div>
+        </div>
+      </div>
+
+      <div className="w-full rounded-2xl bg-white p-2 shadow md:w-64">
+        <nav className="space-y-2">
+          {navigationItems.map(item => {
+            const isActive = pathname === item.href
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={`${
+                  isActive
+                    ? 'translate-x-2 rounded-l-lg border-r-4 border-blue-700 bg-gray-100 text-black'
+                    : 'rounded-lg text-gray-600 hover:bg-gray-100'
+                } flex items-center p-4 text-sm font-medium transition-all duration-200`}
+              >
+                <Image
+                  src={`/icons/accountSidebar/${item.icon}.svg`}
+                  alt={item.name}
+                  width={20}
+                  height={20}
+                  className="mr-2"
+                />
+                {item.name}
+              </Link>
+            )
+          })}
+        </nav>
+      </div>
+      <div className="w-full rounded-2xl bg-white p-2 shadow md:w-64">
+        <a
+          href="https://google.com"
+          className={`${
+            pathname === '/support'
+              ? 'border-orange translate-x-2 rounded-l-lg border-r-4 bg-gray-100 text-black'
+              : 'rounded-lg text-gray-600 hover:bg-gray-100'
+          } flex items-center p-4 text-sm font-medium transition-all duration-200`}
+        >
+          <Image
+            src={`/icons/accountSidebar/support.svg`}
+            alt={'support'}
+            width={20}
+            height={20}
+            className="mr-2"
+          />
+          Поддержка (24/7)
+        </a>
+        <Logout />
+      </div>
+    </div>
+  )
+}
+
+export default AccountSidebar
