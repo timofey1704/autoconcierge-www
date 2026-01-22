@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const API_URL = process.env.NEXT_PUBLIC_API_URL
 
       try {
-        const response = await fetch(`${API_URL}/user/`, {
+        const response = await fetch(`${API_URL}/auth/user/`, {
           headers: {
             Authorization: `Bearer ${session.accessToken}`,
             'Content-Type': 'application/json',

@@ -138,7 +138,7 @@ export const authOptions: NextAuthOptions = {
       id: 'credentials',
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        phone_number: { label: 'Phone Number', type: 'tel' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
@@ -147,7 +147,7 @@ export const authOptions: NextAuthOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              email: credentials?.email,
+              phone_number: credentials?.phone_number,
               password: credentials?.password,
             }),
           })

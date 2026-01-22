@@ -14,7 +14,7 @@ import bgImage from '../../../public/images/auth/bg-image.png'
 import bmw from '../../../public/images/auth/bmw.svg'
 
 const validationRules = {
-  email: { required: true },
+  phone_number: { required: true, minLength: 13 },
   password: { required: true },
 }
 
@@ -41,14 +41,14 @@ const LoginPage = () => {
   const { values, isVisible, handleChange, handleSubmit, togglePasswordVisibility, FormProvider } =
     useForm(
       {
-        email: '',
+        phone_number: '',
         password: '',
       },
       validationRules,
       async values => {
         try {
           const result = await signIn('credentials', {
-            email: values.email,
+            phone_number: values.phone_number,
             password: values.password,
             redirect: false,
           })
@@ -71,7 +71,7 @@ const LoginPage = () => {
   }
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden from-gray-900 via-gray-800 to-gray-900 p-4">
+    <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden from-gray-900 via-gray-800 to-gray-900">
       <Image src={bgImage} alt="bg" fill className="object-cover" />
       <FormProvider>
         <div className="z-10 w-full max-w-4xl">
@@ -90,10 +90,11 @@ const LoginPage = () => {
 
                 <div className="space-y-4">
                   <UTextInput
-                    label="Email"
-                    name="email"
-                    value={values.email}
+                    label="Номер телефона"
+                    name="phone_number"
+                    value={values.phone_number}
                     handleChange={handleChange}
+                    placeholder="Ваш номер телефона"
                   />
                   <UTextInput
                     label="Пароль"
@@ -103,6 +104,7 @@ const LoginPage = () => {
                     isPassword={true}
                     isVisible={isVisible}
                     togglePasswordVisibility={togglePasswordVisibility}
+                    placeholder="Ваш пароль"
                   />
                 </div>
 
