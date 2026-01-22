@@ -10,10 +10,8 @@ import showToast from '@/components/ui/showToast'
 import { signIn } from 'next-auth/react'
 import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
-// import bgImage from '../../../public/images/auth/bg-image.png'
-// import bmw from '../../../public/images/auth/bmw.svg'
-import bgImage from '../../../public/images/no-photo.png'
-import bmw from '../../../public/images/no-photo.png'
+import bgImage from '../../../public/images/auth/bg-image.png'
+import bmw from '../../../public/images/auth/bmw.svg'
 
 const validationRules = {
   email: { required: true, minLength: 13 },
@@ -61,7 +59,7 @@ const LoginPage = () => {
           }
 
           showToast({ type: 'success', message: 'Авторизация успешна!' })
-          router.push('/account/profile')
+          router.push('/main')
         } catch {
           showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
         }
