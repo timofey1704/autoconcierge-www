@@ -13,6 +13,17 @@ lint_frontend:
     - main
     - merge_requests
 
+lint_manager_frontend:
+  image: node:23-alpine
+  stage: lint
+  script:
+    - cd manager-frontend
+    - npm ci
+    - npm run lint
+  only:
+    - main
+    - merge_requests
+
 # test_backend:
 #   image: python:3.14-alpine
 #   stage: test
