@@ -2,40 +2,49 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from api.models import UserProfile
+from django.contrib.auth.models import User
 
 from api.auth.serializers.userResponseSerializer import UserResponseSerializer
 from api.utils.cookiesSetter import AuthBaseViewSet
 from api.utils.decorators import handle_exceptions
-class LoginViewSet(AuthBaseViewSet):
-    """Логин для клиента"""
+
+class LoginManagerViewSet(AuthBaseViewSet):
+    """Логин для менеджера"""
     
-    @action(detail=False, methods=['post'], url_path="login")
+    @action(detail=False, methods=['post'], url_path="login-manager")
     @handle_exceptions
-    def login_client(self, request):
+    def login_manager(self, request):
         try:
-            phone_number = request.data.get("phone_number")
+            email = request.data.get("email")
             password = request.data.get("password")
             
-            if not phone_number or not password:
+            if not email or not password:
                 return Response(
-                    {"error": "Номер телефона и пароль обязательны"},
+                    {"error": "Email и пароль обязательны"},
                     status=status.HTTP_400_BAD_REQUEST
                 )
             
             try:
-                user_profile = UserProfile.objects.get(phone_number=phone_number)
-                user = user_profile.user
-            except UserProfile.DoesNotExist:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
                 return Response(
-                    {"error": "Пользователь не найден"},
+                    {"error": "Менеджер не найден"},
                     status=status.HTTP_404_NOT_FOUND
                 )
             
-            # Проверяем, что это клиент, а не менеджер
-            if user_profile.user_type != 'client':
+            # Проверяем наличие профиля
+            if not hasattr(user, 'userprofile'):
                 return Response(
-                    {"error": "Неверные учетные данные"},
+                    {"error": "Профиль пользователя не найден"},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            user_profile = user.userprofile  # type: ignore
+            
+            # Проверяем, что это менеджер, а не клиент
+            if user_profile.user_type != 'manager':
+                return Response(
+                    {"error": "Доступ запрещен. Только для менеджеров."},
                     status=status.HTTP_403_FORBIDDEN
                 )
             
@@ -50,7 +59,7 @@ class LoginViewSet(AuthBaseViewSet):
             user_data = UserResponseSerializer(user).data
             
             response = Response({
-                "message": "Успешная авторизация",
+                "message": "Успешная авторизация менеджера",
                 "access": str(refresh.access_token),
                 "refresh": str(refresh),
                 "user": user_data

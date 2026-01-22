@@ -112,7 +112,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
             <div className="text-sm font-bold">{user.surname || null}</div>
             <div className="text-sm font-bold">{user.firstName || 'Пользователь'}</div>
           </div>
-          <div className="mt-4 flex items-center gap-5">
+          <div className="mt-2 flex flex-col gap-1">
             {user.uuid && <div className="text-xs font-medium text-gray-500">ID: {user.uuid}</div>}
             {user.account_type && (
               <Link

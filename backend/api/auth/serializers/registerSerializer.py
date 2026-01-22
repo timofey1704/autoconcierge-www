@@ -46,7 +46,8 @@ class ClientRegisterSerializer(serializers.ModelSerializer):
                 user=user,
                 phone_number=phone_number,
                 privacy_accepted=privacy_accepted,
-                account_type='light'  # базовый тип, обновится при активации QR кода
+                user_type='client',
+                client_account_type='light'  # базовый тип, обновится при активации QR кода
             )
             
             return user
