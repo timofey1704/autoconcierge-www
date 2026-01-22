@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useRouter } from 'next/navigation'
 import AccountSidebar from '@/components/AccountSidebar'
@@ -8,19 +8,17 @@ import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const [isLoading, setIsLoading] = useState(true)
   const router = useRouter()
   const { isAuthenticated, user } = useUserStore()
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
       router.replace('/login')
-      return
     }
-    setIsLoading(false)
   }, [isAuthenticated, user, router])
 
-  if (isLoading) {
+  // показываем лоадер пока не загружены данные менеджера
+  if (!isAuthenticated || !user) {
     return <Loader />
   }
 

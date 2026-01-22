@@ -42,6 +42,9 @@
    cd frontend
    npm install
 
+   cd manager-frontend
+   npm install
+
    cd backend
    uv init
    uv venv
@@ -103,6 +106,12 @@
    cd frontend
    npm run dev
    ```
+   В третьем терминале запустите фронтенд менеджеров:
+
+   ```
+   cd manager-frontend
+   npm run dev
+   ```
 
 Теперь проект будет доступен по адресу `http://localhost:3000`.
 
@@ -113,6 +122,7 @@
    ```sh
    cd backend
    cd frontend
+   cd manager-frontend
    ```
 
 2. **Запускаем сборку контейнеров в каждом терминале:**
@@ -171,13 +181,19 @@
    docker logs -f prod-frontend-1
    ```
 
-2. **Логи бекенда:**
+1. **Логи менеджерского фронтенда:**
+
+   ```sh
+   docker logs -f prod-manager-frontend-1
+   ```
+
+3. **Логи бекенда:**
 
    ```sh
    docker logs -f prod-backend-1
    ```
 
-3. **Логи сервера:**
+4. **Логи сервера:**
 
    ```sh
    tail -f /var/log/angie/access.log
