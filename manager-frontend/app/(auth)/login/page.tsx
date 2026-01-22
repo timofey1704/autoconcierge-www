@@ -11,9 +11,9 @@ import { signIn } from 'next-auth/react'
 import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
 // import bgImage from '../../../public/images/auth/bg-image.png'
-import bgImage from '../../../public/window.svg'
 // import bmw from '../../../public/images/auth/bmw.svg'
-import bmw from '../../../public/window.svg'
+import bgImage from '../../../public/images/no-photo.png'
+import bmw from '../../../public/images/no-photo.png'
 
 const validationRules = {
   email: { required: true, minLength: 13 },
