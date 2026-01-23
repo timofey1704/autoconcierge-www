@@ -31,7 +31,7 @@ const CardSlider: React.FC<CardSliderProps> = ({ memberships, sliderRef }) => {
     ],
   }
 
-  const progressPercentage = ((currentSlide + 1) / memberships.length) * 100
+  // const progressPercentage = ((currentSlide + 1) / memberships.length) * 100
 
   return (
     <div className="w-full">

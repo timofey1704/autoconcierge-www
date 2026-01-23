@@ -60,7 +60,7 @@ class UserProfileInline(admin.StackedInline):
                         'fields': account_field
                     }),
                     ('Дополнительно', {
-                        'fields': ('privacy_accepted', 'image')
+                        'fields': ('privacy_accepted', 'image', 'city', 'address', 'patronymic', 'telegram_id')
                     }),
                 )
         else:

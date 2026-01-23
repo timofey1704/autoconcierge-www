@@ -7,6 +7,8 @@ from sitemanagement.constants.account_types import account_types, manager_accoun
 from sitemanagement.constants.image_save_path import user_image_upload_path
 from sitemanagement.models import Partner
 
+from dictionaries.models import Cities
+
 USER_TYPE_CHOICES = [
     ('client', 'Клиент'),
     ('manager', 'Менеджер'),
@@ -44,7 +46,9 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
-    
+    patronymic = models.CharField(max_length=30, verbose_name="Отчество", null=True, blank=True)
+    city = models.ForeignKey(Cities, on_delete=models.PROTECT, verbose_name="Город проживания", null=True, blank=True)
+    address = models.CharField(max_length=255, verbose_name="Адрес", null=True, blank=True)
     privacy_accepted = models.BooleanField(default=False, verbose_name="Принятие политики конфиденциальности")
     image = models.ImageField(
         upload_to=user_image_upload_path,
@@ -52,6 +56,7 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
+    telegram_id = models.CharField(max_length=255, null=True, blank=True, verbose_name="Telegram ID клиента")
     
     class Meta:
         verbose_name = "Профиль пользователя"
