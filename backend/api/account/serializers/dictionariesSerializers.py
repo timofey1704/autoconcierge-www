@@ -38,5 +38,5 @@ class BodyTypeSerializer(serializers.ModelSerializer):
     pet_type = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
-        model = Model
+        model = BodyType
         fields = ('id', 'name', 'model')
