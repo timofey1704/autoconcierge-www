@@ -25,13 +25,15 @@ const Header = () => {
               draggable={false}
             >
               <Image
-                  src={isOpen ? IDSLogoBlack : IDSLogoWhite}
-                  width={106}
-                  height={40}
-                  alt="СБЛ Лизинг"
-                  priority
-                  draggable={false}
-                />
+                src={isOpen ? IDSLogoBlack : IDSLogoWhite}
+                width={106}
+                height={40}
+                alt="IDS"
+                priority
+                draggable={false}
+                quality={100}
+                unoptimized={true}
+              />
             </Link>
           </div>
           <div className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center space-x-10 text-xl font-medium lg:flex">

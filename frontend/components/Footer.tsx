@@ -25,8 +25,10 @@ const Footer = () => {
                   src={IDSLogoWhite}
                   width={106}
                   height={40}
-                  alt="СБЛ Лизинг"
+                  alt="IDS"
                   draggable={false}
+                  quality={100}
+                  unoptimized={true}
                 />
               </Link>
             </div>
@@ -40,8 +42,13 @@ const Footer = () => {
             зарегистрированное по адресу Республика Беларусь, 220034, г. Минск, Войсковый пер., д.
             12, каб. 4
           </p>
+
+          <div className="flex flex-col gap-5 pt-10 xl:pb-10">
+            <p>Партнер сервиса</p>
+            <Image src={SBLLogoWhite} width={150} height={26} alt="СБЛ Лизинг" draggable={false} />
+          </div>
         </div>
-        <div className="flex w-full flex-col justify-between xl:w-auto">
+        <div className="flex w-full flex-col pb-10 xl:w-auto xl:pb-0">
           <div className="flex flex-wrap items-center justify-between gap-5 lg:gap-10">
             <div>
               <div className="flex items-center">
@@ -96,7 +103,7 @@ const Footer = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col flex-wrap justify-start gap-5 pt-10 md:flex-row md:justify-between lg:flex-row lg:justify-between lg:gap-10 xl:justify-end xl:pt-24">
+          <div className="flex flex-col flex-wrap justify-start gap-5 pt-10 md:flex-row md:justify-between lg:flex-row lg:justify-between lg:gap-10 xl:justify-end xl:pt-26.5">
             <Scroll moveTo="services" className="internal-link text-white">
               Пакеты услуг
             </Scroll>
@@ -111,10 +118,10 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="flex flex-col gap-5 py-10">
+      {/* <div className="flex flex-col gap-5 py-10">
         <p>Партнер сервиса</p>
         <Image src={SBLLogoWhite} width={150} height={26} alt="СБЛ Лизинг" draggable={false} />
-      </div>
+      </div> */}
 
       <hr className="h-0.5 rotate-180 border-0 bg-(image:--color-gradient)" />
 
