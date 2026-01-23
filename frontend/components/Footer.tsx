@@ -25,8 +25,9 @@ const Footer = () => {
                   src={IDSLogoWhite}
                   width={106}
                   height={40}
-                  alt="СБЛ Лизинг"
+                  alt="IDS"
                   draggable={false}
+                  quality={100}
                 />
               </Link>
             </div>

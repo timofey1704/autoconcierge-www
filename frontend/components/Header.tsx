@@ -28,9 +28,10 @@ const Header = () => {
                   src={isOpen ? IDSLogoBlack : IDSLogoWhite}
                   width={106}
                   height={40}
-                  alt="СБЛ Лизинг"
+                  alt="IDS"
                   priority
                   draggable={false}
+                  quality={100}
                 />
             </Link>
           </div>
