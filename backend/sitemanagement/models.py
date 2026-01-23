@@ -6,7 +6,7 @@ from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
 
-from sitemanagement.constants.image_save_path import qr_upload_path
+from sitemanagement.constants.image_save_path import qr_upload_path, car_image_upload_path
 from sitemanagement.constants.account_types import account_types
 
 from api.utils.generate_qrcode import generate_qrcode
@@ -143,18 +143,14 @@ class Car(models.Model):
     vin_code = models.CharField(max_length=17, verbose_name='VIN код автомобиля')
     qr_code = models.OneToOneField(
         QRCode,  
-        on_delete=models.SET_NULL,
+        on_delete=models.PROTECT,
         verbose_name='QR код автомобиля',
         related_name='car_instance',
-        null=True,
-        blank=True
     )
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name="Пользователь",
-        null=True,
-        blank=True
     )
     brand = models.ForeignKey(
         Brand,
@@ -187,16 +183,20 @@ class Car(models.Model):
         on_delete=models.PROTECT,
         verbose_name="Лизинговая компания"
     )
-    
+    image = models.ImageField(
+        upload_to=car_image_upload_path,
+        verbose_name="Фото пользователя",
+        null=True,
+        blank=True
+    )
+    licence_plate = models.CharField(max_length=15, verbose_name="Номерной знак авто")
     
     class Meta:
         verbose_name = "Автомобиль"
         verbose_name_plural = "Автомобили"
     
     def __str__(self):
-        return f"{self.vin_code}"
-
-
+        return f"{self.licence_plate} - {self.qr_code.code}"
         
 class Membership(models.Model):
     id = models.AutoField(primary_key=True)
