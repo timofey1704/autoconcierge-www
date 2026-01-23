@@ -5,6 +5,7 @@ from .views.loginManagerView import LoginManagerViewSet
 from .views.logoutView import LogoutView
 from .views.refreshTokenView import RefreshTokenView
 from .views.userView import UserDataView
+from .views.managerDataView import ManagerDataView
 
 urlpatterns = [
     path('login/', LoginViewSet.as_view({'post': 'login_client'}), name="login-client"),
@@ -13,5 +14,6 @@ urlpatterns = [
     path("logout/", LogoutView.as_view(), name="logout"),
     path("register/send-verification/", RegisterViewSet.as_view({'post': 'send_verification_code'}), name="send-verification"),
     path("register/verify/", RegisterViewSet.as_view({'post': 'verify_and_register_client'}), name="verify-and-register"),
-    path("user/", UserDataView.as_view({'get': 'user_data'}), name="user-data")
+    path("user/", UserDataView.as_view({'get': 'user_data'}), name="user-data"),
+    path("manager/", ManagerDataView.as_view({'get': 'manager_data'}), name="manager-data"),
 ]
