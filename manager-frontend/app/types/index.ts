@@ -47,3 +47,33 @@ export interface ButtonProps {
   variant?: 'default' | 'text'
   loading?: boolean
 }
+
+export interface ValidationRules {
+  required?: boolean
+  minLength?: number
+  pattern?: RegExp
+}
+
+export interface ValidationErrors {
+  [key: string]: string
+}
+
+export interface TextInputProps {
+  value: string
+  handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  label?: string
+  placeholder?: string
+  name: string
+  type?: 'text' | 'email' | 'password' | 'datetime-local' | 'date'
+  className?: string
+  maxLength?: number
+  tooltip?: string | React.ReactNode
+  helper_text?: string
+  isPassword?: boolean
+  isVisible?: boolean
+  togglePasswordVisibility?: () => void
+  error?: string
+  min?: string
+  max?: string
+  labelClassName?: string
+}

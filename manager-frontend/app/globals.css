@@ -5,11 +5,27 @@
   --foreground: #171717;
 }
 
+@font-face {
+  font-family: 'Exo 2';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('/fonts/Exo_2/Exo2-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-exo: 'Exo 2', 'sans-serif';
+  --font-sans: 'Open Sans', 'sans-serif';
 }
 
 @media (prefers-color-scheme: dark) {
@@ -23,4 +39,146 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+h1 {
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 48px;
+    line-height: 56px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 64px;
+    line-height: 72px;
+  }
+}
+
+h2 {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 48px;
+    line-height: 56px;
+  }
+}
+
+h3 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+h4 {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 28px;
+    line-height: 36px;
+  }
+}
+
+h5 {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 700;
+  font-style: bold;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 22px;
+    line-height: 30px;
+  }
+}
+
+h6 {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  font-style: normal;
+  font-family: var(--font-exo);
+
+  @media (min-width: 640px) {
+    font-size: 18px;
+    line-height: 26px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 20px;
+    line-height: 28px;
+  }
+}
+
+p {
+  font-size: 14px;
+  line-height: 22px;
+  font-weight: 500;
+  font-style: normal;
+  font-family: var(--font-sans);
+
+  @media (min-width: 640px) {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+div {
+  font-family: var(--font-sans);
+}
+
+span {
+  font-family: var(--font-sans);
+}
+
+.phone-input input {
+  min-width: 256px;
+
+  @media (min-width: 640px) {
+    min-width: 300px;
+  }
 }

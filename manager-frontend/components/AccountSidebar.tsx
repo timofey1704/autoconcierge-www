@@ -95,7 +95,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
               accept="image/*"
             />
             <Image
-              src={previewUrl || user.image || noPhoto}
+              src={previewUrl || user.image || noPhoto} 
               alt="profile image"
               height={84}
               width={84}
