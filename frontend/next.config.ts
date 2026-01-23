@@ -15,11 +15,11 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'stage.ids-help.by/',
+        hostname: 'stage.ids-help.by',
       },
       {
         protocol: 'https',
-        hostname: 'ids-help.by/',
+        hostname: 'ids-help.by',
       },
     ],
   },
