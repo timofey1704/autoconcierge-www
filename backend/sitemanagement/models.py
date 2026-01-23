@@ -3,12 +3,16 @@ import io
 from django.contrib.auth.models import User
 from django.db import models
 from django.core.files.base import ContentFile
+from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 from sitemanagement.constants.image_save_path import qr_upload_path
 from sitemanagement.constants.account_types import account_types
 
 from api.utils.generate_qrcode import generate_qrcode
 from api.utils.prefix_transliteration import transliterate_to_latin
+
+from dictionaries.models import Brand, Model, BodyType, Colors
 
 class Partner(models.Model):
     partner_name = models.CharField(max_length=255, verbose_name="Название компании партнера")
@@ -54,24 +58,6 @@ class Partner(models.Model):
                     # если все комбинации заняты, используем первую+последнюю букву
                     self.partner_prefix = first_letter + letters[-1].upper()
         super().save(*args, **kwargs)
-    
-class Car(models.Model):
-    id = models.AutoField(primary_key=True)
-    vin_code = models.CharField(max_length=17, verbose_name='VIN код автомобиля')
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        verbose_name="Пользователь",
-        null=True,
-        blank=True
-    )
-    
-    class Meta:
-        verbose_name = "Автомобиль"
-        verbose_name_plural = "Автомобили"
-    
-    def __str__(self):
-        return f"{self.vin_code}"
 
 class QRCode(models.Model):
     id = models.AutoField(primary_key=True)
@@ -81,13 +67,6 @@ class QRCode(models.Model):
     verbose_name="Пользователь",
     null=True,
     blank=True
-    )
-    car = models.ForeignKey(
-        Car,
-        on_delete=models.CASCADE,
-        verbose_name='Автомобиль клиента',
-        null=True,
-        blank=True
     )
     partner = models.ForeignKey(
         Partner,
@@ -158,6 +137,66 @@ class QRCode(models.Model):
             self.image.save(f"{unique_code}.png", ContentFile(image_io.getvalue()), save=False)
             
         super().save(*args, **kwargs)
+
+class Car(models.Model):
+    id = models.AutoField(primary_key=True)
+    vin_code = models.CharField(max_length=17, verbose_name='VIN код автомобиля')
+    qr_code = models.OneToOneField(
+        QRCode,  
+        on_delete=models.SET_NULL,
+        verbose_name='QR код автомобиля',
+        related_name='car_instance',
+        null=True,
+        blank=True
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name="Пользователь",
+        null=True,
+        blank=True
+    )
+    brand = models.ForeignKey(
+        Brand,
+        on_delete=models.PROTECT,
+        verbose_name="Марка автомобиля клиента"
+    )
+    model = models.ForeignKey(
+        Model,
+        on_delete=models.PROTECT,
+        verbose_name="Модель автомобиля клиента"
+    )
+    body_type = models.ForeignKey(
+        BodyType,
+        on_delete=models.PROTECT,
+        verbose_name="Кузов автомобиля клиента"
+    )
+    year_built = models.PositiveIntegerField(
+    verbose_name="Год выпуска",
+    validators=[
+        MinValueValidator(1980),
+        MaxValueValidator(timezone.now().year)
+    ])
+    color = models.ForeignKey(
+        Colors,
+        on_delete=models.PROTECT,
+        verbose_name="Цвет автомобиля клиента"
+    )
+    lising_company = models.ForeignKey(
+        Partner,
+        on_delete=models.PROTECT,
+        verbose_name="Лизинговая компания"
+    )
+    
+    
+    class Meta:
+        verbose_name = "Автомобиль"
+        verbose_name_plural = "Автомобили"
+    
+    def __str__(self):
+        return f"{self.vin_code}"
+
+
         
 class Membership(models.Model):
     id = models.AutoField(primary_key=True)
