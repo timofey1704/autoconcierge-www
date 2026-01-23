@@ -4,8 +4,8 @@ import Link from 'next/link'
 import Burger from './Burger'
 import Scroll from '@/app/hooks/useScroll'
 import { useState } from 'react'
-import LogoWhite from '../public/icons/LogoWhite.svg'
-import LogoBlack from '../public/icons/LogoBlack.svg'
+import IDSLogoWhite from '../public/icons/IDSLogoWhite.svg'
+import IDSLogoBlack from '../public/icons/IDSLogoBlack.svg'
 import PhoneIcon from '../public/icons/telephone.svg'
 import Image from 'next/image'
 
@@ -22,13 +22,15 @@ const Header = () => {
             <Link
               href="/"
               className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
+              draggable={false}
             >
               <Image
-                  src={isOpen ? LogoBlack : LogoWhite}
-                  width={145}
-                  height={26}
+                  src={isOpen ? IDSLogoBlack : IDSLogoWhite}
+                  width={106}
+                  height={40}
                   alt="СБЛ Лизинг"
                   priority
+                  draggable={false}
                 />
             </Link>
           </div>
@@ -48,6 +50,10 @@ const Header = () => {
             <Scroll moveTo="faq" className="internal-link text-white">
               FAQ
             </Scroll>
+
+            {/* <a href="https://manager.ids-help.by/login" className="external-link text-white" draggable={false}>
+              Менеджеру
+            </a> */}
           </div>
           <div className="hidden lg:block">
             <div className="text-xs">

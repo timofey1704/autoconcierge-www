@@ -3,7 +3,7 @@ import Scroll from '@/app/hooks/useScroll'
 
 const ProtectYourCar = () => {
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="relative overflow-hidden rounded-[40px] md:w-180 lg:w-240 xl:h-108 xl:w-304">
         <div className="absolute inset-0 h-full bg-[url(/images/ProtectYourCarBackground.jpg)] bg-cover bg-no-repeat sm:bg-size-[150%] sm:bg-position-[5%_45%]" />
 
@@ -20,7 +20,7 @@ const ProtectYourCar = () => {
           </Scroll>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

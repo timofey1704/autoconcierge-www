@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import LogoWhite from '../public/icons/LogoWhite.svg'
+import IDSLogoWhite from '../public/icons/IDSLogoWhite.svg'
+import SBLLogoWhite from '../public/icons/SBLLogoWhite.svg'
 import PhoneIcon from '../public/icons/footer/Phone.svg'
 import FacebookIcon from '../public/icons/footer/Facebook.svg'
 import LinkedInIcon from '../public/icons/footer/LinkedIn.svg'
@@ -10,20 +11,22 @@ import Scroll from '@/app/hooks/useScroll'
 
 const Footer = () => {
   return (
-    <footer className="h-216.5 w-full bg-black px-5 pt-10 pb-5 text-white md:h-159 lg:px-28 lg:pt-15 lg:pb-10 xl:h-101.75">
-      <div className="flex flex-wrap justify-between gap-10 pb-10 xl:gap-0">
+    <footer className="w-full bg-black px-5 pt-10 pb-5 text-white lg:px-28 lg:pt-15 lg:pb-10">
+      <div className="flex flex-wrap justify-between gap-10 xl:gap-0">
         <div className="w-150.25 lg:w-155">
           <div>
-            <div>
+            <div className="w-26.5">
               <Link
                 href="/"
                 className="flex items-baseline gap-2 transition-opacity duration-300 hover:cursor-pointer hover:opacity-80"
+                draggable={false}
               >
                 <Image
-                  src={LogoWhite}
-                  width={145}
-                  height={26}
+                  src={IDSLogoWhite}
+                  width={106}
+                  height={40}
                   alt="СБЛ Лизинг"
+                  draggable={false}
                 />
               </Link>
             </div>
@@ -32,7 +35,7 @@ const Footer = () => {
               <br /> по всей Республике Беларусь
             </p>
           </div>
-          <p className="pt-10 lg:pt-9">
+          <p className="text-dark-gray pt-10 lg:pt-9">
             Сервис предоставляет общество с ограниченной ответственностью «ИнДиЭс Бай»,
             зарегистрированное по адресу Республика Беларусь, 220034, г. Минск, Войсковый пер., д.
             12, каб. 4
@@ -106,6 +109,11 @@ const Footer = () => {
             </Link> */}
           </div>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-5 py-10">
+        <p>Партнер сервиса</p>
+        <Image src={SBLLogoWhite} width={150} height={26} alt="СБЛ Лизинг" draggable={false} />
       </div>
 
       <hr className="h-0.5 rotate-180 border-0 bg-(image:--color-gradient)" />
