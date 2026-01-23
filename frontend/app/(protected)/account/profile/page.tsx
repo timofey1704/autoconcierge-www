@@ -1,7 +1,74 @@
-import React from 'react'
+'use client'
 
-const page = () => {
-  return <div>page</div>
+import { useEffect, useState, Suspense } from 'react'
+import PersonalInfo from './forms/PersonalInfo'
+import ExistedCars from './forms/ExistedCars'
+import CreateCar from './forms/CreateCar'
+import { useTabs } from '@/app/hooks/useTabs'
+import { TabsContainer, TabConfig } from '@/components/ui/TabsContainer'
+import { useSearchParams } from 'next/navigation'
+import Loader from '@/components/ui/Loader'
+
+type TabType = 'contacts' | 'cars'
+
+const TABS: TabConfig<TabType>[] = [
+  {
+    id: 'contacts',
+    label: 'Контактные данные',
+    mobileLabel: 'Контакты',
+  },
+  {
+    id: 'cars',
+    label: 'Данные об автомобиле',
+    mobileLabel: 'Автомобили',
+  },
+]
+
+const ProfilePage = () => {
+  const [showCreateForm, setShowCreateForm] = useState(false)
+  const searchParams = useSearchParams()
+  const tabFromUrl = searchParams.get('tab') as TabType
+
+  const { selectedTab, indicatorStyle, refs, handleTabChange } = useTabs<TabType>(
+    ['contacts', 'cars'],
+    { defaultTab: tabFromUrl || 'contacts' }
+  )
+
+  useEffect(() => {
+    if (tabFromUrl && tabFromUrl !== selectedTab) {
+      handleTabChange(tabFromUrl)
+    }
+  }, [tabFromUrl, selectedTab, handleTabChange])
+  return (
+    <Suspense fallback={<Loader />}>
+      <div>
+        <TabsContainer
+          tabs={TABS}
+          selectedTab={selectedTab}
+          indicatorStyle={indicatorStyle}
+          refs={refs}
+          onTabChange={handleTabChange}
+          rightContent={
+            selectedTab === 'cars' && (
+              <span
+                onClick={() => setShowCreateForm(!showCreateForm)}
+                className="mr-4 cursor-pointer hover:text-blue-700"
+              >
+                {showCreateForm ? 'Список автомобилей' : 'Добавить автомобиль'}
+              </span>
+            )
+          }
+        />
+        {selectedTab === 'contacts' ? (
+          <PersonalInfo />
+        ) : showCreateForm ? (
+          <CreateCar onClose={() => setShowCreateForm(false)} />
+        ) : (
+          <ExistedCars />
+        )}
+      </div>
+    </Suspense>
+  )
 }
 
-export default page
+export default ProfilePage

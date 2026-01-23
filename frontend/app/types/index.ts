@@ -10,13 +10,26 @@ export interface ValidationErrors {
   [key: string]: string
 }
 
+export interface CityData {
+  id: number
+  name: string
+  country: string
+  display_name: string
+}
+
 export interface User {
   id?: number | undefined | string
   uuid?: string
   firstName: string
-  surname: string
+  surname?: string
+  patronymic?: string
   account_type: string
+  phone_number: string
   image?: string
+  email?: string
+  city?: CityData | string | null
+  address?: string
+  telegram_id?: string
 }
 
 export interface UserState {
@@ -125,4 +138,29 @@ export interface NavigationItem {
 export interface AccountSidebarProps {
   user: User
   navigation: NavigationItem[]
+}
+
+export interface LocationOption {
+  value: string
+  label: string
+  id: number
+}
+
+export interface CityResponse {
+  id: number
+  name: string
+  country: string
+  display_name: string
+}
+
+export interface LocationSelectProps {
+  name: string
+  value: CityData | null
+  handleChange: (e: {
+    target: { id: string; value: CityData | null; selectedOption?: LocationOption }
+  }) => void
+  label: string
+  placeholder: string
+  tooltip?: string | React.ReactNode
+  isRequired?: boolean
 }

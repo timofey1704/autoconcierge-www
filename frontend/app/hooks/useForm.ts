@@ -11,7 +11,7 @@ import React, {
   useCallback,
 } from 'react'
 import toast from 'react-hot-toast'
-import { ValidationRules, ValidationErrors } from '../types'
+import { ValidationRules, ValidationErrors, CityData } from '../types'
 
 type FormContextType = {
   isFieldRequired: (fieldName: string) => boolean
@@ -24,7 +24,7 @@ export const useFormContext = () => {
   return context
 }
 
-type FormValue = string | number | boolean | string[] | number[] | null
+type FormValue = string | number | boolean | string[] | number[] | null | CityData
 
 type CustomChangeEvent = {
   target: {
