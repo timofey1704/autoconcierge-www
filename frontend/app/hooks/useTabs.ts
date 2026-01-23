@@ -35,8 +35,10 @@ export function useTabs<T extends string>(tabs: T[], options: UseTabsOptions<T> 
   })
 
   // используем useLayoutEffect для синхронного обновления индикатора после рендера
+  // !это валидный паттерн для DOM измерений - читаем layout и немедленно обновляем UI
   useLayoutEffect(() => {
     if (!selectedTab) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIndicatorStyle(prev => ({ ...prev, opacity: 0 }))
       return
     }
@@ -44,6 +46,7 @@ export function useTabs<T extends string>(tabs: T[], options: UseTabsOptions<T> 
     const activeRef = refs[selectedTab]
 
     if (activeRef?.current) {
+       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIndicatorStyle({
         left: activeRef.current.offsetLeft,
         width: activeRef.current.offsetWidth,
