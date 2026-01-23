@@ -11,7 +11,7 @@ class QRCodeAdmin(admin.ModelAdmin):
     list_display = ("code", "partner", "account_type", "user", "is_printed_timestamp", "is_deployed_timestamp",  "is_selled_timestamp", "is_active_timestamp", "created_at")
     list_filter = ("partner", "account_type", "is_active", "is_deployed", "is_selled", "created_at", "is_printed")
     search_fields = ("code", "user__username", "partner__partner_name")
-    readonly_fields = ("code", "image", "created_at", "user", "is_active", "is_printed", "is_deployed", "is_selled_timestamp", "is_active_timestamp", "active_before", "is_printed_timestamp", "is_deployed_timestamp", "selled_by", "car", "status")
+    readonly_fields = ("code", "image", "created_at", "user", "is_active", "is_printed", "is_deployed", "is_selled_timestamp", "is_active_timestamp", "active_before", "is_printed_timestamp", "is_deployed_timestamp", "selled_by", "status")
     actions = ['print_selected_qr_codes']
     change_list_template = 'admin/api/qrcode_changelist.html'
     
@@ -213,8 +213,9 @@ class PartnerAdmin(admin.ModelAdmin):
     
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ("vin_code", )
-    search_fields = ("vin_code", )
+    list_display = ("vin_code", "qr_code", "user")
+    list_filter = ("user", )
+    search_fields = ("vin_code", "qr_code", "user")
     
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
