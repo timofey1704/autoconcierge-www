@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useCallback, useEffect, useMemo } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 
 interface TabIndicatorStyle {
   left: number
@@ -24,24 +24,18 @@ export function useTabs<T extends string>(tabs: T[], options: UseTabsOptions<T> 
     opacity: 0,
   })
 
-  // cоздаем ref для хранения всех refs табов
-  const refsRef = useRef<{ [key: string]: React.RefObject<HTMLButtonElement | null> } | null>(null)
-
-  // инициализируем refs только!!! при первом рендере
-  if (!refsRef.current) {
-    refsRef.current = {}
+  // создаем и инициализируем refs только при первом рендере
+  // используем useState с ленивой инициализацией вместо useMemo
+  const [refs] = useState(() => {
+    const refsMap: { [key: string]: React.RefObject<HTMLButtonElement | null> } = {}
     tabs.forEach(tab => {
-      refsRef.current![tab] = { current: null }
+      refsMap[tab] = { current: null }
     })
-  }
+    return refsMap as { [K in T]: React.RefObject<HTMLButtonElement | null> }
+  })
 
-  // создаем стабильный объект refs для использования в компоненте
-  const refs = useMemo(
-    () => refsRef.current as { [K in T]: React.RefObject<HTMLButtonElement | null> },
-    [] // пустой массив зависимостей, так как мы всегда используем одну и ту же!! ссылку на объект
-  )
-
-  const updateIndicator = useCallback(() => {
+  // используем useLayoutEffect для синхронного обновления индикатора после рендера
+  useLayoutEffect(() => {
     if (!selectedTab) {
       setIndicatorStyle(prev => ({ ...prev, opacity: 0 }))
       return
@@ -58,11 +52,24 @@ export function useTabs<T extends string>(tabs: T[], options: UseTabsOptions<T> 
     }
   }, [selectedTab, refs])
 
+  // слушаем изменения размера окна
   useEffect(() => {
-    updateIndicator()
-    window.addEventListener('resize', updateIndicator)
-    return () => window.removeEventListener('resize', updateIndicator)
-  }, [updateIndicator])
+    const handleResize = () => {
+      if (!selectedTab) return
+
+      const activeRef = refs[selectedTab]
+      if (activeRef?.current) {
+        setIndicatorStyle({
+          left: activeRef.current.offsetLeft,
+          width: activeRef.current.offsetWidth,
+          opacity: 1,
+        })
+      }
+    }
+
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [selectedTab, refs])
 
   const handleTabChange = (tab: T) => {
     const newTab = allowDeselect && tab === selectedTab ? null : tab
