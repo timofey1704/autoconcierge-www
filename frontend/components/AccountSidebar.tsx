@@ -51,7 +51,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
       // загружаем на сервер
       const response = await uploadImage<ProfileImageResponse>(
         file,
-        '/api/profile/update-userimage',
+        '/api/account/profile/update-image',
         'PATCH'
       )
 

@@ -37,9 +37,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser({
           id: userData.id,
           uuid: userData.uuid,
+          email: userData.email,
           firstName: userData.firstName,
           surname: userData.surname,
+          patronymic: userData.patronymic,
+          image: userData.image,
           account_type: userData.account_type,
+          phone_number: userData.phone_number,
+          city: userData.city,
+          address: userData.address,
+          telegram_id: userData.telegram_id,
         })
         setAuthenticated(true)
       } catch (error) {
