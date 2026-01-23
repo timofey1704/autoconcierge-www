@@ -28,6 +28,7 @@ const Footer = () => {
                   alt="IDS"
                   draggable={false}
                   quality={100}
+                  unoptimized={true}
                 />
               </Link>
             </div>
@@ -46,9 +47,8 @@ const Footer = () => {
             <p>Партнер сервиса</p>
             <Image src={SBLLogoWhite} width={150} height={26} alt="СБЛ Лизинг" draggable={false} />
           </div>
-
         </div>
-        <div className="flex w-full flex-col pb-10 xl:pb-0 xl:w-auto">
+        <div className="flex w-full flex-col pb-10 xl:w-auto xl:pb-0">
           <div className="flex flex-wrap items-center justify-between gap-5 lg:gap-10">
             <div>
               <div className="flex items-center">
