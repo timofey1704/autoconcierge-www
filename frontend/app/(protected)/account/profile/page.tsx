@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, Suspense } from 'react'
+import { useEffect, useState, Suspense, useCallback } from 'react'
 import PersonalInfo from './forms/PersonalInfo'
 import ExistedCars from './forms/ExistedCars'
 import CreateCar from './forms/CreateCar'
@@ -8,6 +8,7 @@ import { useTabs } from '@/app/hooks/useTabs'
 import { TabsContainer, TabConfig } from '@/components/ui/TabsContainer'
 import { useSearchParams } from 'next/navigation'
 import Loader from '@/components/ui/Loader'
+import { Car } from '@/app/types'
 
 type TabType = 'contacts' | 'cars'
 
@@ -26,6 +27,7 @@ const TABS: TabConfig<TabType>[] = [
 
 const ProfilePage = () => {
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [hasCars, setHasCars] = useState(true) // отслеживаем наличие машин
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab') as TabType
 
@@ -39,6 +41,20 @@ const ProfilePage = () => {
       handleTabChange(tabFromUrl)
     }
   }, [tabFromUrl, selectedTab, handleTabChange])
+  
+  // обработчик загрузки машин
+  const handleCarsLoad = useCallback((cars: Car[]) => {
+    setHasCars(cars.length > 0)
+  }, [])
+  
+  // определяем текст кнопки в зависимости от контекста
+  const getButtonText = () => {
+    if (showCreateForm) {
+      return hasCars ? 'Список автомобилей' : 'Отменить'
+    }
+    return 'Добавить автомобиль'
+  }
+  
   return (
     <Suspense fallback={<Loader />}>
       <div>
@@ -54,7 +70,7 @@ const ProfilePage = () => {
                 onClick={() => setShowCreateForm(!showCreateForm)}
                 className="mr-4 cursor-pointer hover:text-blue-700"
               >
-                {showCreateForm ? 'Список автомобилей' : 'Добавить автомобиль'}
+                {getButtonText()}
               </span>
             )
           }
@@ -64,7 +80,10 @@ const ProfilePage = () => {
         ) : showCreateForm ? (
           <CreateCar onClose={() => setShowCreateForm(false)} />
         ) : (
-          <ExistedCars />
+          <ExistedCars 
+            onOpenCreateForm={() => setShowCreateForm(true)}
+            onCarsLoad={handleCarsLoad}
+          />
         )}
       </div>
     </Suspense>

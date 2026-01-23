@@ -166,6 +166,7 @@ export interface LocationSelectProps {
 }
 
 export interface Car {
+  id: number
   vin_code: string
   image?: string
   qr_image: string
@@ -173,8 +174,8 @@ export interface Car {
   brand: string
   model: string
   body_type: string
-  year_build: number
+  year_built: number
   color: string
-  listing_company: string
+  lising_company: string
   licence_plate: string
 }
