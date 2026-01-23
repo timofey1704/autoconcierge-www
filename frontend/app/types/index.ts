@@ -164,3 +164,17 @@ export interface LocationSelectProps {
   tooltip?: string | React.ReactNode
   isRequired?: boolean
 }
+
+export interface Car {
+  vin_code: string
+  image?: string
+  qr_image: string
+  qr_code: string
+  brand: string
+  model: string
+  body_type: string
+  year_build: number
+  color: string
+  listing_company: string
+  licence_plate: string
+}

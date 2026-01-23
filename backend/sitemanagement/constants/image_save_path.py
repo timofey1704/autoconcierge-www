@@ -5,3 +5,7 @@ def qr_upload_path(instance, filename):
 def user_image_upload_path(instance, filename):
     """Генерирует путь: media/{username}/{filename}"""
     return f"{instance.user.username}/{filename}"
+
+def car_image_upload_path(instance, filename):
+    """Генерирует путь: media/{username}/{filename}"""
+    return f"{instance.user.username}/cars/{filename}"
