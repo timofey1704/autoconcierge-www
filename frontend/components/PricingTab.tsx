@@ -8,8 +8,8 @@ interface PricingTabProps {
 
 const PricingTab: React.FC<PricingTabProps> = ({ memberships, id }) => {
   return (
-    <div
-      className="mx-auto mb-10 flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:gap-5 lg:px-8"
+    <section
+      className="mx-auto mb-40 flex w-full max-w-7xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:gap-5 lg:px-8"
       id={id}
     >
       <div className="mr-10 w-full lg:w-auto lg:shrink-0">
@@ -22,7 +22,7 @@ const PricingTab: React.FC<PricingTabProps> = ({ memberships, id }) => {
         </div>
       </div>
       <PricingCard memberships={memberships} />
-    </div>
+    </section>
   )
 }
 
