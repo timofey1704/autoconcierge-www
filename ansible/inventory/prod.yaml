@@ -29,6 +29,7 @@ servers:
     registry_token: gldt-FY7JGssBzRdxNXVfthRn
 
     domain: ids-help.by
+    domain_manager: manager.ids-help.by
     enable_https: true
 
     http_user: ids

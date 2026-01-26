@@ -91,6 +91,13 @@
         mode: "0644"
       notify: Restart angie
 
+    - name: Configure manager frontend
+      ansible.builtin.template:
+        src: autoconcierge/manager-frontend.conf
+        dest: "/etc/angie/http.d/manager-frontend.conf"
+        mode: "0644"
+      notify: Restart angie
+
   handlers:
     - name: Restart compose service
       ansible.builtin.service:
