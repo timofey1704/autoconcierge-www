@@ -71,7 +71,7 @@ services:
 
     networks:
       autoconcierge:
-        ipv4_address: "{{ docker_network_prefix }}.11"
+        ipv4_address: "{{ docker_network_prefix }}.12"
     depends_on:
       backend:
         condition: service_healthy
