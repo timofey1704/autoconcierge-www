@@ -11,6 +11,7 @@ import noPhoto from '../public/images/no-photo.png'
 import { TbPhotoUp } from 'react-icons/tb'
 import showToast from './ui/showToast'
 import { uploadImage } from '@/lib/imageUpload'
+import { getProxiedImageUrl } from '@/lib/imageProxy'
 
 type ProfileImageResponse = {
   user: {
@@ -23,7 +24,7 @@ type ProfileImageResponse = {
 const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => {
   const pathname = usePathname()
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [previewUrl, setPreviewUrl] = useState<string>(user?.image || '')
+  const [previewUrl, setPreviewUrl] = useState<string>(getProxiedImageUrl(user?.image) || '')
 
   const handlePhotoChange = () => {
     fileInputRef.current?.click()
@@ -56,7 +57,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
       )
 
       if (response.user?.image) {
-        setPreviewUrl(response.user.image)
+        setPreviewUrl(getProxiedImageUrl(response.user.image))
       }
 
       showToast({
@@ -83,51 +84,51 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
 
   return (
     <div className="space-y-3">
-      <div className="flex w-full items-center space-x-4 rounded-2xl bg-white p-4 shadow">
-        <div className="flex items-center justify-center">
-          <div className="group relative w-full cursor-pointer" onClick={handlePhotoChange}>
-            <input
-              type="file"
-              id="image"
-              ref={fileInputRef}
-              onChange={handleFileChange}
-              className="hidden"
-              accept="image/*"
-            />
-            <Image
-              src={previewUrl || user.image || noPhoto} 
-              alt="profile image"
-              height={84}
-              width={84}
-              priority
-              className="aspect-square rounded-3xl object-cover md:w-21"
-            />
-            <div className="bg-opacity-40 absolute inset-0 flex items-center justify-center rounded-2xl bg-black opacity-0 transition-opacity group-hover:opacity-100">
-              <TbPhotoUp className="text-3xl text-white" />
+      <div className="flex w-full flex-col rounded-2xl bg-white p-4 shadow">
+        {user.account_type && (
+          <div className="mb-4 flex justify-center">
+            <div
+              className={`${getAccountTypeStyles(
+                user.account_type
+              )} w-full rounded-full px-4 py-1.5 text-center text-xs font-semibold`}
+            >
+              {accountTypeToDisplayName[user.account_type as keyof typeof accountTypeToDisplayName]}
             </div>
           </div>
-        </div>
-        <div>
-          <div className="flex flex-row gap-2 md:flex-col md:gap-0">
-            <div className="text-sm font-bold">{user.surname || null}</div>
-            <div className="text-sm font-bold">{user.name || 'Пользователь'}</div>
+        )}
+
+        <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-center">
+            <div className="group relative w-full cursor-pointer" onClick={handlePhotoChange}>
+              <input
+                type="file"
+                id="image"
+                ref={fileInputRef}
+                onChange={handleFileChange}
+                className="hidden"
+                accept="image/*"
+              />
+              <Image
+                src={previewUrl || getProxiedImageUrl(user.image) || noPhoto}
+                alt="profile image"
+                height={84}
+                width={84}
+                priority
+                className="aspect-square rounded-3xl object-cover md:w-21"
+              />
+              <div className="bg-opacity-40 absolute inset-0 flex items-center justify-center rounded-2xl bg-black opacity-0 transition-opacity group-hover:opacity-100">
+                <TbPhotoUp className="text-3xl text-white" />
+              </div>
+            </div>
           </div>
-          <div className="mt-4 flex items-center gap-5">
+          <div className="flex-1 space-y-1.5">
+            <div className="text-xs font-medium text-gray-700">{user.partner_company}</div>
+            <div className="flex flex-row gap-2 md:flex-col md:gap-0">
+              <div className="text-sm font-bold">{user.surname || null}</div>
+              <div className="text-sm font-bold">{user.name || 'Пользователь'}</div>
+            </div>
+
             {user.uuid && <div className="text-xs font-medium text-gray-500">ID: {user.uuid}</div>}
-            {user.account_type && (
-              <Link
-                href="/account/membership"
-                className={`${getAccountTypeStyles(
-                  user.account_type
-                )} flex items-center justify-center rounded-lg px-2 py-0.5 text-xs`}
-              >
-                {
-                  accountTypeToDisplayName[
-                    user.account_type as keyof typeof accountTypeToDisplayName
-                  ]
-                }
-              </Link>
-            )}
           </div>
         </div>
       </div>
