@@ -67,6 +67,16 @@
         - Restart compose service
         - Prune docker
 
+    - name: Pull manager frontend image
+      become: true
+      become_user: "{{ user }}"
+      community.docker.docker_image_pull:
+        name: registry.gitlab.com/wedeving/autoconcierge-www/manager-frontend:{{ docker_tag }}
+        pull: always
+      notify:
+        - Restart compose service
+        - Prune docker
+
     - name: Systemd service
       ansible.builtin.systemd:
         name: "compose@{{ app }}"

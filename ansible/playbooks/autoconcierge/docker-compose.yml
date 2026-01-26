@@ -48,6 +48,26 @@ services:
       BACKEND_URL: http://backend:8000/api/v1
       NEXTAUTH_URL: https://{{ domain }}
       NEXTAUTH_SECRET: sdjfhshd126kbnaoTj12
+      CHECKOUT_URL: https://checkout.bepaid.by/ctp/api/checkouts
+      PAYMENTS_TEST_MODE: true
+      BEPAID_ID:
+      BEPAID_SECRET_KEY:
+      BEPAID_PRIVATE_KEY:
+
+    networks:
+      autoconcierge:
+        ipv4_address: "{{ docker_network_prefix }}.11"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  manager-frontend:
+    image: "registry.gitlab.com/wedeving/autoconcierge-www/manager-frontend:{{ docker_tag }}"
+    environment:
+      NEXT_PUBLIC_API_URL: https://{{ domain }}/api/v1
+      BACKEND_URL: http://backend:8000/api/v1
+      NEXTAUTH_URL: https://{{ domain }}
+      NEXTAUTH_SECRET: ajsdfg-jbdf-12
 
     networks:
       autoconcierge:
