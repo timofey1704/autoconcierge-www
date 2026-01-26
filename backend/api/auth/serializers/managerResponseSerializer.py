@@ -9,7 +9,7 @@ class ManagerResponseSerializer(serializers.Serializer):
     surname = serializers.CharField(source='last_name')
     image = serializers.SerializerMethodField()
     uuid = serializers.SerializerMethodField()
-    partner = serializers.CharField(source='userprofile.partner')
+    partner_company = serializers.CharField(source='userprofile.partner')
   
     def get_uuid(self, obj):
         try:

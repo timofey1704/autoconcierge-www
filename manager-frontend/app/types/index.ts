@@ -1,3 +1,4 @@
+import { ReactNode } from 'react'
 export interface User {
   id?: number | undefined | string
   uuid?: string
@@ -76,4 +77,16 @@ export interface TextInputProps {
   min?: string
   max?: string
   labelClassName?: string
+}
+
+export interface DialogProps {
+  isOpen: boolean
+  onClose: () => void
+  title?: string
+  description: ReactNode
+  submitText?: string
+  onSubmit?: () => void
+  showCancel?: boolean
+  showSubmit?: boolean
+  cancelText?: string
 }

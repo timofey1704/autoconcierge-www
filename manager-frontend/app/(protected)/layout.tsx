@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import AccountSidebar from '@/components/AccountSidebar'
 import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
+import { getGreetingByTime } from '@/lib/getGreetingsByTime'
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -38,7 +39,12 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
                 {user && <AccountSidebar user={user} navigation={userNavigation} />}
               </div>
             </div>
-            <main className="min-w-0 flex-1 px-5">{children}</main>
+            <main className="min-w-0 flex-1 px-5">
+              <h1 className="text-[32px]!">
+                {getGreetingByTime()}, {user.name} {user.surname}
+              </h1>
+              {children}
+            </main>
           </div>
         </div>
       </div>
