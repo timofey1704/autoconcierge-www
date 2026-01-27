@@ -2,20 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import { PricingCardProps } from '@/app/types'
 import CheckCircleIcon from '@/public/icons/CheckCircle.svg'
-
-const formatDate = (dateString: string | null | undefined): string | null => {
-  if (!dateString) return null
-
-  try {
-    const date = new Date(dateString)
-    const day = date.getDate().toString().padStart(2, '0')
-    const month = (date.getMonth() + 1).toString().padStart(2, '0')
-    const year = date.getFullYear()
-    return `${day}.${month}.${year}`
-  } catch (error) {
-    return null
-  }
-}
+import { formatDate } from '@/lib/utils/dateFormatter'
 
 const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
   return (
@@ -77,9 +64,11 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
                 </div>
               ))}
             </div>
-            <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
-              Оформить подписку
-            </button>
+            {membership.actual_before ? null : (
+              <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
+                Оформить подписку
+              </button>
+            )}
           </div>
         )
       })}
