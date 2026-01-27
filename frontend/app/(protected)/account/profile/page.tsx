@@ -9,6 +9,8 @@ import { TabsContainer, TabConfig } from '@/components/ui/TabsContainer'
 import { useSearchParams } from 'next/navigation'
 import Loader from '@/components/ui/Loader'
 import { Car } from '@/app/types'
+import useUserStore from '@/app/store/userStore'
+import { getGreetingByTime } from '@/lib/utils/getGreetingsByTime'
 
 type TabType = 'contacts' | 'cars'
 
@@ -30,6 +32,7 @@ const ProfilePage = () => {
   const [hasCars, setHasCars] = useState(true) // отслеживаем наличие машин
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab') as TabType
+  const { isAuthenticated, user } = useUserStore()
 
   const { selectedTab, indicatorStyle, refs, handleTabChange } = useTabs<TabType>(
     ['contacts', 'cars'],
@@ -41,12 +44,12 @@ const ProfilePage = () => {
       handleTabChange(tabFromUrl)
     }
   }, [tabFromUrl, selectedTab, handleTabChange])
-  
+
   // обработчик загрузки машин
   const handleCarsLoad = useCallback((cars: Car[]) => {
     setHasCars(cars.length > 0)
   }, [])
-  
+
   // определяем текст кнопки в зависимости от контекста
   const getButtonText = () => {
     if (showCreateForm) {
@@ -54,10 +57,13 @@ const ProfilePage = () => {
     }
     return 'Добавить автомобиль'
   }
-  
+
   return (
     <Suspense fallback={<Loader />}>
       <div>
+        <h1 className="text-[32px]!">
+          {getGreetingByTime()}, {user?.firstName} {user?.surname}
+        </h1>
         <TabsContainer
           tabs={TABS}
           selectedTab={selectedTab}
@@ -80,7 +86,7 @@ const ProfilePage = () => {
         ) : showCreateForm ? (
           <CreateCar onClose={() => setShowCreateForm(false)} />
         ) : (
-          <ExistedCars 
+          <ExistedCars
             onOpenCreateForm={() => setShowCreateForm(true)}
             onCarsLoad={handleCarsLoad}
           />

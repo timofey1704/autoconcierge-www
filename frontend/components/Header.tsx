@@ -53,9 +53,13 @@ const Header = () => {
               FAQ
             </Scroll>
 
-            {/* <a href="https://manager.ids-help.by/login" className="external-link text-white" draggable={false}>
+            <a
+              href="https://manager.ids-help.by/main"
+              className="external-link text-white"
+              draggable={false}
+            >
               Менеджеру
-            </a> */}
+            </a>
           </div>
           <div className="hidden lg:block">
             <div className="text-xs">

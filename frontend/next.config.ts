@@ -22,6 +22,7 @@ const nextConfig: NextConfig = {
         hostname: 'ids-help.by',
       },
     ],
+    qualities: [100, 75],
   },
 }
 

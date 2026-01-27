@@ -34,7 +34,7 @@ const showToast = ({ type, message, action, duration }: ToastProps) => {
         <div className="p-4">
           <div className="flex items-start">
             <div className="flex-1">
-              <p className={`text-sm font-medium ${styles.text}`}>{message}</p>
+              <p className={`text-sm! font-medium ${styles.text}`}>{message}</p>
               {action && (
                 <div className="text-center">
                   <button

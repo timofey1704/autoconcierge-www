@@ -73,8 +73,9 @@ export interface Membership {
   plan: string
   price?: number
   description: string
-  is_popular: boolean
+  is_recommended: boolean
   features: MembershipFeature[]
+  actual_before?: string | null // Дата окончания подписки (ISO 8601)
 }
 
 export interface PricingCardProps {
