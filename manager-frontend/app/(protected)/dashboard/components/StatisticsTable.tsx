@@ -73,7 +73,7 @@ const StatisticsTable = ({data, total, page, pageSize, onPageChange}: Props) => 
                         {table.getRowModel().rows.map((row) => (
                             <tr key={row.id} className="h-18 table-border">
                                 {row.getVisibleCells().map((cell) => (
-                                    <td key={cell.id} className="min-w-29 px-1 text-black">
+                                    <td key={cell.id} className="min-w-30 px-1">
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext()
@@ -92,7 +92,7 @@ const StatisticsTable = ({data, total, page, pageSize, onPageChange}: Props) => 
                                             <button 
                                                 key={i} 
                                                 onClick={() => onPageChange(Number(p))} 
-                                                className={`${page === p ? 'font-bold text-blue' : 'hover:text-blue'}`}
+                                                className={`${page === p ? 'text-sm font-bold text-blue transition' : 'hover:text-blue'}`}
                                             >
                                                 {p}
                                             </button>

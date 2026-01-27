@@ -23,7 +23,12 @@ export const columns: ColumnDef<DataRow>[] = [
         accessorKey: 'isActive',
         header: 'Состояние',
         cell: ({ getValue }) => (
-            <span className={ getValue<boolean>() ? 'text-green' : 'text-red' }>
+            <span className={
+                `px-2 py-[2px] border rounded-[90px] 
+                ${getValue<boolean>() ? 
+                'bg-success-secondary border-success-border text-success-main' : 
+                'bg-danger-secondary border-danger-border text-danger-main'}`
+            }>
                 { getValue<boolean>() ? 'Активирован' : 'Не активирован' }
             </span>
         ),

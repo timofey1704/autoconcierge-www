@@ -23,7 +23,7 @@ const TEST_DATA: DataRow[] = Array.from({ length: 100 }).map((_, i) => ({
     clientFio: clientFios[i % 3],
     servicePackage: servicePackages[i % 3],
     phone: phones[i % 3],
-    isActive: i % 2 ? true : false,
+    isActive: i % 2 ? false : true,
     lastLogin: '26-01-26',
     managerFio: managerFios[i % 2],
     company: 'СБЛ Лизинг',

@@ -37,6 +37,12 @@
   --font-roboto: 'Roboto', 'sans-serif';
   --font-sans: 'Open Sans', 'sans-serif'; 
   --color-table-border: #e3e1ee;
+  --color-success-main: #00801c;
+  --color-success-secondary: #edfff1;
+  --color-success-border: #aaecb9;
+  --color-danger-main: #a10202;
+  --color-danger-secondary: #fcf0f0;
+  --color-danger-border: #e0abab;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -196,5 +202,5 @@ span {
 
 .table-border {
   border-bottom: 1px solid;
-  border-color: var(--table-border);
+  border-color: var(--color-table-border);
 }
