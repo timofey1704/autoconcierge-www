@@ -238,3 +238,9 @@ class FAQAdmin(admin.ModelAdmin):
 class LeadsAdmin(admin.ModelAdmin):
     list_display = ("phone_number", )
     readonly_fields = ("phone_number", )
+    
+@admin.register(Tranasctions)
+class TransactionsAdmin(admin.ModelAdmin):
+    list_display = ("user", "membership", "status")
+    list_filter = ("membership", "status")
+    search_fields = ("user", "membership")

@@ -44,15 +44,15 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
             key={membership.id}
             className={`relative flex min-h-125 w-full flex-col items-start rounded-[20px] px-5 py-12 shadow-lg transition-shadow hover:shadow-xl sm:py-15 ${bgClass}`}
           >
-            {membership.is_popular && (
+            {/* {membership.is_recommended && (
               <div className="bg-color-gradient absolute top-0 left-1/2 z-10 flex h-7.5 w-[80%] max-w-52.25 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-[10px] px-5 py-1.25">
                 <p className="text-sm font-medium sm:text-base">Рекомендуем</p>
               </div>
-            )}
+            )} */}
 
             <div className="flex w-full items-baseline justify-between gap-2">
               <h5 className={`${headingColor} flex-1`}>{membership.plan}</h5>
-              <h5 className={`${headingColor} whitespace-nowrap`}>{membership.price}</h5>
+              {/* <h5 className={`${headingColor} whitespace-nowrap`}>{membership.price}</h5> */}
             </div>
 
             <p className={`py-4 text-sm sm:py-5 sm:text-base ${textColor}`}>

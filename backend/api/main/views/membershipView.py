@@ -12,8 +12,13 @@ class MembershipPlansView(APIView):
     def get(self, request):
         memberships = Membership.objects.all()
         
+        # передаем пользователя в контексте сериализатора чтобы найти actual_before
         data = {
-            'memberships': MembershipPlansSerializer(memberships, many=True).data
+            'memberships': MembershipPlansSerializer(
+                memberships, 
+                many=True, 
+                context={'request': request}
+            ).data
         }
         
         return Response(data, status=status.HTTP_200_OK)

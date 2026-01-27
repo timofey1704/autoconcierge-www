@@ -5,6 +5,7 @@ from django.db import models
 from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.utils import timezone
+from django.conf import settings
 
 from sitemanagement.constants.image_save_path import qr_upload_path, car_image_upload_path
 from sitemanagement.constants.account_types import account_types
@@ -242,3 +243,23 @@ class Leads(models.Model):
         verbose_name_plural = 'Лиды на главной'
     def __str__(self):
         return self.phone_number
+    
+class Tranasctions(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+    membership = models.ForeignKey(Membership, on_delete=models.PROTECT, verbose_name='Тарифный план')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма')
+    auto_renewal = models.BooleanField(default=False, verbose_name='Автоматическое продление')
+    status = models.CharField(max_length=10, verbose_name='Статус', choices=[('pending', 'Ожидание'), ('completed', 'Выполнено'), ('failed', 'Не выполнено')])
+    request_id = models.CharField(max_length=255, verbose_name='Request ID в bePaid')
+    bepaid_id = models.CharField(max_length=255, verbose_name='ID транзакции в bePaid', null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
+    subscription_start = models.DateTimeField(verbose_name='Начало подписки', null=True, blank=True)
+    subscription_end = models.DateTimeField(verbose_name='Окончание подписки', null=True, blank=True)
+    
+    class Meta:
+        verbose_name = 'Транзакция'
+        verbose_name_plural = 'Транзакции'
+        ordering = ['-id']
+        
+    def __str__(self):
+        return f'{self.user.username} - {self.membership.plan}'
