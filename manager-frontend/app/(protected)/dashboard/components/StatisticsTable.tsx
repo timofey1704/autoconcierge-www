@@ -21,9 +21,39 @@ const StatisticsTable = ({data, total, page, pageSize, onPageChange}: Props) => 
         pageCount: Math.ceil(total / pageSize)
     });
 
+    const totalPages = Math.ceil(total / pageSize);
+
+    const getPages = () => {
+        const pages: (number | string)[] = []
+        const totalVisible = 3
+
+        if (totalPages <= totalVisible * 2 + 1) {
+            return Array.from({ length: totalPages }, (_, i) => i + 1)
+        }
+
+        for (let i = 1; i <= totalVisible; i++) pages.push(i)
+
+        const middleStart = Math.max(totalVisible + 1, page - 1)
+        const middleEnd = Math.min(totalPages - totalVisible, page + 1)
+
+        if (middleStart > totalVisible + 1) pages.push('...')
+
+        for (let i = middleStart; i <= middleEnd; i++) {
+            pages.push(i)
+        }
+
+        if (middleEnd < totalPages - totalVisible) pages.push('...')
+
+        for (let i = totalPages - totalVisible + 1; i <= totalPages; i++) {
+            pages.push(i)
+        }
+
+        return pages
+    }
+
     return (
         <div className="space-y-4">
-            <div className="w-full overflow-x-auto">
+            <div className="w-full overflow-x-auto rounded-[16px] xl:w-fit">
                 <table className="text-xs text-center border-collapse rounded-4">
                     <thead className="h-9 bg-black text-white">
                         {table.getHeaderGroups().map((hg) => (
@@ -43,7 +73,7 @@ const StatisticsTable = ({data, total, page, pageSize, onPageChange}: Props) => 
                         {table.getRowModel().rows.map((row) => (
                             <tr key={row.id} className="h-18 table-border">
                                 {row.getVisibleCells().map((cell) => (
-                                    <td key={cell.id} className="min-w-17 max-w-42.5 px-1 text-black">
+                                    <td key={cell.id} className="min-w-29 px-1 text-black">
                                         {flexRender(
                                             cell.column.columnDef.cell,
                                             cell.getContext()
@@ -52,15 +82,34 @@ const StatisticsTable = ({data, total, page, pageSize, onPageChange}: Props) => 
                                 ))}
                             </tr>
                         ))}
+                        <tr className="h-18">
+                            <td colSpan={table.getAllColumns().length}>
+                                <div className="flex items-center justify-end gap-3 text-black">
+                                    {getPages().map((p, i) => 
+                                        p === '...' ? (
+                                            <span key={i}>...</span>
+                                        ) : (
+                                            <button 
+                                                key={i} 
+                                                onClick={() => onPageChange(Number(p))} 
+                                                className={`${page === p ? 'font-bold text-blue' : 'hover:text-blue'}`}
+                                            >
+                                                {p}
+                                            </button>
+                                        )
+                                    )}
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div className="flex items-center justify-end gap-3">
+            {/* <div className="flex items-center justify-end gap-3 text-black">
                 <p>1</p>
                 <p>2</p>
                 <p>3</p>
-            </div>
+            </div> */}
         </div>
     )
 }

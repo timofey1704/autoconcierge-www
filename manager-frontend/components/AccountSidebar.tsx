@@ -143,7 +143,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
                 href={item.href}
                 className={`${
                   isActive
-                    ? 'border-orange translate-x-2 rounded-l-lg border-r-4 bg-gray-100 text-black'
+                    ? 'border-blue translate-x-2 rounded-l-lg border-r-4 bg-gray-100 text-black'
                     : 'rounded-lg text-gray-600 hover:bg-gray-100'
                 } flex items-center p-4 text-sm font-medium transition-all duration-200`}
               >

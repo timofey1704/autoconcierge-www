@@ -8,7 +8,12 @@ export const columns: ColumnDef<DataRow>[] = [
     },
     {
         accessorKey: 'servicePackage',
-        header: 'Пакет услуг'
+        header: 'Пакет услуг',
+        cell: ({ getValue }) => (
+            <span className="text-blue">
+                { getValue<string>() }
+            </span>
+        )
     },
     {
         accessorKey: 'phone',
@@ -27,10 +32,10 @@ export const columns: ColumnDef<DataRow>[] = [
         accessorKey: 'lastLogin',
         header: 'Дата входа'
     },
-    {
-        accessorKey: 'managerFio',
-        header: 'Менеджер'
-    },
+    // {
+    //     accessorKey: 'managerFio',
+    //     header: 'Менеджер'
+    // },
     {
         accessorKey: 'company',
         header: 'Компания'

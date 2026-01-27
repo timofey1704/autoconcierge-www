@@ -18,7 +18,7 @@ const phones = ['+375294899889', '+375292343443', '+375296565665']
 const managerFios = ['Александров Александр Александрович', 'Иванов Иван Иванович']
 const departments = ['Страхование жизни', 'Имущество', 'Смешанное']
 
-const TEST_DATA: DataRow[] = Array.from({ length: 20 }).map((_, i) => ({
+const TEST_DATA: DataRow[] = Array.from({ length: 100 }).map((_, i) => ({
     id: i + 1,
     clientFio: clientFios[i % 3],
     servicePackage: servicePackages[i % 3],
@@ -31,6 +31,25 @@ const TEST_DATA: DataRow[] = Array.from({ length: 20 }).map((_, i) => ({
 }))
 
 export const GetStatisticsData = async (page: number, pageSize: number) => {
+    // Возможно count вместо total
+
+    // const data = await fetch(
+    //     `${process.env.NEXT_PUBLIC_API_URL}/account/dashboard/get-data?page=${page}&pageSize=${pageSize}`,
+    //     {
+    //         method: 'GET',
+    //         credentials: 'include',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         }
+    //     }
+    // )
+
+    // if (!data.ok) {
+    //     throw new Error('Error while loading data')
+    // }
+
+    // return data.json();
+
     const data = [...TEST_DATA];
 
     const startPosition = (page - 1) * pageSize;
