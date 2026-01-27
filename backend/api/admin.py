@@ -43,7 +43,7 @@ class UserProfileInline(admin.StackedInline):
                         'fields': account_field
                     }),
                     ('Партнер', {
-                        'fields': ('partner',)
+                        'fields': ('partner', 'department')
                     }),
                     ('Дополнительно', {
                         'fields': ('privacy_accepted', 'image')

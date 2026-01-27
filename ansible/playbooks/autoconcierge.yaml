@@ -67,6 +67,16 @@
         - Restart compose service
         - Prune docker
 
+    - name: Pull manager frontend image
+      become: true
+      become_user: "{{ user }}"
+      community.docker.docker_image_pull:
+        name: registry.gitlab.com/wedeving/autoconcierge-www/manager-frontend:{{ docker_tag }}
+        pull: always
+      notify:
+        - Restart compose service
+        - Prune docker
+
     - name: Systemd service
       ansible.builtin.systemd:
         name: "compose@{{ app }}"
@@ -78,6 +88,13 @@
       ansible.builtin.template:
         src: autoconcierge/frontend.conf
         dest: "/etc/angie/http.d/frontend.conf"
+        mode: "0644"
+      notify: Restart angie
+
+    - name: Configure manager frontend
+      ansible.builtin.template:
+        src: autoconcierge/manager-frontend.conf
+        dest: "/etc/angie/http.d/manager-frontend.conf"
         mode: "0644"
       notify: Restart angie
 
