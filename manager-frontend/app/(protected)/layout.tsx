@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import AccountSidebar from '@/components/AccountSidebar'
 import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
@@ -10,13 +10,18 @@ import { getGreetingByTime } from '@/lib/getGreetingsByTime'
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
   const { isAuthenticated, user } = useUserStore()
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
-      router.replace('/login')
+      // Сохраняем текущий URL для редиректа после логина
+      const currentUrl = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '')
+      const encodedCallback = encodeURIComponent(currentUrl)
+      router.replace(`/login?callbackUrl=${encodedCallback}`)
     }
-  }, [isAuthenticated, user, router])
+  }, [isAuthenticated, user, router, pathname, searchParams])
 
   // показываем лоадер пока не загружены данные менеджера
   if (!isAuthenticated || !user) {

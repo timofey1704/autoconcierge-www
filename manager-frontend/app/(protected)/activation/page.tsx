@@ -35,7 +35,7 @@ interface SellResponse {
   }
 }
 
-const VerifyPage = () => {
+const ActivationPage = () => {
   const params = useSearchParams()
   const code = params.get('ref')
   const [qrData, setQrData] = useState<QRData | null>(null)
@@ -122,7 +122,13 @@ const VerifyPage = () => {
 
           {qrData.imageURL && (
             <div className="mb-4 flex justify-center">
-              <Image src={qrData.imageURL} alt="QR код" className="h-64 w-64 object-contain" />
+              <Image
+                src={qrData.imageURL}
+                alt="QR код"
+                width={256}
+                height={256}
+                className="h-64 w-64 object-contain"
+              />
             </div>
           )}
 
@@ -153,4 +159,4 @@ const VerifyPage = () => {
   return null
 }
 
-export default VerifyPage
+export default ActivationPage

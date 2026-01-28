@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import useUserStore from '@/app/store/userStore'
 import Loader from '@/components/ui/Loader'
 import { useForm } from '@/app/hooks/useForm'
@@ -20,14 +20,18 @@ const validationRules = {
 
 const LoginPage = () => {
   const router = useRouter()
+  const searchParams = useSearchParams()
   const { isAuthenticated } = useUserStore()
   const [isLoading, setIsLoading] = useState(true)
+
+  // получаем URL для редиректа после логина
+  const callbackUrl = searchParams.get('callbackUrl') || '/main'
 
   useEffect(() => {
     // проверяем логин
     if (isAuthenticated) {
-      // распределяем
-      router.replace('/main')
+      // редиректим туда, откуда пришли (или на /main по умолчанию)
+      router.replace(decodeURIComponent(callbackUrl))
       return
     }
 
@@ -36,7 +40,7 @@ const LoginPage = () => {
     }, 300)
 
     return () => clearTimeout(timer)
-  }, [isAuthenticated, router])
+  }, [isAuthenticated, router, callbackUrl])
 
   const { values, isVisible, handleChange, handleSubmit, togglePasswordVisibility, FormProvider } =
     useForm(
@@ -59,7 +63,8 @@ const LoginPage = () => {
           }
 
           showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1000 })
-          router.push('/main')
+          // Редиректим туда, откуда пришли (или на /main по умолчанию)
+          router.push(decodeURIComponent(callbackUrl))
         } catch {
           showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
         }
