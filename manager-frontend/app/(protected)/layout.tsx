@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import AccountSidebar from '@/components/AccountSidebar'
@@ -8,7 +8,8 @@ import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
 import { getGreetingByTime } from '@/lib/getGreetingsByTime'
 
-export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+// !компонент для проверки аутентификации с доступом к searchParams
+function AuthGuard() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -16,12 +17,18 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   useEffect(() => {
     if (!isAuthenticated || !user) {
-      // Сохраняем текущий URL для редиректа после логина
+      // cохраняем текущий URL для редиректа после логина
       const currentUrl = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '')
       const encodedCallback = encodeURIComponent(currentUrl)
       router.replace(`/login?callbackUrl=${encodedCallback}`)
     }
   }, [isAuthenticated, user, router, pathname, searchParams])
+
+  return null
+}
+
+export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, user } = useUserStore()
 
   // показываем лоадер пока не загружены данные менеджера
   if (!isAuthenticated || !user) {
@@ -35,6 +42,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   return (
     <>
+      <Suspense fallback={null}>
+        <AuthGuard />
+      </Suspense>
       <Toaster />
       <div className="min-h-screen bg-[#F3F3F3]">
         <div className="mx-auto max-w-337.5 px-4 pt-8 sm:px-6">
