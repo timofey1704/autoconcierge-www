@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
 import Loader from '@/components/ui/Loader'
@@ -82,18 +83,25 @@ const VerifyPage = () => {
   )
 
   useEffect(() => {
-    if (!code) {
-      setError('Код не найден в параметрах URL')
-      return
+    if (code) {
+      // проверяем QR код при загрузке страницы
+      checkQR({ code })
     }
-    // проверяем QR код при загрузке страницы
-    checkQR({ code })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code])
 
   const handleSell = () => {
     if (code) {
       sellQR({ code })
     }
+  }
+
+  if (!code) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-xl text-red-500">Код не найден в параметрах URL</div>
+      </div>
+    )
   }
 
   if (isChecking || isSelling) return <Loader />
@@ -114,7 +122,7 @@ const VerifyPage = () => {
 
           {qrData.imageURL && (
             <div className="mb-4 flex justify-center">
-              <img src={qrData.imageURL} alt="QR код" className="h-64 w-64 object-contain" />
+              <Image src={qrData.imageURL} alt="QR код" className="h-64 w-64 object-contain" />
             </div>
           )}
 
