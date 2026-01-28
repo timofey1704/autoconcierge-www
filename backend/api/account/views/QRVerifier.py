@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 from django.utils import timezone
 from rest_framework import status
@@ -8,6 +9,8 @@ from rest_framework.permissions import IsAuthenticated
 from api.utils.exceptionsHandler import handle_exceptions
 
 from sitemanagement.models import QRCode
+
+logger = logging.getLogger(__name__)
 
 class QRVerifier(APIView):
     permission_classes = [IsAuthenticated]
@@ -72,10 +75,14 @@ class QRVerifier(APIView):
         # - qr код продан (is_selled=True)
         # - qr код активирован (is_active=True)
         # - qr код не продан, но пользователь не менеджер
+        
+        redirect_url = qr_code.partner.redirect_url
+        logger.info(f"Redirecting user {request.user.id} to partner URL: {redirect_url} (is_manager={is_manager}, is_selled={qr_code.is_selled})")
+        
         return Response(
             {
                 'action': 'redirect',
-                'redirect_url': qr_code.partner.redirect_url,
+                'redirect_url': redirect_url,
                 'message': 'Перенаправление на сайт партнера',
             },
             status=status.HTTP_200_OK,

@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
 import Loader from '@/components/ui/Loader'
+import useUserStore from '@/app/store/userStore'
+import { getProxiedImageUrl } from '@/lib/imageProxy'
 
 interface QRPayload {
   code: string
@@ -38,6 +40,7 @@ interface SellResponse {
 const ActivationForm = () => {
   const params = useSearchParams()
   const code = params.get('ref')
+  const { user } = useUserStore()
   const [qrData, setQrData] = useState<QRData | null>(null)
   const [error, setError] = useState<string>('')
   const [isRedirecting, setIsRedirecting] = useState(false)
@@ -49,25 +52,34 @@ const ActivationForm = () => {
       method: 'POST',
       mutationOptions: {
         onSuccess: data => {
+          console.log('QR Check Response:', data)
+
           if (data.action === 'redirect' && data.redirect_url) {
             // показываем лоадер и редиректим на сайт партнера
+            console.log('Redirecting to:', data.redirect_url)
             setIsRedirecting(true)
             setTimeout(() => {
               window.location.href = data.redirect_url!
             }, 500)
           } else if (data.action === 'sell' && data.qr_code) {
             // показываем QR для продажи
+            console.log('Showing sell form')
             setQrData(data.qr_code)
+          } else {
+            // Неожиданный ответ
+            console.error('Unexpected response:', data)
+            setError('Неожиданный ответ от сервера')
           }
         },
         onError: error => {
+          console.error('QR Check Error:', error)
           setError('Ошибка при проверке QR кода')
         },
       },
     }
   )
 
-  // продаем QR кода
+  // продаем QR код
   const { mutate: sellQR, isLoading: isSelling } = useClientFetch<SellResponse, QRPayload>(
     '/account/verify-qr/',
     {
@@ -87,12 +99,57 @@ const ActivationForm = () => {
   )
 
   useEffect(() => {
-    if (code) {
-      // проверяем QR код при загрузке страницы
+    // если пользователь не авторизован, используем ПАБЛИК! API для редиректа
+    if (!user && code) {
+      console.log('User not authenticated, using public API for redirect')
+      const redirectUser = async () => {
+        try {
+          setIsRedirecting(true)
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
+          const response = await fetch(`${API_URL}/account/verify-qr-public/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code }),
+          })
+
+          if (!response.ok) {
+            throw new Error('Failed to get redirect URL')
+          }
+
+          const data = await response.json()
+          if (data.redirect_url) {
+            console.log('Redirecting to:', data.redirect_url)
+            window.location.href = data.redirect_url
+          } else {
+            setError('Не удалось получить URL для перенаправления')
+          }
+        } catch (err) {
+          console.error('Public redirect error:', err)
+          setError('Ошибка при перенаправлении')
+        }
+      }
+      redirectUser()
+      return
+    }
+
+    // если пользователь авторизован, используем обычный API
+    if (user && code) {
+      console.log('Checking QR code:', code)
       checkQR({ code })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code])
+  }, [code, user])
+
+  // Отладка состояния
+  useEffect(() => {
+    console.log('State:', {
+      isChecking,
+      isSelling,
+      isRedirecting,
+      hasQrData: !!qrData,
+      hasError: !!error,
+    })
+  }, [isChecking, isSelling, isRedirecting, qrData, error])
 
   const handleSell = () => {
     if (code) {
@@ -136,7 +193,7 @@ const ActivationForm = () => {
           {qrData.imageURL && (
             <div className="mb-4 flex justify-center">
               <Image
-                src={qrData.imageURL}
+                src={getProxiedImageUrl(qrData.imageURL)}
                 alt="QR код"
                 width={256}
                 height={256}
@@ -169,7 +226,15 @@ const ActivationForm = () => {
     )
   }
 
-  return null
+  // fallback - не должно попасть сюда в нормальных условиях
+  console.warn('Unexpected state - no render condition matched')
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="max-w-md rounded-lg bg-gray-50 p-6 text-center">
+        <p className="text-gray-700">Загрузка...</p>
+      </div>
+    </div>
+  )
 }
 
 export default ActivationForm

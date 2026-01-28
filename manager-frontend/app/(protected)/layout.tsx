@@ -3,6 +3,7 @@
 import { useEffect, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import AccountSidebar from '@/components/AccountSidebar'
 import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
@@ -28,10 +29,13 @@ function AuthGuard() {
 }
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
+  const { status } = useSession()
   const { isAuthenticated, user } = useUserStore()
 
-  // показываем лоадер пока не загружены данные менеджера
-  if (!isAuthenticated || !user) {
+  // показываем лоадер пока:
+  // 1. Сессия загружается (status === "loading")
+  // 2. Или пользователь не аутентифицирован
+  if (status === 'loading' || !isAuthenticated || !user) {
     return <Loader />
   }
 
