@@ -18,7 +18,7 @@ urlpatterns = [
     path('dashboard/get-data/', DashboardViewSet.as_view({'get': 'get_manager_clients'}), name='manager_clients'),
     path('dashboard/statistics/', DashboardViewSet.as_view({'get': 'get_statistics'}), name='dashboard_statistics'),
     
-    # QR код - публичная проверка (БЕЗ авторизации для редиректа)
+    # QR код - публичная проверка (!БЕЗ авторизации для редиректа)
     path('verify-qr-public/', QRPublicVerifier.as_view(), name='verify_qr_public'),
     
     # QR код - проверка и продажа (требует авторизацию менеджера)

@@ -101,7 +101,6 @@ const ActivationForm = () => {
   useEffect(() => {
     // если пользователь не авторизован, используем ПАБЛИК! API для редиректа
     if (!user && code) {
-      console.log('User not authenticated, using public API for redirect')
       const redirectUser = async () => {
         try {
           setIsRedirecting(true)
@@ -118,7 +117,6 @@ const ActivationForm = () => {
 
           const data = await response.json()
           if (data.redirect_url) {
-            console.log('Redirecting to:', data.redirect_url)
             window.location.href = data.redirect_url
           } else {
             setError('Не удалось получить URL для перенаправления')
@@ -134,22 +132,10 @@ const ActivationForm = () => {
 
     // если пользователь авторизован, используем обычный API
     if (user && code) {
-      console.log('Checking QR code:', code)
       checkQR({ code })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, user])
-
-  // Отладка состояния
-  useEffect(() => {
-    console.log('State:', {
-      isChecking,
-      isSelling,
-      isRedirecting,
-      hasQrData: !!qrData,
-      hasError: !!error,
-    })
-  }, [isChecking, isSelling, isRedirecting, qrData, error])
 
   const handleSell = () => {
     if (code) {
