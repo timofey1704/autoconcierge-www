@@ -37,7 +37,7 @@ const UTextInput = ({
           onChange={handleChange}
           className={`w-full border bg-white px-3 py-2 ${
             error ? 'border-red-500' : 'border-gray-300'
-          } rounded-[20px] text-black focus:ring-1 focus:outline-none ${
+          } rounded-4xl text-black focus:ring-1 focus:outline-none ${
             error ? 'focus:ring-red-400' : 'focus:ring-blue-400'
           } focus:bg-white`}
           autoComplete={name}

@@ -26,6 +26,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
   const userNavigation = [
     { name: 'Главная', href: '/main', icon: 'main' },
     { name: 'Статистика', href: '/dashboard', icon: 'dashboard' },
+    { name: 'Активация', href: '/activation', icon: 'dashboard' },
   ]
 
   return (
