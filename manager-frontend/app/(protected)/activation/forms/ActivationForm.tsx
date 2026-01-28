@@ -40,6 +40,7 @@ const ActivationForm = () => {
   const code = params.get('ref')
   const [qrData, setQrData] = useState<QRData | null>(null)
   const [error, setError] = useState<string>('')
+  const [isRedirecting, setIsRedirecting] = useState(false)
 
   // проверяем QR код
   const { mutate: checkQR, isLoading: isChecking } = useClientFetch<QRCheckResponse, QRPayload>(
@@ -49,8 +50,11 @@ const ActivationForm = () => {
       mutationOptions: {
         onSuccess: data => {
           if (data.action === 'redirect' && data.redirect_url) {
-            // редиректим на сайт партнера
-            window.location.href = data.redirect_url
+            // показываем лоадер и редиректим на сайт партнера
+            setIsRedirecting(true)
+            setTimeout(() => {
+              window.location.href = data.redirect_url!
+            }, 500)
           } else if (data.action === 'sell' && data.qr_code) {
             // показываем QR для продажи
             setQrData(data.qr_code)
@@ -104,7 +108,16 @@ const ActivationForm = () => {
     )
   }
 
-  if (isChecking || isSelling) return <Loader />
+  if (isChecking || isSelling || isRedirecting) {
+    return (
+      <div className="flex min-h-screen flex-col items-center justify-center">
+        <Loader />
+        {isRedirecting && (
+          <p className="mt-4 text-lg text-gray-600">Перенаправление на сайт партнера...</p>
+        )}
+      </div>
+    )
+  }
 
   if (error) {
     return (

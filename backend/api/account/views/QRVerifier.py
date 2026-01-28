@@ -16,9 +16,16 @@ class QRVerifier(APIView):
     def post(self, request):
         """
         Проверка QR кода и определение действия:
-        1. Не продан (is_selled=False) -> показать менеджеру для продажи
-        2. Продан (is_selled=True) -> редирект на Partner.redirect_url
+        
+        Логика редиректов:
+        1. Не продан + менеджер -> показать форму продажи (action: 'sell')
+        2. Не продан + не менеджер -> редирект на партнера (action: 'redirect')
+        3. Продан -> редирект на партнера (action: 'redirect')
+        4. Активирован -> редирект на партнера (action: 'redirect')
         """
+        # проверяем что пользователь - менеджер
+        is_manager = hasattr(request.user, 'userprofile') and request.user.userprofile.is_manager
+        
         code = request.data.get('code')
         if not code:
             return Response(
@@ -33,9 +40,12 @@ class QRVerifier(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
         
-        # если QR код еще не продан - показываем менеджеру в его аккаунте
-        if not qr_code.is_selled:
-            # маппинг типов аккаунта для отображения
+        # логика определения действия:
+        # 1. если не продан И пользователь менеджер → показать форму продажи
+        # 2. во всех остальных случаях → редирект на партнера
+        
+        if not qr_code.is_selled and is_manager:
+            # Непроданный код для менеджера - показываем форму продажи
             account_type_display = {
                 'L': 'Light',
                 'M': 'Medium',
@@ -58,7 +68,10 @@ class QRVerifier(APIView):
                 status=status.HTTP_200_OK,
             )
         
-        # если QR код продан (не важно активирован или нет) - редиректим на партнера
+        # во всех остальных случаях - редирект на партнера:
+        # - qr код продан (is_selled=True)
+        # - qr код активирован (is_active=True)
+        # - qr код не продан, но пользователь не менеджер
         return Response(
             {
                 'action': 'redirect',
