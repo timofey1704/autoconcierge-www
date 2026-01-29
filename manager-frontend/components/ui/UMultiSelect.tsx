@@ -1,7 +1,7 @@
 'use client'
 
-import { MultiSelectProps } from "@/app/types"
-import Select from "react-select"
+import { MultiSelectProps } from '@/app/types'
+import Select from 'react-select'
 
 const UMultiSelect = <T,>({
   value,
@@ -12,7 +12,7 @@ const UMultiSelect = <T,>({
   options,
   className = '',
   noOptionsMessage = 'Нет доступных опций',
-}: MultiSelectProps<T>) => {  
+}: MultiSelectProps<T>) => {
   return (
     <div className={className}>
       {label && <label className="my-2 block text-sm font-medium text-gray-500">{label}</label>}
@@ -34,7 +34,7 @@ const UMultiSelect = <T,>({
           control: base => ({
             ...base,
             borderRadius: '0.75rem',
-            backgroundColor: '#F3F4F6',
+            backgroundColor: '#FFFFFF',
             border: '1px solid #E5E7EB',
             padding: '2px',
             '&:hover': {

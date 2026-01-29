@@ -1,52 +1,72 @@
-import { ColumnDef } from "@tanstack/react-table";
-import { DataRow } from "../constants/statistics";
+import { ColumnDef } from '@tanstack/react-table'
+import { DataRow } from '../constants/statistics'
 
 export const columns: ColumnDef<DataRow>[] = [
-    {
-        accessorKey: 'clientFio',
-        header: 'ФИО клиента'
+  {
+    accessorKey: 'qr_code',
+    header: 'QR код',
+  },
+  {
+    accessorKey: 'client_full_name',
+    header: 'ФИО клиента',
+  },
+  {
+    accessorKey: 'membership_type',
+    header: 'Пакет услуг',
+    cell: ({ getValue }) => <span className="text-blue">{getValue<string>()}</span>,
+  },
+  {
+    accessorKey: 'client_phone_number',
+    header: 'Телефон',
+    cell: ({ getValue }) => {
+      const phone = getValue<string | null>()
+      return phone || '-'
     },
-    {
-        accessorKey: 'servicePackage',
-        header: 'Пакет услуг',
-        cell: ({ getValue }) => (
-            <span className="text-blue">
-                { getValue<string>() }
-            </span>
-        )
+  },
+  {
+    accessorKey: 'is_active',
+    header: 'Состояние',
+    cell: ({ getValue }) => (
+      <span
+        className={`rounded-[90px] border px-2 py-0.5 ${
+          getValue<boolean>()
+            ? 'bg-success-secondary border-success-border text-success-main'
+            : 'bg-danger-secondary border-danger-border text-danger-main'
+        }`}
+      >
+        {getValue<boolean>() ? 'Активирован' : 'Не активирован'}
+      </span>
+    ),
+  },
+  {
+    accessorKey: 'last_activity',
+    header: 'Последняя активность',
+    cell: ({ getValue }) => {
+      const date = getValue<string | null>()
+      if (!date) return '-'
+
+      // !не забудь про форматтер для даты
+      return new Date(date).toLocaleDateString('ru-RU', {
+        day: '2-digit',
+        month: '2-digit',
+        year: '2-digit',
+      })
     },
-    {
-        accessorKey: 'phone',
-        header: 'Телефон'
+  },
+  {
+    accessorKey: 'company',
+    header: 'Компания',
+    cell: ({ getValue }) => {
+      const company = getValue<string | null>()
+      return company || '-'
     },
-    {
-        accessorKey: 'isActive',
-        header: 'Состояние',
-        cell: ({ getValue }) => (
-            <span className={
-                `px-2 py-[2px] border rounded-[90px] 
-                ${getValue<boolean>() ? 
-                'bg-success-secondary border-success-border text-success-main' : 
-                'bg-danger-secondary border-danger-border text-danger-main'}`
-            }>
-                { getValue<boolean>() ? 'Активирован' : 'Не активирован' }
-            </span>
-        ),
+  },
+  {
+    accessorKey: 'department',
+    header: 'Отделение',
+    cell: ({ getValue }) => {
+      const department = getValue<string | null>()
+      return department || '-'
     },
-    {
-        accessorKey: 'lastLogin',
-        header: 'Дата входа'
-    },
-    // {
-    //     accessorKey: 'managerFio',
-    //     header: 'Менеджер'
-    // },
-    {
-        accessorKey: 'company',
-        header: 'Компания'
-    },
-    {
-        accessorKey: 'department',
-        header: 'Отделение'
-    }
+  },
 ]

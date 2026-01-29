@@ -33,7 +33,6 @@ class QRPublicVerifier(APIView):
                 {'error': 'QR код не найден'},
                 status=status.HTTP_404_NOT_FOUND,
             )
-        
         # !!всегда возвращаем redirect_url на партнера
         redirect_url = qr_code.partner.redirect_url
         

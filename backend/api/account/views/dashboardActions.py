@@ -24,6 +24,8 @@ class DashboardViewSet(ViewSet):
         - search: поиск по ФИО клиента, номеру телефона или коду QR
         - sort_by: поле для сортировки (last_activity, client_name, membership_type)
         - sort_order: asc/desc - порядок сортировки
+        - page: номер страницы (начиная с 1)
+        - page_size: количество записей на странице
         """
         user = request.user
         
@@ -87,11 +89,26 @@ class DashboardViewSet(ViewSet):
         
         qr_codes = qr_codes.order_by(order_field)
         
-        serializer = DashboardSerializer(qr_codes, many=True)
+        # получаем общее количество записей до пагинации
+        total_count = qr_codes.count()
         
+        # пагинация
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 10))
+        
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        
+        qr_codes_page = qr_codes[start_index:end_index]
+        
+        serializer = DashboardSerializer(qr_codes_page, many=True)
+      
         return Response({
             'data': serializer.data,
-            'count': qr_codes.count(),
+            'count': total_count,
+            'page': page,
+            'page_size': page_size,
+            'total_pages': (total_count + page_size - 1) // page_size,
             'filters': {
                 'membership_type': membership_type,
                 'is_active': is_active,
