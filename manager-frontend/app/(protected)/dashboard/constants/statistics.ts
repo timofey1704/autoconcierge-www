@@ -33,23 +33,6 @@ const TEST_DATA: DataRow[] = Array.from({ length: 100 }).map((_, i) => ({
 export const GetStatisticsData = async (page: number, pageSize: number) => {
     // Возможно count вместо total
 
-    // const data = await fetch(
-    //     `${process.env.NEXT_PUBLIC_API_URL}/account/dashboard/get-data?page=${page}&pageSize=${pageSize}`,
-    //     {
-    //         method: 'GET',
-    //         credentials: 'include',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //     }
-    // )
-
-    // if (!data.ok) {
-    //     throw new Error('Error while loading data')
-    // }
-
-    // return data.json();
-
     const data = [...TEST_DATA];
 
     const startPosition = (page - 1) * pageSize;
