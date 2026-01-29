@@ -4,11 +4,14 @@ RUN apk add iproute2-ss=6.17.0-r0 --no-cache && rm -rf /var/cache/apk/*
 COPY --chmod=755 <<EOT ./entrypoint.sh
 #!/usr/bin/env sh
 set -e
-npm run build &&
+npm run build -- --experimental-build-mode generate
 npm start
 EOT
 
-COPY . ./
+COPY package*.json ./
 RUN npm install
+COPY . ./
+RUN npm run build -- --experimental-build-mode compile
+
 EXPOSE 3000
 ENTRYPOINT ["./entrypoint.sh"]
