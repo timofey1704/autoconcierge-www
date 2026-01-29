@@ -9,6 +9,7 @@ export const columns: ColumnDef<DataRow>[] = [
   {
     accessorKey: 'client_full_name',
     header: 'ФИО клиента',
+    cell: ({ getValue }) => <span className="min-w-30">{getValue<string>()}</span>
   },
   {
     accessorKey: 'membership_type',

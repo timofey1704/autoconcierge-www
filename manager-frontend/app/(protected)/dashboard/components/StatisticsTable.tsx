@@ -54,8 +54,8 @@ const StatisticsTable = ({ data, total, page, pageSize, onPageChange }: Props) =
   return (
     <div className="space-y-4">
       <div className="w-full overflow-x-auto rounded-2xl xl:w-fit">
-        <table className="rounded-4 border-collapse text-center text-xs">
-          <thead className="h-9 bg-black text-white">
+        <table className="w-full table-fixed rounded-4 border-collapse text-center text-xs">
+          <thead className="h-9 bg-black text-white whitespace-nowrap">
             {table.getHeaderGroups().map(hg => (
               <tr key={hg.id}>
                 {hg.headers.map(header => (
@@ -70,7 +70,7 @@ const StatisticsTable = ({ data, total, page, pageSize, onPageChange }: Props) =
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="table-border h-18">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="min-w-30 px-1">
+                  <td key={cell.id} className="w-0 px-1 break-words">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
@@ -98,12 +98,6 @@ const StatisticsTable = ({ data, total, page, pageSize, onPageChange }: Props) =
           </tbody>
         </table>
       </div>
-
-      {/* <div className="flex items-center justify-end gap-3 text-black">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-            </div> */}
     </div>
   )
 }

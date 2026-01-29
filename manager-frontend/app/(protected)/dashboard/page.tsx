@@ -11,6 +11,8 @@ import { useDebounce } from '@/app/hooks/useDebounce'
 import UMultiSelect from '@/components/ui/UMultiSelect'
 import { membershipTypes, statusTypes } from '@/app/constants/multiselectOptions'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
+import ClearFiltersIcon from '../../../public/icons/clearFilters.svg'
+import UButton from '@/components/ui/UButton'
 
 const TABLE_PAGE_SIZE = 7
 
@@ -125,7 +127,7 @@ const StatisticsPage = () => {
 
       <div className="pt-5 xl:pt-10">
         <div className="flex w-full flex-wrap items-center justify-between gap-5 pb-2.5">
-          <div className="flex flex-wrap items-center gap-5 lg:flex-nowrap">
+          <div className="flex flex-wrap items-center gap-3 lg:flex-nowrap">
             <UMultiSelect<MembershipValue>
               name="membership"
               value={membership}
@@ -141,6 +143,16 @@ const StatisticsPage = () => {
               options={statusTypes}
               placeholder="Статус активации"
               className="w-full max-w-80 min-w-50 lg:max-w-70"
+            />
+            <UButton
+              type="button"
+              onClick={() => {
+                setMembership([]);
+                setStatus([]);
+                setTablePage(1);
+              }}
+              midIcon={<Image src={ClearFiltersIcon} width={60} height={60} alt={''} />}
+              className="w-auto h-auto py-2 border-none outline-none"
             />
           </div>
           <UTextInput
