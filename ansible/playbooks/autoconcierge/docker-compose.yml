@@ -54,6 +54,13 @@ services:
       BEPAID_SECRET_KEY:
       BEPAID_PRIVATE_KEY:
 
+    healthcheck:
+      test: ["CMD", "sh", "-c", "ss -nltp | grep '0.0.0.0:3000'"]
+      interval: 2s
+      timeout: 1s
+      retries: 40
+      start_period: 1s
+
     networks:
       autoconcierge:
         ipv4_address: "{{ docker_network_prefix }}.11"
@@ -73,7 +80,7 @@ services:
       autoconcierge:
         ipv4_address: "{{ docker_network_prefix }}.12"
     depends_on:
-      backend:
+      frontend:
         condition: service_healthy
 
   postgres:
