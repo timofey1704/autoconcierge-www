@@ -55,8 +55,8 @@ services:
       BEPAID_PRIVATE_KEY:
 
     healthcheck:
-      test: ["CMD", "sh", "-c", "ss -nltp | grep '0.0.0.0:3000'"]
-      interval: 2s
+      test: ["CMD", "sh", "-c", "ss -nltp | grep ':3000'"]
+      interval: 5s
       timeout: 1s
       retries: 40
       start_period: 1s
