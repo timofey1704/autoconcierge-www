@@ -22,7 +22,6 @@ class QRVerifier(APIView):
         3. Продан -> редирект на партнера (action: 'redirect')
         4. Активирован -> редирект на партнера (action: 'redirect')
         """
-        # проверяем что пользователь - менеджер
         is_manager = hasattr(request.user, 'userprofile') and request.user.userprofile.is_manager
         
         code = request.data.get('code')
@@ -39,12 +38,8 @@ class QRVerifier(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
         
-        # логика определения действия:
-        # 1. если не продан И пользователь менеджер → показать форму продажи
-        # 2. во всех остальных случаях → редирект на партнера
-        
+        # непроданный код для менеджера - показываем форму продажи
         if not qr_code.is_selled and is_manager:
-            # Непроданный код для менеджера - показываем форму продажи
             account_type_display = {
                 'L': 'Light',
                 'M': 'Medium',
@@ -52,6 +47,7 @@ class QRVerifier(APIView):
             }.get(qr_code.account_type, qr_code.account_type)
             
             imageURL = f"{settings.BASE_URL}{qr_code.image.url}" if qr_code.image else None
+            
             return Response(
                 {
                     'action': 'sell',
@@ -67,18 +63,29 @@ class QRVerifier(APIView):
                 status=status.HTTP_200_OK,
             )
         
-        # во всех остальных случаях - редирект на партнера:
-        # - qr код продан (is_selled=True)
-        # - qr код активирован (is_active=True)
-        # - qr код не продан, но пользователь не менеджер
-        
+        # во всех остальных случаях - редирект на партнера
         redirect_url = qr_code.partner.redirect_url
+        
+        redirect_reason = []
+        if qr_code.is_selled:
+            redirect_reason.append('QR код уже продан')
+        if qr_code.is_active:
+            redirect_reason.append('QR код уже активирован')
+        if not is_manager:
+            redirect_reason.append('Пользователь не является менеджером')
+        
+        reason_message = ', '.join(redirect_reason) if redirect_reason else 'Перенаправление на сайт партнера'
         
         return Response(
             {
                 'action': 'redirect',
                 'redirect_url': redirect_url,
-                'message': 'Перенаправление на сайт партнера',
+                'message': reason_message,
+                'debug_info': {
+                    'is_selled': qr_code.is_selled,
+                    'is_active': qr_code.is_active,
+                    'is_manager': is_manager,
+                } if settings.DEBUG else None
             },
             status=status.HTTP_200_OK,
         )

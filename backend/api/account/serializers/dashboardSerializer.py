@@ -76,12 +76,12 @@ class DashboardSerializer(serializers.ModelSerializer):
         return None
     
     def get_department(self, obj):
-        """Получаем отдел из профиля клиента"""
-        if not obj.user:
+        """Получаем отдел менеджера, который продал QR код"""
+        if not obj.selled_by:
             return None
         
-        if hasattr(obj.user, 'userprofile'):
-            return obj.user.userprofile.department
+        if hasattr(obj.selled_by, 'userprofile'):
+            return obj.selled_by.userprofile.department
         
         return None
     

@@ -8,10 +8,10 @@ export async function GET(
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1'
   const BASE_URL = apiUrl.replace('/api/v1', '')
 
-  // получаем путь из урла
-  const pathname = request.nextUrl.pathname
-  const path = pathname.replace('/api/media/', '')
-  const imageUrl = `${BASE_URL}/media/${path}`
+  // получаем путь из динамического параметра роута
+  const { path } = await params
+  const imagePath = path.join('/')
+  const imageUrl = `${BASE_URL}/media/${imagePath}`
 
   try {
     const response = await fetch(imageUrl)

@@ -14,6 +14,14 @@
 }
 
 @font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url('/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf') format('truetype');
+}
+
+@font-face {
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 200 700;
@@ -24,15 +32,23 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-orange: #ff6b35;
+  --color-blue: #2a00d3;
   --font-exo: 'Exo 2', 'sans-serif';
-  --font-sans: 'Open Sans', 'sans-serif';
+  --font-roboto: 'Roboto', 'sans-serif';
+  --font-sans: 'Open Sans', 'sans-serif'; 
+  --color-table-border: #e3e1ee;
+  --color-success-main: #00801c;
+  --color-success-secondary: #edfff1;
+  --color-success-border: #aaecb9;
+  --color-danger-main: #a10202;
+  --color-danger-secondary: #fcf0f0;
+  --color-danger-border: #e0abab;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
+    --foreground: #0e110d;
   }
 }
 
@@ -47,7 +63,7 @@ h1 {
   line-height: 44px;
   font-weight: 700;
   font-style: bold;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 48px;
@@ -65,7 +81,7 @@ h2 {
   line-height: 40px;
   font-weight: 700;
   font-style: bold;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 40px;
@@ -83,7 +99,7 @@ h3 {
   line-height: 32px;
   font-weight: 700;
   font-style: bold;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 32px;
@@ -101,7 +117,7 @@ h4 {
   line-height: 28px;
   font-weight: 700;
   font-style: bold;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 24px;
@@ -119,7 +135,7 @@ h5 {
   line-height: 26px;
   font-weight: 700;
   font-style: bold;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 20px;
@@ -137,7 +153,7 @@ h6 {
   line-height: 24px;
   font-weight: 500;
   font-style: normal;
-  font-family: var(--font-exo);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 18px;
@@ -155,7 +171,7 @@ p {
   line-height: 22px;
   font-weight: 500;
   font-style: normal;
-  font-family: var(--font-sans);
+  font-family: var(--font-roboto);
 
   @media (min-width: 640px) {
     font-size: 16px;
@@ -169,11 +185,11 @@ p {
 }
 
 div {
-  font-family: var(--font-sans);
+  font-family: var(--font-roboto);
 }
 
 span {
-  font-family: var(--font-sans);
+  font-family: var(--font-roboto);
 }
 
 .phone-input input {
@@ -182,4 +198,9 @@ span {
   @media (min-width: 640px) {
     min-width: 300px;
   }
+}
+
+.table-border {
+  border-bottom: 1px solid;
+  border-color: var(--color-table-border);
 }

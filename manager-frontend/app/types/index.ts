@@ -63,6 +63,7 @@ export interface TextInputProps {
   value: string
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
   label?: string
+  icon?: React.ReactNode
   placeholder?: string
   name: string
   type?: 'text' | 'email' | 'password' | 'datetime-local' | 'date'
@@ -89,4 +90,20 @@ export interface DialogProps {
   showCancel?: boolean
   showSubmit?: boolean
   cancelText?: string
+}
+
+export type SelectOption<T> = {
+  value: T
+  label: string
+}
+
+export type MultiSelectProps<T> = {
+  value: T[]
+  handleChange: (value: T[]) => void
+  label?: string
+  placeholder?: string
+  name: string
+  options: SelectOption<T>[]
+  className?: string
+  noOptionsMessage?: string
 }

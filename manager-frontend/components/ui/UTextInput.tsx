@@ -5,6 +5,7 @@ const UTextInput = ({
   value,
   handleChange,
   label,
+  icon,
   placeholder,
   name,
   type = 'text',
@@ -36,7 +37,8 @@ const UTextInput = ({
           value={value || ''}
           onChange={handleChange}
           className={`w-full border bg-white px-3 py-2 ${
-            error ? 'border-red-500' : 'border-gray-300'
+            icon ? 'pl-10' : '' }
+          ${ error ? 'border-red-500' : 'border-gray-300'
           } rounded-[20px] text-black focus:ring-1 focus:outline-none ${
             error ? 'focus:ring-red-400' : 'focus:ring-blue-400'
           } focus:bg-white`}
@@ -44,6 +46,11 @@ const UTextInput = ({
           maxLength={maxLength}
           min={min}
         />
+        {icon && (
+          <div className="absolute top-1/2 left-3 -translate-y-1/2">
+            {icon}
+          </div> 
+        )}
         {isPassword && (
           <button
             type="button"
