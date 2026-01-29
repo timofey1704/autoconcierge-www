@@ -32,7 +32,7 @@ const ProfilePage = () => {
   const [hasCars, setHasCars] = useState(true) // отслеживаем наличие машин
   const searchParams = useSearchParams()
   const tabFromUrl = searchParams.get('tab') as TabType
-  const { isAuthenticated, user } = useUserStore()
+  const { user } = useUserStore()
 
   const { selectedTab, indicatorStyle, refs, handleTabChange } = useTabs<TabType>(
     ['contacts', 'cars'],
@@ -53,7 +53,7 @@ const ProfilePage = () => {
   // определяем текст кнопки в зависимости от контекста
   const getButtonText = () => {
     if (showCreateForm) {
-      return hasCars ? 'Список автомобилей' : 'Отменить'
+      return hasCars ? 'Ваши авто' : 'Отменить'
     }
     return 'Добавить автомобиль'
   }

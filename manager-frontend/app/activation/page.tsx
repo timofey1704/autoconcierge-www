@@ -1,15 +1,15 @@
 'use client'
 
 import { Suspense } from 'react'
+import ActivationForm from './forms/ActivationForm'
 import Loader from '@/components/ui/Loader'
-import LoginForm from './forms/LoginForm'
 
-const LoginPage = () => {
+const ActivationPage = () => {
   return (
     <Suspense fallback={<Loader />}>
-      <LoginForm />
+      <ActivationForm />
     </Suspense>
   )
 }
 
-export default LoginPage
+export default ActivationPage

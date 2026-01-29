@@ -18,6 +18,7 @@ from dictionaries.models import Brand, Model, BodyType, Colors
 class Partner(models.Model):
     partner_name = models.CharField(max_length=255, verbose_name="Название компании партнера")
     partner_prefix = models.CharField(max_length=2, verbose_name="Префикс для QR кода", editable=False, blank=True)
+    redirect_url = models.CharField(max_length=255)
     
     class Meta:
         verbose_name = "Партнер"

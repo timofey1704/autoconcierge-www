@@ -1,7 +1,7 @@
 import KnowledgeBase from './components/KnowledgeBase'
 import VideoResources from './components/VideoResources'
 
-const page = () => {
+const MainPage = () => {
   return (
     <div className="space-y-5">
       <KnowledgeBase />
@@ -10,4 +10,4 @@ const page = () => {
   )
 }
 
-export default page
+export default MainPage

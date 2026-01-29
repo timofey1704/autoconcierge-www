@@ -19,7 +19,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
         return (
           <div
             key={membership.id}
-            className={`relative flex min-h-125 w-full flex-col items-start rounded-[20px] px-5 pt-16 shadow-lg transition-shadow hover:shadow-xl sm:pt-17 ${bgClass}`}
+            className={`relative flex min-h-125 w-full flex-col items-start rounded-4xl px-5 pt-16 shadow-lg transition-shadow hover:shadow-xl sm:pt-17 ${bgClass}`}
           >
             {formattedDate && (
               <p
