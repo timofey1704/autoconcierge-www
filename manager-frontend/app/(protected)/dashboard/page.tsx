@@ -134,7 +134,7 @@ const StatisticsPage = () => {
               handleChange={setMembership}
               options={membershipTypes}
               placeholder="Тип пакета услуг"
-              className="w-full max-w-80 min-w-50 lg:max-w-70"
+              className="w-full min-w-57 max-w-80 lg:max-w-65"
             />
             <UMultiSelect<StatusValue>
               name="status"
@@ -142,7 +142,7 @@ const StatisticsPage = () => {
               handleChange={setStatus}
               options={statusTypes}
               placeholder="Статус активации"
-              className="w-full max-w-80 min-w-50 lg:max-w-70"
+              className="w-full min-w-60 max-w-80 lg:max-w-65"
             />
             <UButton
               type="button"
@@ -151,15 +151,8 @@ const StatisticsPage = () => {
                 setStatus([]);
                 setTablePage(1);
               }}
-              midIcon={
-                <Image 
-                  src={ClearFiltersIcon} 
-                  width={60} 
-                  height={60} 
-                  alt={''} 
-                  className="w-7 h-7 lg:w-15 lg:h-15"
-                />}
-              className="w-auto h-auto py-2 border-none outline-none"
+              text="Очистить"
+              className="w-auto h-full py-2 text-blue text-[16px] underline border-none outline-none"
             />
           </div>
           <UTextInput

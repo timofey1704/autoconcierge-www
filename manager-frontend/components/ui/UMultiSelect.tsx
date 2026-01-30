@@ -30,6 +30,7 @@ const UMultiSelect = <T,>({
         classNamePrefix="select"
         placeholder={placeholder}
         noOptionsMessage={() => noOptionsMessage}
+        isSearchable={false}
         styles={{
           control: base => ({
             ...base,
