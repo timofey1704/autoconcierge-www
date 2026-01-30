@@ -109,6 +109,7 @@ class QRCode(models.Model):
     is_active = models.BooleanField(default=False, verbose_name="Статус активации клиентом")    # активирован ли QR клиентом?
     is_active_timestamp = models.DateTimeField(null=True, blank=True, verbose_name="Дата активации")
     active_before = models.DateTimeField(null=True, blank=True, verbose_name="Таймер деактивации")      # если пользователь не активировал QR код за 60 дней, то его нужно деактивировать
+    is_used = models.BooleanField(default=False)
     
     class Meta:
         verbose_name = "QR код"

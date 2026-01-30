@@ -65,6 +65,15 @@ class CheckCodeView(ViewSet):
             # проверяем, привязан ли QR к машине через обратное отношение
             has_car = getattr(qr_code, 'car_instance', None) is not None
             
+            # получаем компанию-партнера через менеджера, который продал QR код
+            partner_name = None
+            if qr_code.selled_by:
+                userprofile = getattr(qr_code.selled_by, 'userprofile', None)
+                if userprofile:
+                    partner = getattr(userprofile, 'partner', None)
+                    if partner:
+                        partner_name = partner.partner_name
+            
             imageURL = f"{settings.BASE_URL}{qr_code.image.url}" if qr_code.image else None
             return Response(
                 {
@@ -73,7 +82,8 @@ class CheckCodeView(ViewSet):
                     "code": qr_code.code,
                     "imageURL": imageURL,
                     "isAlreadyVerificated": True,
-                    "hasLinkedCar": has_car
+                    "hasLinkedCar": has_car,
+                    "lising_company": partner_name
                 },
                 status=status.HTTP_200_OK,
             )

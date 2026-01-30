@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json()
     const { code } = data
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/check-code/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/validate-code/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -12,6 +12,10 @@ import React, {
 } from 'react'
 import toast from 'react-hot-toast'
 import { ValidationRules, ValidationErrors, CityData } from '../types'
+import { CarBrand } from '../(protected)/account/profile/selectors/CarBrandSelector'
+import { CarModel } from '../(protected)/account/profile/selectors/CarModelSelector'
+import { CarBodyType } from '../(protected)/account/profile/selectors/BodyTypeSelector'
+import { CarColor } from '../(protected)/account/profile/selectors/ColorSelector'
 
 type FormContextType = {
   isFieldRequired: (fieldName: string) => boolean
@@ -24,7 +28,18 @@ export const useFormContext = () => {
   return context
 }
 
-type FormValue = string | number | boolean | string[] | number[] | null | CityData
+type FormValue =
+  | string
+  | number
+  | boolean
+  | string[]
+  | number[]
+  | null
+  | CityData
+  | CarBrand
+  | CarModel
+  | CarBodyType
+  | CarColor
 
 type CustomChangeEvent = {
   target: {

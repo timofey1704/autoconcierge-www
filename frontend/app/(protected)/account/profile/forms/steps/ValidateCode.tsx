@@ -87,7 +87,7 @@ const ValidateCode: React.FC<ValidateCodeProps> = ({ code, onValidated }) => {
             disabled={verificationCode.length !== 6}
             className={`w-full rounded-xl px-4 py-3 font-medium text-white transition-all duration-200 ${
               verificationCode.length === 6
-                ? 'bg-orange cursor-pointer hover:bg-orange-600'
+                ? 'bg-gradient cursor-pointer transition-all duration-200 hover:scale-[0.98]'
                 : 'cursor-not-allowed bg-gray-300'
             }`}
           >

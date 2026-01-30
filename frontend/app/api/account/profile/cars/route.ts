@@ -18,14 +18,13 @@ export async function POST(req: NextRequest) {
 
     // добавляем все текстовые поля
     const textFields = [
-      'name',
-      'type',
-      'birthday',
-      'gender',
-      'breed',
+      'brand',
+      'body_type',
+      'year_built',
       'color',
-      'comment',
-      'allergies',
+      'vin_code',
+      'licence_plate',
+      'lising_company',
       'qr_code',
     ]
     textFields.forEach(field => {
@@ -40,7 +39,7 @@ export async function POST(req: NextRequest) {
     if (image instanceof Blob) {
       sendFormData.append('image', image)
     }
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/pets/create-pet/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/create-car/`, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${session.accessToken}`,
@@ -56,7 +55,7 @@ export async function POST(req: NextRequest) {
     const result = await response.json()
     return new Response(JSON.stringify(result), { status: 200 })
   } catch (error) {
-    console.error('POST /api/profile/pets error:', error)
+    console.error('POST /api/profile/cars error:', error)
     return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
     })

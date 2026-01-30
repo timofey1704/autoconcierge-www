@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json()
     const { sms_code, qr_code } = data
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/validate-qr-sms/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/verify-sms-code/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

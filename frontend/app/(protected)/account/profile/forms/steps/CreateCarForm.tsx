@@ -3,39 +3,32 @@ import { useForm } from '@/app/hooks/useForm'
 import UTextInput from '@/components/ui/UTextInput'
 import showToast from '@/components/ui/showToast'
 import Image from 'next/image'
-// import PetTypeSelector, { PetType } from '@/components/selectors/PetTypeSelector'
-// import GenderSelector from '@/components/selectors/GenderSelector'
-// import BreedSelector, { Breed } from '@/components/selectors/BreedSelector'
-// import ColorSelector, { PetColor } from '@/components/selectors/ColorSelector'
+import { getProxiedImageUrl } from '@/lib/utils/imageProxy'
+import { QRCodeData } from '@/app/types'
+import CarBrandSelector, { CarBrand } from '../../selectors/CarBrandSelector'
+import CarModelSelector, { CarModel } from '../../selectors/CarModelSelector'
+import CarBodyTypeSelector, { CarBodyType } from '../../selectors/BodyTypeSelector'
+import ColorSelector, { CarColor } from '../../selectors/ColorSelector'
+import YearSelector from '../../selectors/YearSelector'
 
 const validationRules = {
   imageURL: { required: false },
-  name: { required: true },
-  type: { required: true },
-  birthday: { required: true },
-  gender: { required: true },
-  breed: { required: true },
+  brand: { required: true },
+  model: { required: true },
+  body_type: { required: true },
+  year_built: { required: true },
   color: { required: true },
-  comment: { required: false },
-  allergies: { required: false },
+  vin_code: { required: true },
+  licence_plate: { required: true },
+  lising_company: { required: true },
 }
 
-export type PetImageResponse = {
-  imageUrl: string
-  message: string
-}
-
-interface QRCodeData {
-  code: string
-  imageURL: string
-}
-
-interface CreatePetFormProps {
+interface CreateCarFormProps {
   onClose: () => void
   initialQRData: QRCodeData | null
 }
 
-const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData }) => {
+const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData }) => {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -43,16 +36,16 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
   const { values, handleChange, handleSubmit, FormProvider } = useForm(
     {
       imageURL: '',
-      name: '',
-      // type: null as CarType | null,
-      birthday: '',
-      gender: '',
-      // breed: null as Breed | null,
-      // color: null as CarColor | null,
-      comment: '',
-      allergies: '',
+      brand: null as CarBrand | null,
+      model: null as CarModel | null,
+      body_type: null as CarBodyType | null,
+      year_built: '',
+      color: null as CarColor | null,
+      vin_code: '',
+      licence_plate: '',
       QRImage: initialQRData?.imageURL || '',
       QRCode: initialQRData?.code || '',
+      listing_company: initialQRData?.listing_company || '',
     },
     validationRules,
     async values => {
@@ -65,23 +58,22 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
           formData.append('qr_code', initialQRData.code)
         }
 
-        //   // добавляем все текстовые поля
-        //   Object.entries(values).forEach(([key, value]) => {
-        //     if (!['imageURL', 'QRImage', 'QRCode'].includes(key)) {
-        //       // для полей с id отправляем только id
-        //       if (
-        //         ['type', 'breed', 'color'].includes(key) &&
-        //         value &&
-        //         typeof value === 'object' &&
-        //         'id' in value
-        //       ) {
-        //         formData.append(key, value.id.toString())
-        //       } else {
-        //         formData.append(key, value?.toString() || '')
-        //       }
-        //     }
-        //   }
-        // )
+        // добавляем все текстовые поля
+        Object.entries(values).forEach(([key, value]) => {
+          if (!['imageURL', 'QRImage', 'QRCode'].includes(key)) {
+            // для полей с id отправляем только id
+            if (
+              ['brand', 'model', 'body_type', 'color'].includes(key) &&
+              value &&
+              typeof value === 'object' &&
+              'id' in value
+            ) {
+              formData.append(key, value.id.toString())
+            } else {
+              formData.append(key, value?.toString() || '')
+            }
+          }
+        })
 
         // если есть файл для загрузки, добавляем его
         if (selectedFile) {
@@ -118,7 +110,7 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
           })
         }
 
-        showToast({ type: 'success', message: 'Питомец успешно добавлен!' })
+        showToast({ type: 'success', message: 'Автомобиль успешно добавлен!' })
         onClose()
       } catch (error) {
         showToast({
@@ -169,8 +161,8 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
       <div className="space-y-3 py-3">
         <div className="overflow-hidden rounded-2xl pl-1">
           <div className="space-y-4">
-            <form className="space-y-4" onSubmit={handleSubmit}>
-              <div className="flex items-center justify-around gap-4 py-4">
+            <form className="flex space-x-6" onSubmit={handleSubmit}>
+              <div className="flex flex-col items-center justify-around gap-4 py-4">
                 <div className="flex items-center justify-center md:w-40">
                   <div
                     className="group relative w-full cursor-pointer transition-opacity hover:opacity-80"
@@ -188,7 +180,7 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
                       accept="image/*"
                     />
                     <Image
-                      src={previewUrl || '/images/noPet.svg'}
+                      src={previewUrl || '/images/no-car.svg'}
                       alt="Pet"
                       height={160}
                       width={160}
@@ -199,80 +191,83 @@ const CreateCarForm: React.FC<CreatePetFormProps> = ({ onClose, initialQRData })
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <Image
-                    src={values.QRImage || '/images/noQR.svg'}
+                    src={getProxiedImageUrl(values.QRImage) || '/images/noQR.svg'}
                     alt="qrcode"
-                    width={160}
-                    height={160}
+                    width={102}
+                    height={102}
                     className="rounded-2xl object-contain"
                   />
                   {values.QRCode && (
-                    <div className="flex items-center justify-center rounded-lg bg-white px-12 py-2">
-                      <span className="font-mono text-lg font-semibold text-gray-700">
+                    <div className="flex items-center justify-center rounded-lg bg-white px-5 py-2">
+                      <span className="font-mono text-[12px] font-semibold text-gray-700">
                         {values.QRCode}
                       </span>
                     </div>
                   )}
                 </div>
               </div>
-              <div className="h-0,5 w-full bg-white" />
-              <div className="grid grid-cols-1 gap-6 px-0.5 pb-4 md:grid-cols-3">
-                <UTextInput
-                  name="name"
-                  value={values.name}
+
+              <div className="grid grid-cols-1 gap-6 px-0.5 pb-4 md:grid-cols-2">
+                <CarBrandSelector
+                  name="brand"
+                  value={values.brand}
                   handleChange={handleChange}
-                  label="Кличка"
-                  placeholder="Как зовут вашего питомца?"
+                  label="Марка"
+                  placeholder="Выберите марку автомобиля"
                 />
-                {/* <PetTypeSelector
-                  name="type"
-                  value={values.type}
+
+                <CarModelSelector
+                  name="model"
+                  value={values.model}
                   handleChange={handleChange}
-                  label="Вид"
-                  placeholder="Какой у вас питомец?"
-                /> */}
-                <UTextInput
-                  name="birthday"
-                  type="date"
-                  max={new Date().toISOString().split('T')[0]}
-                  min={
-                    new Date(new Date().setFullYear(new Date().getFullYear() - 15))
-                      .toISOString()
-                      .split('T')[0]
-                  }
-                  value={values.birthday}
-                  handleChange={handleChange}
-                  label="Дата рождения"
+                  label="Модель"
+                  placeholder="Выберите модель автомобиля"
                 />
-                {/* <GenderSelector
-                  name="gender"
-                  value={values.gender}
+
+                <CarBodyTypeSelector
+                  name="model"
+                  value={values.body_type}
                   handleChange={handleChange}
-                  label="Пол"
-                  placeholder="Выберите пол питомца"
+                  label="Кузов"
+                  placeholder="Выберите кузов автомобиля"
                 />
-                <BreedSelector
-                  name="breed"
-                  value={values.breed}
-                  petTypeId={values.type?.id}
+
+                <YearSelector
+                  name="year_built"
+                  value={values.year_built}
                   handleChange={handleChange}
-                  label="Порода"
-                  placeholder="Выберите породу питомца"
+                  label="Год выпуска"
+                  placeholder="Выберите год выпуска автомобиля"
                 />
                 <ColorSelector
                   name="color"
                   value={values.color}
                   handleChange={handleChange}
                   label="Цвет"
-                  placeholder="Выберите цвет питомца"
-                /> */}
-              </div>
-
-              <div className="flex items-center justify-center">
-                <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
-                  Сохранить
-                </button>
+                  placeholder="Выберите цвет автомобиля"
+                />
+                <UTextInput
+                  name="vin_code"
+                  value={values.vin_code}
+                  handleChange={handleChange}
+                  label="VIN код"
+                  placeholder="Введите VIN код автомобиля"
+                />
+                <UTextInput
+                  name="licence_plate"
+                  value={values.licence_plate}
+                  handleChange={handleChange}
+                  label="Номерной знак"
+                  placeholder="Введите госномер автомобиля"
+                />
+                <div>{values.listing_company}</div>
               </div>
             </form>
+            <div className="flex items-center justify-center">
+              <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
+                Сохранить
+              </button>
+            </div>
           </div>
         </div>
       </div>

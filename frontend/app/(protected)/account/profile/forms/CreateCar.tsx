@@ -3,12 +3,7 @@ import EnterCode from './steps/EnterCode'
 import CreateCarForm from './steps/CreateCarForm'
 import ValidateCode from './steps/ValidateCode'
 import StepIndicator from '@/components/ui/StepIndicator'
-
-interface QRCodeData {
-  code: string
-  imageURL: string
-  isAlreadyVerificated?: boolean
-}
+import { QRCodeData } from '@/app/types'
 
 interface CreateCarFormProps {
   onClose: () => void
