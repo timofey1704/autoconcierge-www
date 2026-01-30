@@ -160,11 +160,11 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
   return (
     <FormProvider>
       <div className="space-y-3 py-3">
-        <div className="overflow-hidden rounded-2xl pl-1">
+        <div className="overflow-visible rounded-2xl md:pl-1">
           <div className="space-y-4">
-            <form className="flex space-x-6" onSubmit={handleSubmit}>
-              <div className="flex flex-col items-center justify-around gap-4 py-4">
-                <div className="flex items-center justify-center md:w-40">
+            <form className="flex flex-col md:flex-row md:space-x-6" onSubmit={handleSubmit}>
+              <div className="mb-6 flex shrink-0 flex-row items-center justify-center gap-3 py-4 md:mb-0 md:flex-col md:justify-around md:gap-4">
+                <div className="flex w-40 items-center justify-center">
                   <div
                     className="group relative w-full cursor-pointer transition-opacity hover:opacity-80"
                     onClick={openFileDialog}
@@ -182,21 +182,21 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                     />
                     <Image
                       src={previewUrl || '/images/no-car.svg'}
-                      alt="Pet"
+                      alt="Car"
                       height={160}
                       width={160}
                       priority
-                      className="aspect-square w-full rounded-2xl object-cover md:w-40"
+                      className="aspect-square rounded-2xl object-cover"
                     />
                   </div>
                 </div>
-                <div className="flex flex-col items-center gap-2">
+                <div className="flex flex-col items-center gap-1 md:gap-2">
                   <Image
                     src={getProxiedImageUrl(values.QRImage) || '/images/noQR.svg'}
                     alt="qrcode"
                     width={102}
                     height={102}
-                    className="rounded-2xl object-contain"
+                    className="h-24 w-24 rounded-2xl object-contain md:h-25.5 md:w-25.5"
                   />
                   {values.QRCode && (
                     <div className="flex items-center justify-center rounded-lg bg-white px-5 py-2">
@@ -208,7 +208,7 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 gap-6 px-0.5 pb-4 md:grid-cols-2">
+              <div className="grid flex-1 grid-cols-1 gap-6 pb-4 md:grid-cols-2 md:px-0.5">
                 <CarBrandSelector
                   name="brand"
                   value={values.brand}
@@ -270,7 +270,7 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                 />
               </div>
             </form>
-            <div className="w-full px-0.5">
+            <div className="w-full md:px-0.5">
               <button
                 onClick={handleSubmit}
                 className="w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
