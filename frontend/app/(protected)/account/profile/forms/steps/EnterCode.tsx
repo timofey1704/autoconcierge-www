@@ -2,17 +2,11 @@ import React from 'react'
 import { useForm } from '@/app/hooks/useForm'
 import UTextInput from '@/components/ui/UTextInput'
 import showToast from '@/components/ui/showToast'
+import { QRCodeData } from '@/app/types'
 
 const validationRules = {
   code: { required: true },
 }
-
-interface QRCodeData {
-  code: string
-  imageURL: string
-  isAlreadyVerificated?: boolean
-}
-
 interface ValidateCodeProps {
   onValidated: (data: QRCodeData) => void
 }
@@ -42,6 +36,7 @@ const ValidateCode: React.FC<ValidateCodeProps> = ({ onValidated }) => {
           code: result.code,
           imageURL: result.imageURL,
           isAlreadyVerificated: result.isAlreadyVerificated,
+          listing_company: result.listing_company,
         })
       } catch (error) {
         showToast({

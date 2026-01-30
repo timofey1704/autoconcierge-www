@@ -2,7 +2,27 @@ from rest_framework import serializers
 from sitemanagement.models import Car
 from django.conf import settings
 
+
+class CarCreateSerializer(serializers.ModelSerializer):
+    """Сериализатор для создания автомобиля"""
+    
+    class Meta:
+        model = Car
+        fields = [
+            'vin_code',
+            'licence_plate',
+            'brand',
+            'model',
+            'body_type',
+            'year_built',
+            'color',
+            'lising_company',
+            'image',
+        ]
+
+
 class CarSerializer(serializers.ModelSerializer):
+    """Сериализатор для чтения данных автомобиля"""
     brand = serializers.SerializerMethodField()
     model = serializers.SerializerMethodField()
     body_type = serializers.SerializerMethodField()
@@ -18,6 +38,7 @@ class CarSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'vin_code',
+            'licence_plate',
             'brand',
             'model',
             'body_type',
@@ -27,7 +48,6 @@ class CarSerializer(serializers.ModelSerializer):
             'qr_code',
             'qr_image',
             'image',
-            'year_built',
         ]
     
     def get_brand(self, obj):

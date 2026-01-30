@@ -21,23 +21,23 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps }) => {
           >
             {step.id !== steps.length && (
               <div className="absolute top-10 left-4 h-full w-0.5 bg-gray-200">
-                {step.status === 'complete' && <div className="bg-orange h-full w-0.5" />}
+                {step.status === 'complete' && <div className="bg-gradient h-full w-0.5" />}
               </div>
             )}
 
             <div
               className={`relative flex h-8 w-8 items-center justify-center rounded-full ${
                 step.status === 'complete'
-                  ? 'bg-orange'
+                  ? 'bg-gradient'
                   : step.status === 'current'
-                    ? 'border-orange border-2 bg-white'
+                    ? 'border-gradient border-2 bg-white'
                     : 'border-2 border-gray-300 bg-white'
               }`}
             >
               {step.status === 'complete' ? (
                 <CheckIcon className="h-5 w-5 text-white" />
               ) : step.status === 'current' ? (
-                <span className="bg-orange h-2.5 w-2.5 rounded-full" />
+                <span className="bg-gradient h-2.5 w-2.5 rounded-full" />
               ) : (
                 <span className="h-2.5 w-2.5 rounded-full bg-transparent group-hover:bg-gray-300" />
               )}
@@ -57,9 +57,9 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps }) => {
             {step.status === 'complete' ? (
               <>
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                  <div className="bg-orange h-0.5 w-full" />
+                  <div className="bg-gradient h-0.5 w-full" />
                 </div>
-                <div className="bg-orange relative flex h-8 w-8 items-center justify-center rounded-full">
+                <div className="bg-gradient relative flex h-8 w-8 items-center justify-center rounded-full">
                   <CheckIcon className="h-5 w-5 text-white" />
                 </div>
               </>
@@ -68,8 +68,8 @@ const StepIndicator: React.FC<StepIndicatorProps> = ({ steps }) => {
                 <div className="absolute inset-0 flex items-center" aria-hidden="true">
                   <div className="h-0.5 w-full bg-gray-200" />
                 </div>
-                <div className="border-orange relative flex h-8 w-8 items-center justify-center rounded-full border-2 bg-white">
-                  <span className="bg-orange h-2.5 w-2.5 rounded-full" />
+                <div className="border-gradient relative flex h-8 w-8 items-center justify-center rounded-full border-2 bg-white">
+                  <span className="bg-gradient h-2.5 w-2.5 rounded-full" />
                 </div>
               </>
             ) : (

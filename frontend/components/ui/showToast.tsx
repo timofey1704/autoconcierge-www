@@ -50,7 +50,7 @@ const showToast = ({ type, message, action, duration }: ToastProps) => {
         </div>
       </div>
     ),
-    { duration: duration || 4000 }
+    { duration: duration || 1500 }
   )
 }
 

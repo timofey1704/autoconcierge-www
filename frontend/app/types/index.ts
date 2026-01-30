@@ -180,3 +180,10 @@ export interface Car {
   lising_company: string
   licence_plate: string
 }
+
+export interface QRCodeData {
+  code: string
+  imageURL: string
+  isAlreadyVerificated?: boolean
+  listing_company: string
+}
