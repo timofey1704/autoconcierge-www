@@ -134,7 +134,7 @@ const StatisticsPage = () => {
               handleChange={setMembership}
               options={membershipTypes}
               placeholder="Тип пакета услуг"
-              className="w-full max-w-80 min-w-57 lg:max-w-70"
+              className="w-full min-w-57 max-w-80 lg:max-w-65"
             />
             <UMultiSelect<StatusValue>
               name="status"
@@ -142,7 +142,7 @@ const StatisticsPage = () => {
               handleChange={setStatus}
               options={statusTypes}
               placeholder="Статус активации"
-              className="w-full max-w-80 min-w-57 lg:max-w-70"
+              className="w-full min-w-60 max-w-80 lg:max-w-65"
             />
             <UButton
               type="button"
