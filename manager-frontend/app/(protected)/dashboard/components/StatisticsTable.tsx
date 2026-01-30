@@ -52,10 +52,10 @@ const StatisticsTable = ({ data, total, page, pageSize, onPageChange }: Props) =
   }
 
   return (
-    <div className="space-y-4">
-      <div className="w-full overflow-x-auto rounded-2xl xl:w-fit">
-        <table className="rounded-4 border-collapse text-center text-xs">
-          <thead className="h-9 bg-black text-white">
+    <div className="space-y-4 rounded-2xl shadow-lg">
+      <div className="w-full overflow-x-auto rounded-2xl xl:w-fit table-scroll mb-0">
+        <table className="min-w-245.5 rounded-4 border-collapse text-center text-xs">
+          <thead className="h-9 bg-black text-white whitespace-nowrap">
             {table.getHeaderGroups().map(hg => (
               <tr key={hg.id}>
                 {hg.headers.map(header => (
@@ -70,40 +70,30 @@ const StatisticsTable = ({ data, total, page, pageSize, onPageChange }: Props) =
             {table.getRowModel().rows.map(row => (
               <tr key={row.id} className="table-border h-18">
                 {row.getVisibleCells().map(cell => (
-                  <td key={cell.id} className="min-w-30 px-1">
+                  <td key={cell.id} className="w-0 px-1 break-words">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </td>
                 ))}
               </tr>
             ))}
-            <tr className="h-18">
-              <td colSpan={table.getAllColumns().length}>
-                <div className="flex items-center justify-end gap-3 text-black">
-                  {getPages().map((p, i) =>
-                    p === '...' ? (
-                      <span key={i}>...</span>
-                    ) : (
-                      <button
-                        key={i}
-                        onClick={() => onPageChange(Number(p))}
-                        className={`${page === p ? 'text-blue text-sm font-bold transition' : 'hover:text-blue'}`}
-                      >
-                        {p}
-                      </button>
-                    )
-                  )}
-                </div>
-              </td>
-            </tr>
           </tbody>
         </table>
       </div>
-
-      {/* <div className="flex items-center justify-end gap-3 text-black">
-                <p>1</p>
-                <p>2</p>
-                <p>3</p>
-            </div> */}
+      <div className="h-18 flex items-center justify-end gap-3 text-black pr-5 text-sm">
+        {getPages().map((p, i) =>
+          p === '...' ? (
+            <span key={i}>...</span>
+          ) : (
+            <button
+              key={i}
+              onClick={() => onPageChange(Number(p))}
+              className={`${page === p ? 'text-blue text-sm font-bold transition' : 'hover:text-blue'}`}
+            >
+              {p}
+            </button>
+          )
+        )}
+      </div>
     </div>
   )
 }
