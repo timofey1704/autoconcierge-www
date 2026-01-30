@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
     // добавляем все текстовые поля
     const textFields = [
       'brand',
+      'model',
       'body_type',
       'year_built',
       'color',

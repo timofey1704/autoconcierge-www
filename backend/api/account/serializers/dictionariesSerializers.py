@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from dictionaries.models import Cities, Brand, Model, BodyType
+from dictionaries.models import Cities, Brand, Model, BodyType, Colors
 
 class CitySerializer(serializers.ModelSerializer):
     "Сериалиалайзер для выдачи городов"
@@ -27,7 +27,7 @@ class BrandSerializer(serializers.ModelSerializer):
         
 class ModelSerializer(serializers.ModelSerializer):
     """Сериализатор для выдачи моделей автомобилей"""
-    pet_type = serializers.PrimaryKeyRelatedField(read_only=True)
+    brand = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Model
@@ -35,8 +35,15 @@ class ModelSerializer(serializers.ModelSerializer):
         
 class BodyTypeSerializer(serializers.ModelSerializer):
     """Сериализатор для выдачи типов кузовов автомобилей"""
-    pet_type = serializers.PrimaryKeyRelatedField(read_only=True)
+    model = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = BodyType
         fields = ('id', 'name', 'model')
+        
+class ColorSerializer(serializers.ModelSerializer):
+    """Сериализатор для выдачи цветов питомцев"""
+    class Meta:
+        model = Colors
+        fields = ('id', 'name', 'hex_code')
+        

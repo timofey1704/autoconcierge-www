@@ -73,20 +73,18 @@ class CheckCodeView(ViewSet):
                     partner = getattr(userprofile, 'partner', None)
                     if partner:
                         partner_name = partner.partner_name
-            
+                   
             imageURL = f"{settings.BASE_URL}{qr_code.image.url}" if qr_code.image else None
-            return Response(
-                {
-                    "action": "pass",
-                    "message": "QR код уже верифицирован",
-                    "code": qr_code.code,
-                    "imageURL": imageURL,
-                    "isAlreadyVerificated": True,
-                    "hasLinkedCar": has_car,
-                    "lising_company": partner_name
-                },
-                status=status.HTTP_200_OK,
-            )
+            response_data = {
+                "action": "pass",
+                "message": "QR код уже верифицирован",
+                "code": qr_code.code,
+                "imageURL": imageURL,
+                "isAlreadyVerificated": True,
+                "hasLinkedCar": has_car,
+                "listing_company": partner_name
+            }
+            return Response(response_data, status=status.HTTP_200_OK)
 
         # проверяем можно ли отправить новый код
         can_send, error_message = redis_client.can_send_new_code(phone_number)
@@ -112,17 +110,26 @@ class CheckCodeView(ViewSet):
             )
 
         # возвращаем успешный ответ с данными QR кода
+        # получаем компанию-партнера через менеджера, который продал QR код
+        
+        partner_name = None
+        if qr_code.selled_by:
+            userprofile = getattr(qr_code.selled_by, 'userprofile', None)
+            if userprofile:
+                partner = getattr(userprofile, 'partner', None)
+                if partner:
+                    partner_name = partner.partner_name
+        
         imageURL = f"{settings.BASE_URL}{qr_code.image.url}" if qr_code.image else None
-        return Response(
-            {
-                "action": "pass",
-                "message": "Код подтверждения отправлен на ваш номер телефона",
-                "code": qr_code.code,
-                "imageURL": imageURL,
-                "isAlreadyVerificated": False
-            },
-            status=status.HTTP_200_OK,
-        )
+        response_data = {
+            "action": "pass",
+            "message": "Код подтверждения отправлен на ваш номер телефона",
+            "code": qr_code.code,
+            "imageURL": imageURL,
+            "isAlreadyVerificated": False,
+            "listing_company": partner_name
+        }
+        return Response(response_data, status=status.HTTP_200_OK)
         
     @action(detail=False, methods=['post'])
     @handle_exceptions

@@ -2,14 +2,15 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from dictionaries.models import Cities, Brand, Model, BodyType
+from dictionaries.models import Cities, Brand, Model, BodyType, Colors
 from api.utils.pagination import StandardResultsSetPagination
 
 from api.account.serializers.dictionariesSerializers import (CityListSerializer, 
 CitySerializer, 
 BrandSerializer, 
 ModelSerializer,
-BodyTypeSerializer)
+BodyTypeSerializer,
+ColorSerializer)
 
 from api.utils.decorators import handle_exceptions
 
@@ -42,6 +43,13 @@ class DictionariesView(ViewSet):
     def get_body_types(self, request):
         body_types = BodyType.objects.all()
         serializer = BodyTypeSerializer(body_types, many=True)
+        return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    @handle_exceptions
+    def get_colors(self, request):
+        colors = Colors.objects.all()
+        serializer = ColorSerializer(colors, many=True)
         return Response(serializer.data)
     
 class CityView(ViewSet):

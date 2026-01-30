@@ -12,6 +12,7 @@ urlpatterns = [
     path('dictionaries/get-brands/', DictionariesView.as_view({'get': 'get_brands'}), name='get-brands'),
     path('dictionaries/get-models/', DictionariesView.as_view({'get': 'get_models'}), name='get-models'),
     path('dictionaries/get-body-types/', DictionariesView.as_view({'get': 'get_body_types'}), name='get-boty-types'),
+    path('dictionaries/get-colors/', DictionariesView.as_view({'get': 'get_colors'}), name='get-colors'),
     
     path('change-profile-data/', ChangeProfileDataView.as_view({'patch': 'change_profile_contacts_data'}), name='change_profile_contacts_data'),
     path('cars/', CarActionsViewSet.as_view({'get': 'get_cars'}), name='get_cars'),

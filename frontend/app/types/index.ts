@@ -110,6 +110,7 @@ export interface TextInputProps {
   min?: string
   max?: string
   labelClassName?: string
+  disabled?: boolean
 }
 
 export interface DialogProps {

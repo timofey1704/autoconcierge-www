@@ -46,8 +46,7 @@ class CarActionsViewSet(ViewSet):
             return Response(
                 {"error": "QR код не найден или уже использован"},
                 status=status.HTTP_404_NOT_FOUND
-            )
-        
+            )     
         serializer = CarCreateSerializer(data=request.data)
         if not serializer.is_valid():
             logger.error(f"Serializer errors: {serializer.errors}")
@@ -57,8 +56,12 @@ class CarActionsViewSet(ViewSet):
             )
 
         try:
-            # сохраняем автомобиль с привязкой QR кода и пользователя
-            car = cast(Car, serializer.save(user=request.user, qr_code=qr_code))
+            # сохраняем автомобиль с привязкой QR кода, пользователя и лизинговой компании из QR кода
+            car = cast(Car, serializer.save(
+                user=request.user, 
+                qr_code=qr_code,
+                lising_company=qr_code.partner  # берем партнера из QR кода
+            ))
             
             # помечаем QR код как использованный
             qr_code.is_used = True

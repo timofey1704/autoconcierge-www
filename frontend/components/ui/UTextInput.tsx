@@ -17,6 +17,7 @@ const UTextInput = ({
   isVisible,
   error,
   labelClassName = '',
+  disabled = false,
 }: TextInputProps) => {
   return (
     <div className={className}>
@@ -35,7 +36,7 @@ const UTextInput = ({
           placeholder={placeholder}
           value={value || ''}
           onChange={handleChange}
-          className={`w-full border bg-white px-3 py-2 ${
+          className={`w-full border bg-white px-3 py-2 ${disabled ? 'cursor-not-allowed bg-gray-200!' : 'bg-white'} ${
             error ? 'border-red-500' : 'border-gray-300'
           } rounded-4xl text-black focus:ring-1 focus:outline-none ${
             error ? 'focus:ring-red-400' : 'focus:ring-blue-400'
@@ -43,6 +44,7 @@ const UTextInput = ({
           autoComplete={name}
           maxLength={maxLength}
           min={min}
+          disabled={disabled}
         />
         {isPassword && (
           <button

@@ -20,7 +20,6 @@ const validationRules = {
   color: { required: true },
   vin_code: { required: true },
   licence_plate: { required: true },
-  lising_company: { required: true },
 }
 
 interface CreateCarFormProps {
@@ -58,9 +57,11 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
           formData.append('qr_code', initialQRData.code)
         }
 
+        // !lising_company берется автоматически из QR кода на бекенде
+
         // добавляем все текстовые поля
         Object.entries(values).forEach(([key, value]) => {
-          if (!['imageURL', 'QRImage', 'QRCode'].includes(key)) {
+          if (!['imageURL', 'QRImage', 'QRCode', 'listing_company'].includes(key)) {
             // для полей с id отправляем только id
             if (
               ['brand', 'model', 'body_type', 'color'].includes(key) &&
@@ -225,7 +226,7 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                 />
 
                 <CarBodyTypeSelector
-                  name="model"
+                  name="body_type"
                   value={values.body_type}
                   handleChange={handleChange}
                   label="Кузов"
@@ -260,11 +261,20 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                   label="Номерной знак"
                   placeholder="Введите госномер автомобиля"
                 />
-                <div>{values.listing_company}</div>
+                <UTextInput
+                  name="listing_company"
+                  value={values.listing_company}
+                  handleChange={handleChange}
+                  label="Лизинговая компания"
+                  disabled={true}
+                />
               </div>
             </form>
-            <div className="flex items-center justify-center">
-              <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
+            <div className="w-full px-0.5">
+              <button
+                onClick={handleSubmit}
+                className="w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
+              >
                 Сохранить
               </button>
             </div>

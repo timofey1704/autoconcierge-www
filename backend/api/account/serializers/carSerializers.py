@@ -16,9 +16,9 @@ class CarCreateSerializer(serializers.ModelSerializer):
             'body_type',
             'year_built',
             'color',
-            'lising_company',
             'image',
         ]
+        # !lising_company берется из QR кода автоматически в вью
 
 
 class CarSerializer(serializers.ModelSerializer):
