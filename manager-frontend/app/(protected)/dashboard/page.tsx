@@ -151,7 +151,14 @@ const StatisticsPage = () => {
                 setStatus([]);
                 setTablePage(1);
               }}
-              midIcon={<Image src={ClearFiltersIcon} width={60} height={60} alt={''} />}
+              midIcon={
+                <Image 
+                  src={ClearFiltersIcon} 
+                  width={60} 
+                  height={60} 
+                  alt={''} 
+                  className="w-7 h-7 lg:w-15 lg:h-15"
+                />}
               className="w-auto h-auto py-2 border-none outline-none"
             />
           </div>
