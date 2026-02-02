@@ -24,9 +24,13 @@ class CarCreateSerializer(serializers.ModelSerializer):
 class CarSerializer(serializers.ModelSerializer):
     """Сериализатор для чтения данных автомобиля"""
     brand = serializers.SerializerMethodField()
+    brand_id = serializers.IntegerField(source='brand.id', read_only=True)
     model = serializers.SerializerMethodField()
+    model_id = serializers.IntegerField(source='model.id', read_only=True)
     body_type = serializers.SerializerMethodField()
+    body_type_id = serializers.IntegerField(source='body_type.id', read_only=True)
     color = serializers.SerializerMethodField()
+    color_id = serializers.IntegerField(source='color.id', read_only=True)
     lising_company = serializers.SerializerMethodField()
     qr_code = serializers.SerializerMethodField()
     qr_image = serializers.SerializerMethodField()
@@ -40,10 +44,14 @@ class CarSerializer(serializers.ModelSerializer):
             'vin_code',
             'licence_plate',
             'brand',
+            'brand_id',
             'model',
+            'model_id',
             'body_type',
+            'body_type_id',
             'year_built',
             'color',
+            'color_id',
             'lising_company',
             'qr_code',
             'qr_image',

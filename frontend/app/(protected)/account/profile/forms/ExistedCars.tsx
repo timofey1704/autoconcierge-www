@@ -3,6 +3,7 @@ import { useClientFetch } from '@/app/hooks/useClientFetch'
 import { Car } from '@/app/types'
 import Loader from '@/components/ui/Loader'
 import CarCard from '../components/CarCard'
+import EditPopup from '../components/EditPopup'
 import showToast from '@/components/ui/showToast'
 
 interface ExistedCarsProps {
@@ -13,6 +14,7 @@ interface ExistedCarsProps {
 const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
   const { data: cars, isLoading, error, refetch } = useClientFetch<Car[]>('/account/cars/')
   const [deletingCarId, setDeletingCarId] = useState<number | null>(null)
+  const [editingCar, setEditingCar] = useState<Car | null>(null)
 
   // уведомляем родителя о загрузке машин
   useEffect(() => {
@@ -20,6 +22,24 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
       onCarsLoad(cars)
     }
   }, [cars, onCarsLoad])
+
+  const handleEdit = (carId: number) => {
+    const car = cars?.find(c => c.id === carId)
+    if (car) {
+      setEditingCar(car)
+    }
+  }
+
+  const handleCloseEditPopup = () => {
+    setEditingCar(null)
+  }
+
+  const handleEditSuccess = async () => {
+    showToast({ type: 'success', message: 'Автомобиль успешно обновлен' })
+    setEditingCar(null)
+    // обновляем список автомобилей
+    await refetch()
+  }
 
   const handleDelete = async (carId: number) => {
     try {
@@ -75,11 +95,16 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
             <CarCard
               key={car.id}
               car={car}
+              onEdit={handleEdit}
               onDelete={handleDelete}
               isDeleting={deletingCarId === car.id}
             />
           ))}
         </div>
+      )}
+
+      {editingCar && (
+        <EditPopup car={editingCar} onClose={handleCloseEditPopup} onSuccess={handleEditSuccess} />
       )}
     </>
   )

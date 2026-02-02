@@ -85,6 +85,40 @@ class CarActionsViewSet(ViewSet):
     
     @action(detail=True, methods=['patch'])
     @handle_exceptions
+    def edit_car(self, request, pk=None):
+        """Редактирование автомобиля"""
+        try:
+            car = Car.objects.get(pk=pk, user=request.user, is_deleted=False)
+        except Car.DoesNotExist:
+            return Response(
+                {"error": "Автомобиль не найден или не принадлежит вам"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        serializer = CarCreateSerializer(car, data=request.data, partial=True)
+        if not serializer.is_valid():
+            logger.error(f"Serializer errors: {serializer.errors}")
+            return Response(
+                {"errors": serializer.errors}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            # Сохраняем изменения
+            updated_car = cast(Car, serializer.save())
+            
+            # Возвращаем обновленные данные
+            response_serializer = CarSerializer(updated_car)
+            return Response(response_serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            logger.error(f"Ошибка при редактировании автомобиля: {str(e)}")
+            return Response(
+                {"error": f"Ошибка при редактировании автомобиля: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['patch'])
+    @handle_exceptions
     def delete_car(self, request, pk=None):
         """Удаление автомобиля"""
         try:

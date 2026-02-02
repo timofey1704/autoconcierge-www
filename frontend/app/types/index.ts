@@ -174,10 +174,14 @@ export interface Car {
   qr_image: string
   qr_code: string
   brand: string
+  brand_id: number
   model: string
+  model_id: number
   body_type: string
+  body_type_id: number
   year_built: number
   color: string
+  color_id: number
   lising_company: string
   licence_plate: string
 }

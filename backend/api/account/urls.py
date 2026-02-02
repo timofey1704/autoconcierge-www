@@ -17,6 +17,7 @@ urlpatterns = [
     path('change-profile-data/', ChangeProfileDataView.as_view({'patch': 'change_profile_contacts_data'}), name='change_profile_contacts_data'),
     path('cars/', CarActionsViewSet.as_view({'get': 'get_cars'}), name='get_cars'),
     path('create-car/', CarActionsViewSet.as_view({'post': 'create_car'}), name='create_car'),
+    path('edit-car/<int:pk>/', CarActionsViewSet.as_view({'patch': 'edit_car'}), name='edit_car'),
     path('delete-car/<int:pk>/', CarActionsViewSet.as_view({'patch': 'delete_car'}), name='delete_car'),
     
     path('dashboard/get-data/', DashboardViewSet.as_view({'get': 'get_manager_clients'}), name='manager_clients'),

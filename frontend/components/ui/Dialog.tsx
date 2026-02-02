@@ -46,7 +46,7 @@ export const Dialog = ({
             />
           </svg>
         </button>
-        <h2 className="mb-4 text-xl font-semibold">{title}</h2>
+        <h2 className="mb-4 text-3xl! font-semibold">{title}</h2>
         <div className="mb-6">{description}</div>
 
         <div className="flex w-full gap-3">

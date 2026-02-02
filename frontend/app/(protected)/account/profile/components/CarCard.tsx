@@ -7,11 +7,12 @@ import DeleteIcon from '@/public/icons/ProfileDelete.svg'
 
 interface CarCardProps {
   car: Car
+  onEdit: (carId: number) => void
   onDelete: (carId: number) => void
   isDeleting: boolean
 }
 
-const CarCard: React.FC<CarCardProps> = ({ car, onDelete, isDeleting }) => {
+const CarCard: React.FC<CarCardProps> = ({ car, onEdit, onDelete, isDeleting }) => {
 
   return (
     <div className="rounded-2xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md md:p-6 relative">
@@ -31,7 +32,9 @@ const CarCard: React.FC<CarCardProps> = ({ car, onDelete, isDeleting }) => {
         <div className="flex items-center gap-2">
           <button
             type="button"
-            className="cursor-pointer transition-opacity hover:opacity-70"
+            onClick={() => onEdit(car.id)}
+            disabled={isDeleting}
+            className="cursor-pointer transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Редактировать"
           >
             <Image src={EditIcon} alt="Edit" width={24} height={24} className="md:h-8 md:w-8" />
