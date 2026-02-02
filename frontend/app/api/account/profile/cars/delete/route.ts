@@ -15,7 +15,7 @@ export async function PATCH(req: NextRequest) {
 
     const { id } = data
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/delete-car/`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/delete-car/${id}/`, {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',

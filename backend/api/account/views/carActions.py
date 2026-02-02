@@ -41,7 +41,7 @@ class CarActionsViewSet(ViewSet):
             )
 
         # ищем существующий QR код
-        qr_code = QRCode.objects.filter(code=qr_code_value, is_used=False).first()
+        qr_code = QRCode.objects.filter(code=qr_code_value, is_used=False, status='active', is_selled=True).first()
         if not qr_code:
             return Response(
                 {"error": "QR код не найден или уже использован"},

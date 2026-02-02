@@ -26,7 +26,8 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
       setDeletingCarId(carId)
 
       const response = await fetch('/api/account/profile/cars/delete', {
-        method: 'DELETE',
+        method: 'PATCH',
+        body: JSON.stringify({ id: carId }),
       })
 
       if (!response.ok) {
