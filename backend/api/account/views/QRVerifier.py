@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.utils import timezone
+from datetime import timedelta
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -120,6 +121,7 @@ class QRVerifier(APIView):
         qr_code.is_selled = True
         qr_code.selled_by = request.user
         qr_code.is_selled_timestamp = timezone.now()
+        qr_code.active_before = timezone.now() + timedelta(days=60)
         qr_code.save()
         
         return Response(

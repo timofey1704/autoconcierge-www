@@ -23,6 +23,9 @@ services:
       DB_HOST: postgres
       DB_PORT: 5432
 
+      # redis
+      REDIS_HOST: redis
+
       # activation url
       ACTIVATION_URL: "https://manager.{{ domain }}/activation"
 
@@ -38,6 +41,8 @@ services:
         ipv4_address: "{{ docker_network_prefix }}.10"
 
     depends_on:
+      redis:
+        condition: service_started
       postgres:
         condition: service_healthy
 
@@ -83,6 +88,13 @@ services:
       frontend:
         condition: service_healthy
 
+  redis:
+    image: redis:8-alpine
+    volumes:
+      - "redis:/data"
+    networks:
+      zoopolis:
+        ipv4_address: "{{ docker_network_prefix }}.20"
   postgres:
     image: postgres:18-alpine
     volumes:
