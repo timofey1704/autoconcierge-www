@@ -23,7 +23,7 @@ class CarActionsViewSet(ViewSet):
     @action(detail=False, methods=['get'])
     @handle_exceptions
     def get_cars(self, request):
-        cars = Car.objects.filter(user=request.user)
+        cars = Car.objects.filter(user=request.user, is_deleted=False)
         serializer = CarSerializer(cars, many=True)
         return Response(serializer.data)
     
@@ -80,5 +80,33 @@ class CarActionsViewSet(ViewSet):
                 car.delete()
             return Response(
                 {"error": f"Ошибка при создании автомобиль: {str(e)}"},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    
+    @action(detail=True, methods=['patch'])
+    @handle_exceptions
+    def delete_car(self, request, pk=None):
+        """Удаление автомобиля"""
+        try:
+            car = Car.objects.get(pk=pk, user=request.user)
+        except Car.DoesNotExist:
+            return Response(
+                {"error": "Автомобиль не найден или не принадлежит вам"},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        
+        try:            
+            #! cкрываем автомобиль от клиента, сохраняя его в базе (AVT-72)
+            car.is_deleted = True
+            car.save()
+            
+            return Response(
+                {"message": "Автомобиль успешно удален"},
+                status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            logger.error(f"Ошибка при удалении автомобиля: {str(e)}")
+            return Response(
+                {"error": f"Ошибка при удалении автомобиля: {str(e)}"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )

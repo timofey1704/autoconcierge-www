@@ -193,6 +193,7 @@ class Car(models.Model):
         blank=True
     )
     licence_plate = models.CharField(max_length=15, verbose_name="Номерной знак авто")
+    is_deleted = models.BooleanField(default=False, verbose_name="Статус удаления", help_text="Если выставлено True, то клиент 'удалил' машину")
     
     class Meta:
         verbose_name = "Автомобиль"

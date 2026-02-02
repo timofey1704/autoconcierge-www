@@ -1,8 +1,9 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
 import { Car } from '@/app/types'
 import Loader from '@/components/ui/Loader'
 import CarCard from '../components/CarCard'
+import showToast from '@/components/ui/showToast'
 
 interface ExistedCarsProps {
   onOpenCreateForm: () => void
@@ -11,6 +12,7 @@ interface ExistedCarsProps {
 
 const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
   const { data: cars, isLoading, error, refetch } = useClientFetch<Car[]>('/account/cars/')
+  const [deletingCarId, setDeletingCarId] = useState<number | null>(null)
 
   // уведомляем родителя о загрузке машин
   useEffect(() => {
@@ -18,6 +20,33 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
       onCarsLoad(cars)
     }
   }, [cars, onCarsLoad])
+
+  const handleDelete = async (carId: number) => {
+    try {
+      setDeletingCarId(carId)
+
+      const response = await fetch('/api/account/profile/cars/delete', {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Ошибка при удалении автомобиля')
+      }
+
+      showToast({ type: 'success', message: 'Автомобиль успешно удален' })
+
+      // обновляем список автомобилей
+      await refetch()
+    } catch (error) {
+      showToast({
+        type: 'error',
+        message: error instanceof Error ? error.message : 'Не удалось удалить автомобиль',
+      })
+    } finally {
+      setDeletingCarId(null)
+    }
+  }
 
   if (isLoading) {
     return <Loader />
@@ -42,7 +71,12 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
       ) : (
         <div className="my-4 space-y-4">
           {cars?.map(car => (
-            <CarCard key={car.id} car={car} />
+            <CarCard
+              key={car.id}
+              car={car}
+              onDelete={handleDelete}
+              isDeleting={deletingCarId === car.id}
+            />
           ))}
         </div>
       )}

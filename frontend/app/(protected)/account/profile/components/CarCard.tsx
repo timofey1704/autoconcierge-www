@@ -2,17 +2,57 @@ import React from 'react'
 import Image from 'next/image'
 import { Car } from '@/app/types'
 import { getProxiedImageUrl } from '@/lib/utils/imageProxy'
+import EditIcon from '@/public/icons/ProfileEdit.svg'
+import DeleteIcon from '@/public/icons/ProfileDelete.svg'
 
 interface CarCardProps {
   car: Car
+  onDelete: (carId: number) => void
+  isDeleting: boolean
 }
 
-const CarCard: React.FC<CarCardProps> = ({ car }) => {
+const CarCard: React.FC<CarCardProps> = ({ car, onDelete, isDeleting }) => {
+
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md md:p-6">
-      <h4 className="mb-4">
-        {car.brand} {car.model}
-      </h4>
+    <div className="rounded-2xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md md:p-6 relative">
+      {isDeleting && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 rounded-2xl z-10">
+          <div className="flex flex-col items-center gap-2">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
+            <span className="text-sm text-gray-600">Удаление...</span>
+          </div>
+        </div>
+      )}
+      
+      <div className="mb-4 flex items-center justify-between">
+        <h4 className="text-lg font-semibold text-gray-900">
+          {car.brand} {car.model}
+        </h4>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            className="cursor-pointer transition-opacity hover:opacity-70"
+            aria-label="Редактировать"
+          >
+            <Image src={EditIcon} alt="Edit" width={24} height={24} className="md:h-8 md:w-8" />
+          </button>
+          <button
+            type="button"
+            onClick={() => onDelete(car.id)}
+            disabled={isDeleting}
+            className="cursor-pointer transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
+            aria-label="Удалить"
+          >
+            <Image
+              src={DeleteIcon}
+              alt="Delete"
+              width={24}
+              height={24}
+              className="md:h-8 md:w-8"
+            />
+          </button>
+        </div>
+      </div>
       <div className="flex flex-col gap-4 md:flex-row md:gap-6">
         <div className="flex shrink-0 flex-row items-center justify-around gap-3 md:flex-col md:gap-4">
           <div className="flex w-32 items-center justify-center md:w-40">
