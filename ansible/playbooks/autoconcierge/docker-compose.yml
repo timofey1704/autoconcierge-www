@@ -88,13 +88,6 @@ services:
       frontend:
         condition: service_healthy
 
-  redis:
-    image: redis:8-alpine
-    volumes:
-      - "redis:/data"
-    networks:
-      zoopolis:
-        ipv4_address: "{{ docker_network_prefix }}.20"
   postgres:
     image: postgres:18-alpine
     volumes:
@@ -112,6 +105,14 @@ services:
     networks:
       autoconcierge:
         ipv4_address: "{{ docker_network_prefix }}.20"
+
+  redis:
+    image: redis:8-alpine
+    volumes:
+      - "redis:/data"
+    networks:
+      autoconcierge:
+        ipv4_address: "{{ docker_network_prefix }}.21"
 
 networks:
   autoconcierge:
