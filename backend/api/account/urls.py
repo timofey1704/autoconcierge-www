@@ -6,6 +6,7 @@ from api.account.views.dashboardActions import DashboardViewSet
 from api.account.views.QRVerifier import QRVerifier
 from api.account.views.QRPublicVerifier import QRPublicVerifier
 from api.account.views.smsValidators import CheckCodeView
+from api.account.views.membershipActions import MembershipView, NotificationView
 
 urlpatterns = [
     path('dictionaries/cities/', CityView.as_view({'get': 'get_cities'}), name='get_cities'),
@@ -32,4 +33,7 @@ urlpatterns = [
     # SMS верификация QR кода клиентом
     path('validate-code/', CheckCodeView.as_view({'post': 'validate_code'}), name='validate_code'),
     path('verify-sms-code/', CheckCodeView.as_view({'post': 'verify_sms_code'}), name='verify_sms_code'),
+    
+    path('payments/', MembershipView.as_view({'post': 'change_membership'}), name='change_membership'),
+    path("notification/", NotificationView.as_view(), name='notification'),
 ]

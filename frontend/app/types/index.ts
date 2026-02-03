@@ -71,6 +71,7 @@ interface MembershipFeature {
 export interface Membership {
   id: number
   plan: string
+  account_type: string // "light" | "medium" | "premium" - исходное значение для сравнения
   price?: number
   description: string
   is_recommended: boolean
@@ -80,6 +81,7 @@ export interface Membership {
 
 export interface PricingCardProps {
   memberships: Membership[]
+  user_account_type?: string
 }
 
 export interface ButtonProps {

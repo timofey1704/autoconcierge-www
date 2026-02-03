@@ -1,10 +1,24 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Image from 'next/image'
-import { PricingCardProps } from '@/app/types'
+import { Membership, PricingCardProps } from '@/app/types'
 import CheckCircleIcon from '@/public/icons/CheckCircle.svg'
 import { formatDate } from '@/lib/utils/dateFormatter'
+import SubmitPopup from './SubmitPopup'
 
-const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
+const PricingCard: React.FC<PricingCardProps> = ({ memberships, user_account_type }) => {
+  const [isSubmitPopupOpen, setIsSubmitPopupOpen] = useState(false)
+  const [selectedMembership, setSelectedMembership] = useState<Membership | null>(null)
+
+  const handleSubmitPopupClose = () => {
+    setIsSubmitPopupOpen(false)
+    setSelectedMembership(null)
+  }
+
+  const handleSelectMembership = (membership: Membership) => {
+    setSelectedMembership(membership)
+    setIsSubmitPopupOpen(true)
+  }
+
   return (
     <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
       {memberships.map((membership, index) => {
@@ -15,6 +29,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
 
         const formattedDate = formatDate(membership.actual_before)
         const recommendedTextColor = index <= 1 ? 'text-blue-700' : 'text-blue-400'
+
+        const isCurrentPlan = user_account_type === membership.account_type
 
         return (
           <div
@@ -64,14 +80,25 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
                 </div>
               ))}
             </div>
-            {membership.actual_before ? null : (
-              <button className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]">
+            {!isCurrentPlan && (
+              <button
+                onClick={() => handleSelectMembership(membership)}
+                className="my-7 w-full rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
+              >
                 Оформить подписку
               </button>
             )}
           </div>
         )
       })}
+      {isSubmitPopupOpen && selectedMembership && (
+        <SubmitPopup
+          membership={selectedMembership}
+          isOpen={isSubmitPopupOpen}
+          onClose={handleSubmitPopupClose}
+          onSuccess={handleSubmitPopupClose}
+        />
+      )}
     </div>
   )
 }

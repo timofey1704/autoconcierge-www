@@ -108,14 +108,14 @@ const LoginPage = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-end">
+                {/* <div className="flex items-center justify-end">
                   <Link
                     href="/password-recovery"
                     className="text-sm text-blue-600 transition-colors duration-200 hover:text-blue-700 hover:underline"
                   >
                     Забыли пароль?
                   </Link>
-                </div>
+                </div> */}
 
                 <button
                   type="submit"
@@ -145,7 +145,7 @@ const LoginPage = () => {
             <div className="text-center text-sm md:text-base">
               <span className="text-gray-600">Впервые у нас? </span>
               <Link
-                href="/register"
+                href="/"
                 className="font-semibold text-blue-600 transition-colors duration-200 hover:text-blue-700 hover:underline"
               >
                 Зарегистрироваться
