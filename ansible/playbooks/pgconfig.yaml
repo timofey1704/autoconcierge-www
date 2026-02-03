@@ -1,10 +1,28 @@
 - name: Postgresql config
   hosts: servers
   tasks:
+    - name: Key dir
+      ansible.builtin.file:
+        path: "/usr/share/postgresql-common/pgdg"
+        state: directory
+        mode: "0755"
+
+    - name: Add apt key
+      ansible.builtin.get_url:
+        url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+        dest: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+        mode: "0644"
+
+    - name: Add postgresql repo
+      ansible.builtin.apt_repository:
+        repo: "deb [signed-by=/usr/share/postgresql-common/pgdg/apt.postgresql.org.asc] \
+               https://apt.postgresql.org/pub/repos/apt {{ ansible_facts['distribution_release'] }}-pgdg main"
+        state: present
+
     - name: Preinstall packages
       ansible.builtin.package:
         name:
-          - postgresql-client
+          - postgresql-client-18
           - python3-psycopg2
 
     - name: Create db user
