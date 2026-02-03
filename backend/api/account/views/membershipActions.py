@@ -1,6 +1,7 @@
 import logging
 from django.utils import timezone
 from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.decorators import action
@@ -24,14 +25,7 @@ class MembershipView(ViewSet):
         user = request.user
         plan = request.data.get('plan')
         request_id = request.data.get('tracking_id')
-        timeActivation = request.data.get('timeActivation')
         
-        if not timeActivation:
-            return Response({
-                'success': False,
-                'message': 'Не указана дата активации'
-            }, status=status.HTTP_400_BAD_REQUEST)
-            
         if not plan:
             return Response({
                 'success': False,
@@ -53,8 +47,10 @@ class MembershipView(ViewSet):
                 'message': 'У вас уже активирован этот тарифный план'
             }, status=status.HTTP_400_BAD_REQUEST)
             
+        # считаем начало подписки на только! на сервере
         now = timezone.now()
-        subscription_end = now + timedelta(days=30)  # 30 дней
+        subscription_start = now + timedelta(days=1)  # активация через 24 часа
+        subscription_end = subscription_start + relativedelta(months=1)  # 1 календарный месяц с момента активации
         
         if Tranasctions.objects.filter(request_id=request_id).exists():
             return Response(
@@ -71,15 +67,24 @@ class MembershipView(ViewSet):
             'user': user.id,
             'membership': membership.id, 
             'amount': 0 if is_free_plan else membership.price,
-            'subscription_start': timeActivation,
+            'subscription_start': subscription_start,
             'subscription_end': subscription_end,
             'status': transaction_status,
             'request_id': request_id,
             'auto_renewal': request.data.get('auto_renewal', False)
         }
         
+        logger.info(f"Transaction created - start: {subscription_start}, end: {subscription_end}")
+        
         serializer = MembershipSerializer(data=transaction_data)
-        serializer.is_valid(raise_exception=True)
+        if not serializer.is_valid():
+            logger.error(f"Serializer validation errors: {serializer.errors}")
+            return Response({
+                'success': False,
+                'message': 'Ошибка валидации данных',
+                'errors': serializer.errors
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
         serializer.save()
         
         # обновляем данные пользователя для ответа
