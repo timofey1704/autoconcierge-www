@@ -40,11 +40,8 @@
       ansible.builtin.file:
         path: "/home/{{ user }}/.ssh"
         state: directory
-        mode: "0755"
-    - name: Ssh dir
-      ansible.builtin.file:
-        path: "/home/{{ user }}/.ssh"
-        state: directory
+        owner: "{{ user }}"
+        group: "{{ user }}"
         mode: "0755"
     - name: Ssh keys
       ansible.builtin.copy:

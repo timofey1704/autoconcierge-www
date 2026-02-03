@@ -30,7 +30,7 @@ servers:
 
     domain: ids-help.by
     domain_manager: manager.ids-help.by
-    enable_https: true
+    enable_https: false
 
     http_user: ids
     http_pass: welcome
