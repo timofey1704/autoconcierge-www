@@ -4,8 +4,12 @@ import { useClientFetch } from '@/app/hooks/useClientFetch'
 import PricingCard from './components/PricingCard'
 import { Membership } from '@/app/types'
 import Loader from '@/components/ui/Loader'
+import useUserStore from '@/app/store/userStore'
 
 const PricingPage = () => {
+  const { user } = useUserStore()
+  const user_account_type = user?.account_type
+
   const {
     data: response,
     isLoading,
@@ -30,7 +34,7 @@ const PricingPage = () => {
           Раздел в стадии наполнения. Следите за обновлениями!
         </div>
       ) : (
-        <PricingCard memberships={memberships} />
+        <PricingCard memberships={memberships} user_account_type={user_account_type} />
       )}
     </>
   )

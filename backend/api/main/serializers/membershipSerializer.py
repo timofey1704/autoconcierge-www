@@ -10,6 +10,7 @@ class FeatureSerializer(serializers.ModelSerializer):
 class MembershipPlansSerializer(serializers.ModelSerializer):
     features = FeatureSerializer(many=True, read_only=True)
     plan = serializers.SerializerMethodField()
+    account_type = serializers.CharField(source='plan', read_only=True)
     price = serializers.IntegerField()
     is_recommended = serializers.BooleanField()
     actual_before = serializers.SerializerMethodField(
@@ -49,4 +50,4 @@ class MembershipPlansSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Membership
-        fields = ["id", "plan", "price", "is_recommended", "actual_before", "features"]
+        fields = ["id", "plan", "account_type", "price", "is_recommended", "actual_before", "features"]
