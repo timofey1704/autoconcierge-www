@@ -24,7 +24,14 @@ class MembershipView(ViewSet):
         user = request.user
         plan = request.data.get('plan')
         request_id = request.data.get('tracking_id')
+        timeActivation = request.data.get('timeActivation')
         
+        if not timeActivation:
+            return Response({
+                'success': False,
+                'message': 'Не указана дата активации'
+            }, status=status.HTTP_400_BAD_REQUEST)
+            
         if not plan:
             return Response({
                 'success': False,
@@ -64,7 +71,7 @@ class MembershipView(ViewSet):
             'user': user.id,
             'membership': membership.id, 
             'amount': 0 if is_free_plan else membership.price,
-            'subscription_start': now,
+            'subscription_start': timeActivation,
             'subscription_end': subscription_end,
             'status': transaction_status,
             'request_id': request_id,
@@ -75,14 +82,8 @@ class MembershipView(ViewSet):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         
-        # для бесплатного плана сразу обновляем тип аккаунта
-        if is_free_plan:
-            user_profile = user.userprofile
-            user_profile.account_type = plan
-            user_profile.save()
-            
-            # обновляем данные пользователя для ответа
-            user_data = {
+        # обновляем данные пользователя для ответа
+        user_data = {
                 'id': user.id,
                 'name': user.first_name,
                 'uuid': str(user.userprofile.uuid)[:6] if user.userprofile.uuid else None,
@@ -94,19 +95,13 @@ class MembershipView(ViewSet):
                 'imageURL': user.userprofile.image.url if user.userprofile.image else None,
             }
             
-            return Response({
+        return Response({
                 'success': True,
                 'message': response_message,
                 'transaction': serializer.data,
                 'user': user_data
             }, status=status.HTTP_200_OK)
-        
-        # для платных планов возвращаем только транзакцию
-        return Response({
-            'success': True,
-            'message': response_message,
-            'transaction': serializer.data
-        }, status=status.HTTP_200_OK)
+
         
 class NotificationView(APIView):
     @handle_exceptions

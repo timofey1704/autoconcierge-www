@@ -19,6 +19,8 @@ interface SubmitPopupProps {
 const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
   const { user } = useUserStore()
 
+  const timeActivation = formatDateTime(new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString())
+
   const changeAccountType = async (membership: Membership) => {
     const internalPlan = displayNameToAccountType[membership.plan]
     if (!internalPlan) {
@@ -41,7 +43,7 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
     //препроцессинг для бипейда
     const amountInCents = convertPriceToCents(membership.price)
 
-    const response = await fetch('/api/profile/payments', {
+    const response = await fetch('/api/account/payments', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,6 +51,7 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
       body: JSON.stringify({
         plan: internalPlan,
         amount: amountInCents,
+        timeActivation: timeActivation,
         description: `Оплата подписки Autoconcierge - ${getDisplayPlanName(internalPlan)} на 1 месяц`,
         tracking_id: generateTrackingId(),
         email: user?.email,
@@ -90,7 +93,7 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
             любые события с автомобилем, произошедшие в этот промежуток, не покрываются услугами
             автоконсьержа.
           </p>
-          <p>Дата активации: {formatDateTime(new Date().toISOString())}</p>
+          <p>Дата активации: {timeActivation}</p>
 
           <div className="flex gap-3">
             <button

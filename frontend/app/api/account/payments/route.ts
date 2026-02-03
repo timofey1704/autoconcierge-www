@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
     const data = await req.json()
 
-    const { plan, description, tracking_id, email } = data
+    const { plan, description, tracking_id, email, timeActivation } = data
     let { amount } = data
 
     // 1. создаем транзакцию в бекенде
@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${session.accessToken}`,
       },
-      body: JSON.stringify({ plan, tracking_id }),
+      body: JSON.stringify({ plan, tracking_id, timeActivation }),
     })
 
     if (!backendResponse.ok) {
