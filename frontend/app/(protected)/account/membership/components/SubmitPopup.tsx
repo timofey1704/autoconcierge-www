@@ -7,6 +7,7 @@ import showToast from '@/components/ui/showToast'
 import { Membership } from '@/app/types'
 import { displayNameToAccountType } from '@/app/constants/accountTypes'
 import useUserStore from '@/app/store/userStore'
+import { formatDateTime } from '@/lib/utils/dateFormatter'
 
 interface SubmitPopupProps {
   membership: Membership
@@ -16,7 +17,7 @@ interface SubmitPopupProps {
 }
 
 const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
-  const { user, setUser } = useUserStore()
+  const { user } = useUserStore()
 
   const changeAccountType = async (membership: Membership) => {
     const internalPlan = displayNameToAccountType[membership.plan]
@@ -48,7 +49,7 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
       body: JSON.stringify({
         plan: internalPlan,
         amount: amountInCents,
-        description: `Оплата подписки Zoopolis - ${getDisplayPlanName(internalPlan)} на 30 дней`,
+        description: `Оплата подписки Autoconcierge - ${getDisplayPlanName(internalPlan)} на 1 месяц`,
         tracking_id: generateTrackingId(),
         email: user?.email,
       }),
@@ -89,20 +90,22 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
             любые события с автомобилем, произошедшие в этот промежуток, не покрываются услугами
             автоконсьержа.
           </p>
+          <p>Дата активации: {formatDateTime(new Date().toISOString())}</p>
+
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 rounded-xl border-2 border-gray-300 py-3 text-base font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
-            >
-              Отмена
-            </button>
             <button
               type="button"
               onClick={() => changeAccountType(membership)}
               className="flex-1 rounded-xl bg-linear-to-r from-[#2A00D3] to-blue-700 py-3 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:from-[#2A00D3] hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
             >
               Подтвердить
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="flex-1 rounded-xl border-2 border-gray-300 py-3 text-base font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 focus:outline-none"
+            >
+              Отмена
             </button>
           </div>
         </div>

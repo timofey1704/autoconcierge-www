@@ -11,3 +11,21 @@ export const formatDate = (dateString: string | null | undefined): string | null
     return null
   }
 }
+
+export const formatDateTime = (dateString: string | null | undefined): string | null => {
+  if (!dateString) return null
+
+  try {
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat('ru-RU', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false, // 24-часовой формат
+    }).format(date)
+  } catch (error) {
+    return null
+  }
+}
