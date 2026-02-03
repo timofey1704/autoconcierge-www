@@ -5,6 +5,7 @@ COPY --chmod=755 <<EOT ./entrypoint.sh
 #!/usr/bin/env sh
 set -e
 npm run build -- --experimental-build-mode generate
+npm run build -- --experimental-build-mode generate
 npm start
 EOT
 
