@@ -31,7 +31,7 @@ class Command(BaseCommand):
             except UserProfile.DoesNotExist:
                 self.stdout.write(
                     self.style.WARNING(
-                        f'⚠️ Пользователь {user.id} без профиля — пропущен'
+                        f'Пользователь {user.id} без профиля — пропущен'
                     )
                 )
                 continue

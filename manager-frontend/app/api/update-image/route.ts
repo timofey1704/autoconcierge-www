@@ -24,13 +24,16 @@ export async function PATCH(req: NextRequest) {
     const backendFormData = new FormData()
     backendFormData.append('image', image)
 
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/manager/change-image/`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${session.accessToken}`,
-      },
-      body: backendFormData,
-    })
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/account/manager/change-image/`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${session.accessToken}`,
+        },
+        body: backendFormData,
+      }
+    )
 
     if (!response.ok) {
       const error = await response.json()

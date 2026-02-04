@@ -62,7 +62,7 @@ const LoginForm = () => {
             return
           }
 
-          showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1000 })
+          // showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1000 })
           // Редиректим туда, откуда пришли (или на /main по умолчанию)
           router.push(decodeURIComponent(callbackUrl))
         } catch {

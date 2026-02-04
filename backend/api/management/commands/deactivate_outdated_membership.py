@@ -27,15 +27,15 @@ class Command(BaseCommand):
             ).exists()
             
             if not has_active_subscription:
-                # если нет активных подписок - переводим на zooID
+                # если нет активных подписок - переводим на Light
                 old_type = profile.account_type
-                profile.account_type = 'zooID'
+                profile.account_type = 'light'
                 profile.save()
                 updated_count += 1
                 
                 self.stdout.write(
                     self.style.WARNING(
-                        f'Пользователь {profile.user.username} переведен с тарифа {old_type} на zooID'
+                        f'Пользователь {profile.user.username} переведен с тарифа {old_type} на Light'
                     )
                 )
 

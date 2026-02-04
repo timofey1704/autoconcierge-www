@@ -93,3 +93,19 @@ class ChangeProfileDataView(ViewSet):
             "user": UserResponseSerializer(user).data
         }
         return Response(response_data, status=status.HTTP_200_OK)
+
+    @action(detail=False, methods=['patch'])
+    @handle_exceptions
+    def change_manager_image(self, request):
+        
+        user = request.user
+        user_profile = get_object_or_404(UserProfile, user=user)
+        # обновляем фотографию профиля
+        if 'image' in request.FILES:
+            user_profile.image = request.FILES['image']
+            user_profile.save()
+            
+        response_data = {
+            "message": "Данные успешно обновлены",
+        }
+        return Response(response_data, status=status.HTTP_200_OK)

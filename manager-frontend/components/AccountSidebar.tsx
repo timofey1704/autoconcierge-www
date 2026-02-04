@@ -50,11 +50,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
       setPreviewUrl(previewUrl)
 
       // загружаем на сервер
-      const response = await uploadImage<ProfileImageResponse>(
-        file,
-        '/api/profile/update-userimage',
-        'PATCH'
-      )
+      const response = await uploadImage<ProfileImageResponse>(file, '/api/update-image', 'PATCH')
 
       if (response.user?.image) {
         setPreviewUrl(getProxiedImageUrl(response.user.image))

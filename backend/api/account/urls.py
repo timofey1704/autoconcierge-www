@@ -16,6 +16,7 @@ urlpatterns = [
     path('dictionaries/get-colors/', DictionariesView.as_view({'get': 'get_colors'}), name='get-colors'),
     
     path('change-profile-data/', ChangeProfileDataView.as_view({'patch': 'change_profile_contacts_data'}), name='change_profile_contacts_data'),
+    path('manager/change-image/', ChangeProfileDataView.as_view({'patch': 'change_manager_image'}), name='change_manager_image'),
     path('cars/', CarActionsViewSet.as_view({'get': 'get_cars'}), name='get_cars'),
     path('create-car/', CarActionsViewSet.as_view({'post': 'create_car'}), name='create_car'),
     path('edit-car/<int:pk>/', CarActionsViewSet.as_view({'patch': 'edit_car'}), name='edit_car'),
