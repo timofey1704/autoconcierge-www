@@ -9,6 +9,14 @@ uv run manage.py collectstatic -c --noinput &&
 uv run gunicorn --bind 0.0.0.0:8000 base.wsgi:application
 EOT
 
+COPY --chmod=755 <<EOT ./cron_1h.sh
+#!/usr/bin/env sh
+set -e
+uv run manage.py activate_new_memberships
+uv run manage.py deactivate_outdated_membership
+uv run manage.py deactivate_overdue_qrs
+EOT
+
 RUN --mount=type=cache,target=/root/.cache/uv \
   --mount=type=bind,source=uv.lock,target=uv.lock \
   --mount=type=bind,source=pyproject.toml,target=pyproject.toml \

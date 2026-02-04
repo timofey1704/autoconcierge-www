@@ -98,6 +98,14 @@
         mode: "0644"
       notify: Restart angie
 
+    - name: Cron backend tasks
+      become: true
+      become_user: "{{ user }}"
+      ansible.builtin.cron:
+        name: "{{ app }} backend tasks"
+        minute: "0"
+        job: "/usr/bin/docker exec {{ app }}-backend-1 ./cron_1h.sh"
+
   handlers:
     - name: Restart compose service
       ansible.builtin.service:
