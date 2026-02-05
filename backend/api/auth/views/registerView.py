@@ -129,16 +129,16 @@ class RegisterViewSet(AuthBaseViewSet):
                         user_profile.client_account_type = account_type
                         user_profile.save()
                     
-                    # создаем машину если указан VIN код        
-                    if vin_code:
-                        car = Car.objects.create(vin_code=vin_code)        
-                        car.user = user  # type: ignore
-                        car.save()
+                    # # создаем машину если указан VIN код        
+                    # if vin_code:
+                    #     car = Car.objects.create(vin_code=vin_code)        
+                    #     car.user = user  # type: ignore
+                    #     car.save()
                         
-                        # связываем QR код с машиной если есть
-                        if qr_code_obj:
-                            qr_code_obj.car = car  # type: ignore
-                            qr_code_obj.save()
+                    #     # связываем QR код с машиной если есть
+                    #     if qr_code_obj:
+                    #         qr_code_obj.car = car  # type: ignore
+                    #         qr_code_obj.save()
                     
                     refresh = RefreshToken.for_user(user) # type: ignore
                     user_data = UserResponseSerializer(user).data

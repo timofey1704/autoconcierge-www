@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Link from 'next/link'
+// import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useUserStore from '@/app/store/userStore'
 import Loader from '@/components/ui/Loader'
@@ -113,14 +113,14 @@ const LoginForm = () => {
                   />
                 </div>
 
-                <div className="flex items-center justify-end">
+                {/* <div className="flex items-center justify-end">
                   <Link
                     href="/password-recovery"
                     className="text-sm text-blue-600 transition-colors duration-200 hover:text-blue-700 hover:underline"
                   >
                     Забыли пароль?
                   </Link>
-                </div>
+                </div> */}
 
                 <button
                   type="submit"
@@ -147,7 +147,7 @@ const LoginForm = () => {
               <div className="flex-1 border-t border-gray-300" />
             </div>
 
-            <div className="text-center text-sm md:text-base">
+            {/* <div className="text-center text-sm md:text-base">
               <span className="text-gray-600">Впервые у нас? </span>
               <Link
                 href="/register"
@@ -155,7 +155,7 @@ const LoginForm = () => {
               >
                 Зарегистрироваться
               </Link>
-            </div>
+            </div> */}
           </form>
         </div>
       </FormProvider>
