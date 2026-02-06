@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json()
 
     const { plan, description, tracking_id, email, timeActivation } = data
-    let { amount } = data
+    const { amount } = data
 
     // 1. создаем транзакцию в бекенде
     const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/payments/`, {

@@ -1,5 +1,6 @@
 'use client'
 
+import { useMemo } from 'react'
 import { Dialog } from '@/components/ui/Dialog'
 import { generateTrackingId } from '../utils/generate-tracking-id'
 import { convertPriceToCents, getDisplayPlanName } from '../utils/converters'
@@ -16,8 +17,13 @@ interface SubmitPopupProps {
   onSuccess: () => void
 }
 
-const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
+const SubmitPopup = ({ membership, onClose }: SubmitPopupProps) => {
   const { user } = useUserStore()
+
+  const activationDate = useMemo(() => {
+    const HOUR = 60 * 60 * 1000
+    return new Date(Math.ceil((Date.now() + 24 * 60 * 60 * 1000) / HOUR) * HOUR).toISOString()
+  }, [])
 
   const changeAccountType = async (membership: Membership) => {
     const internalPlan = displayNameToAccountType[membership.plan]
@@ -85,15 +91,12 @@ const SubmitPopup = ({ membership, onClose, onSuccess }: SubmitPopupProps) => {
       description={
         <div className="space-y-4">
           <p className="">
-            Все операции в сервисе фиксируются с точностью до минуты. С этого момента и до активации
+            Все операции в сервисе фиксируются с точностью до часа. С этого момента и до активации
             вашей подписки в течение 24 часов проходит технический мораторий. Это означает, что
             любые события с автомобилем, произошедшие в этот промежуток, не покрываются услугами
             автоконсьержа.
           </p>
-          <p>
-            Дата активации:{' '}
-            {formatDateTime(new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString())}
-          </p>
+          <p>Дата активации: {formatDateTime(activationDate)}</p>
 
           <div className="flex gap-3">
             <button
