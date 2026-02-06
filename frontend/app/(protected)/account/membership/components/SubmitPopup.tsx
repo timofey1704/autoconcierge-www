@@ -1,6 +1,6 @@
 'use client'
 
-import { useMemo } from 'react'
+import { useState, useEffect } from 'react'
 import { Dialog } from '@/components/ui/Dialog'
 import { generateTrackingId } from '../utils/generate-tracking-id'
 import { convertPriceToCents, getDisplayPlanName } from '../utils/converters'
@@ -20,9 +20,15 @@ interface SubmitPopupProps {
 const SubmitPopup = ({ membership, onClose }: SubmitPopupProps) => {
   const { user } = useUserStore()
 
-  const activationDate = useMemo(() => {
+  const [activationDate, setActivationDate] = useState<string | null>(null)
+
+  useEffect(() => {
     const HOUR = 60 * 60 * 1000
-    return new Date(Math.ceil((Date.now() + 24 * 60 * 60 * 1000) / HOUR) * HOUR).toISOString()
+    const nowPlusDay = Date.now() + 24 * 60 * 60 * 1000
+
+    const rounded = Math.ceil(nowPlusDay / HOUR) * HOUR
+
+    setActivationDate(new Date(rounded).toISOString())
   }, [])
 
   const changeAccountType = async (membership: Membership) => {
