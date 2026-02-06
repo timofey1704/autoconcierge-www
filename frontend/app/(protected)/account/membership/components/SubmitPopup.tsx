@@ -1,6 +1,5 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import { Dialog } from '@/components/ui/Dialog'
 import { generateTrackingId } from '../utils/generate-tracking-id'
 import { convertPriceToCents, getDisplayPlanName } from '../utils/converters'
@@ -8,7 +7,7 @@ import showToast from '@/components/ui/showToast'
 import { Membership } from '@/app/types'
 import { displayNameToAccountType } from '@/app/constants/accountTypes'
 import useUserStore from '@/app/store/userStore'
-import { formatDateTime } from '@/lib/utils/dateFormatter'
+import { formatDateTime, ACTIVATION_DATE_ISO } from '@/lib/utils/dateFormatter'
 
 interface SubmitPopupProps {
   membership: Membership
@@ -19,17 +18,6 @@ interface SubmitPopupProps {
 
 const SubmitPopup = ({ membership, onClose }: SubmitPopupProps) => {
   const { user } = useUserStore()
-
-  const [activationDate, setActivationDate] = useState<string | null>(null)
-
-  useEffect(() => {
-    const HOUR = 60 * 60 * 1000
-    const nowPlusDay = Date.now() + 24 * 60 * 60 * 1000
-
-    const rounded = Math.ceil(nowPlusDay / HOUR) * HOUR
-
-    setActivationDate(new Date(rounded).toISOString())
-  }, [])
 
   const changeAccountType = async (membership: Membership) => {
     const internalPlan = displayNameToAccountType[membership.plan]
@@ -102,7 +90,7 @@ const SubmitPopup = ({ membership, onClose }: SubmitPopupProps) => {
             любые события с автомобилем, произошедшие в этот промежуток, не покрываются услугами
             автоконсьержа.
           </p>
-          <p>Дата активации: {formatDateTime(activationDate)}</p>
+          <p>Дата активации: {formatDateTime(ACTIVATION_DATE_ISO)}</p>
 
           <div className="flex gap-3">
             <button

@@ -29,3 +29,11 @@ export const formatDateTime = (dateString: string | null | undefined): string | 
     return null
   }
 }
+
+const HOUR = 60 * 60 * 1000
+
+export const ACTIVATION_DATE_ISO = (() => {
+  const nowPlusDay = Date.now() + 24 * 60 * 60 * 1000
+  const rounded = Math.ceil(nowPlusDay / HOUR) * HOUR
+  return new Date(rounded).toISOString()
+})()
