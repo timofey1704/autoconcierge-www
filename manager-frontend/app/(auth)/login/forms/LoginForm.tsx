@@ -141,11 +141,11 @@ const LoginForm = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* <div className="flex items-center gap-4">
               <div className="flex-1 border-t border-gray-300" />
               <span className="shrink-0 text-sm text-gray-500">или</span>
               <div className="flex-1 border-t border-gray-300" />
-            </div>
+            </div> */}
 
             {/* <div className="text-center text-sm md:text-base">
               <span className="text-gray-600">Впервые у нас? </span>

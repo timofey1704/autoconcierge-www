@@ -1,6 +1,7 @@
 'use client'
 
 import Scroll from '@/app/hooks/useScroll'
+import Link from 'next/link'
 
 interface BurgerProps {
   isOpen: boolean
@@ -39,8 +40,8 @@ const Burger = ({ isOpen, setIsOpen }: BurgerProps) => {
       <div
         className={`bg-light-gray fixed left-0 z-40 w-full origin-top shadow-lg transition-all duration-300 ease-in-out ${
           isOpen
-            ? 'top-15 h-[calc(100vh-60px)] scale-y-100 opacity-100'
-            : 'top-15 h-0 scale-y-0 opacity-0'
+            ? 'top-20 h-[calc(100vh-60px)] scale-y-100 opacity-100'
+            : 'top-20 h-0 scale-y-0 opacity-0'
         } ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
       >
         <div
@@ -63,6 +64,7 @@ const Burger = ({ isOpen, setIsOpen }: BurgerProps) => {
           <Scroll moveTo="faq" className="internal-link" onClick={handleClose}>
             FAQ
           </Scroll>
+          <Link href="login">Вход</Link>
         </div>
       </div>
     </>

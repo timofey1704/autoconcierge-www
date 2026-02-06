@@ -36,23 +36,20 @@ const Header = () => {
               />
             </Link>
           </div>
-          <div className="absolute left-1/2 hidden -translate-x-1/2 items-center justify-center space-x-10 text-xl font-medium lg:flex">
+
+          <div className="hidden flex-1 items-center justify-center space-x-10 text-xl font-medium lg:flex">
             <Scroll moveTo="services" className="internal-link text-white">
               Услуги
             </Scroll>
-
             <Scroll moveTo="how-it-works" className="internal-link text-white">
               Как это работает?
             </Scroll>
-
             <Scroll moveTo="pricing" className="internal-link text-white">
               Тарифы
             </Scroll>
-
             <Scroll moveTo="faq" className="internal-link text-white">
               FAQ
             </Scroll>
-
             <a
               href="https://manager.ids-help.by/main"
               className="external-link text-white"
@@ -61,22 +58,38 @@ const Header = () => {
               Менеджеру
             </a>
           </div>
-          <div className="hidden lg:block">
-            <div className="text-xs">
-              <span className="mr-1 animate-pulse bg-linear-to-r from-white to-emerald-400 bg-clip-text text-transparent">
-                Онлайн 24/7
-              </span>
-              <span className="text-gradient">*</span>
-            </div>
-            <a href="tel:88011008080">
-              <div className="flex items-center">
-                <Image src={PhoneIcon} width={20} height={20} alt="Телефон" />
-                <div className="pl-2.5 text-sm text-white">8 (801) 100-80-80</div>
+
+          <div className="hidden items-center gap-4 lg:flex">
+            <div>
+              <div className="text-xs">
+                <span className="mr-1 animate-pulse bg-linear-to-r from-white to-emerald-400 bg-clip-text text-transparent">
+                  Онлайн 24/7
+                </span>
+                <span className="text-gradient">*</span>
               </div>
-            </a>
+              <a href="tel:88011008080">
+                <div className="flex items-center">
+                  <Image src={PhoneIcon} width={20} height={20} alt="Телефон" />
+                  <div className="pl-2.5 text-sm text-white">8 (801) 100-80-80</div>
+                </div>
+              </a>
+            </div>
+            <Link
+              href="/login"
+              className="group bg-gradient flex cursor-pointer items-center justify-between rounded-4xl px-8 py-1.5 text-white transition-all duration-500"
+            >
+              Вход{' '}
+              <Image
+                src="/icons/profileLogin.svg"
+                alt="Profile login"
+                width={18}
+                height={18}
+                className="ml-2 rounded-full bg-white"
+              />
+            </Link>
           </div>
 
-          <div className="flex items-center pr-2 lg:hidden">
+          <div className="flex items-center pr-4 lg:hidden">
             <Burger isOpen={isOpen} setIsOpen={setIsOpen} />
           </div>
         </div>
