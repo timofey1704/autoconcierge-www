@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ path: string[] }> }
-) {
+export async function GET(request: NextRequest) {
   // получаем базовый урл, убирая /api/v1 если он есть
   const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1'
   const BASE_URL = apiUrl.replace('/api/v1', '')
