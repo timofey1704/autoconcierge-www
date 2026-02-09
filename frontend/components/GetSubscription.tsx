@@ -14,7 +14,7 @@ const validationRules = {
 const GetSubscription = () => {
   const { values, handleChange, handleSubmit, FormProvider, resetField } = useForm(
     {
-      phone_number: '',
+      phone_number_subscription: '',
       privacy_policy: false,
     },
     validationRules,
@@ -38,7 +38,7 @@ const GetSubscription = () => {
 
         showToast({ type: 'success', message: 'Заявка успешно создана!' })
 
-        resetField('phone_number', '')
+        resetField('phone_number_subscription', '')
         resetField('privacy_policy', false)
       } catch (error) {
         showToast({
@@ -66,10 +66,10 @@ const GetSubscription = () => {
               </p>
               <div className="flex w-full flex-wrap items-end gap-5 pb-5">
                 <UTextInput
-                  name="phone_number"
+                  name="phone_number_subscription"
                   placeholder="+375 (___) _____-___-___"
                   label="Телефон"
-                  value={values.phone_number}
+                  value={values.phone_number_subscription}
                   handleChange={handleChange}
                   className="w-full lg:w-68.5"
                   labelClassName="text-white"

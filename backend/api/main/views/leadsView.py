@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from api.utils.exceptionsHandler import handle_exceptions
 from api.main.serializers.leadsSerializer import LeadsSerializer
 
-from sitemanagement.models import Leads
-
 class LeadsView(APIView):
     @handle_exceptions
     def post(self, request):

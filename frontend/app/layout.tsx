@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Providers } from './providers/Providers'
 import { Toaster } from 'react-hot-toast'
+import TawkToScript from '@/components/TawkToScript'
 
 export const metadata: Metadata = {
   title: 'СБЛ-Лизинг',
@@ -32,6 +33,7 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className="flex min-h-screen flex-col">
+        <TawkToScript />
         <Providers>
           <Toaster />
           {children}

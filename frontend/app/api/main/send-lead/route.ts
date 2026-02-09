@@ -3,7 +3,7 @@ import { NextRequest } from 'next/server'
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json()
-    const { phone_number } = data
+    const { phone_number_subscription } = data
 
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/main/send-lead/`, {
       method: 'POST',
@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        phone_number,
+        phone_number_subscription,
       }),
     })
 
