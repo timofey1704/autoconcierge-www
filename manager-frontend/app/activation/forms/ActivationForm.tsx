@@ -180,7 +180,7 @@ const ActivationForm = () => {
     return (
       <div className="flex min-h-screen flex-col items-center justify-center p-4">
         <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
-          <h1 className="mb-4 text-center text-2xl font-bold">Продажа QR кода</h1>
+          <h1 className="mb-4 text-center text-2xl font-bold">Выдача QR кода</h1>
 
           {qrData.imageURL && (
             <div className="mb-4 flex justify-center">

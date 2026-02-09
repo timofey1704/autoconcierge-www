@@ -26,6 +26,10 @@ services:
       # redis
       REDIS_HOST: redis
 
+      #sms service
+      SMS_USER: info@zoopolis.org
+      SMS_API_KEY: SPsIpFIV9UGwaPXuZuT7
+
       # activation url
       ACTIVATION_URL: "https://manager.{{ domain }}/activation"
 
