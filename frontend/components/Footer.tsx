@@ -127,10 +127,6 @@ const Footer = () => {
 
       <div className="flex flex-wrap justify-between gap-2.5 pt-10 lg:pt-5">
         <p>Все права защищены © 2025</p>
-        {/* Вернуть ссылку, когда появится отдельная страница */}
-        {/* <Link href="/privacy-policy" className="internal-link">
-          Политика конфиденциальности
-        </Link> */}
       </div>
     </footer>
   )

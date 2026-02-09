@@ -162,9 +162,9 @@ const MainForm = () => {
               >
                 <span className="text-xs font-normal text-gray-700">
                   Ознакомлен(а) и согласен(а) на обработку моих
-                  <Link className="text-gradient ml-1 text-xs font-medium" href="/privacy-policy">
+                  <span className="text-gradient ml-1 text-xs font-medium">
                     персональных данных
-                  </Link>
+                  </span>
                 </span>
               </UCheckbox>
             </form>

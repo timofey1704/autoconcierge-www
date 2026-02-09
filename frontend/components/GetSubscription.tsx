@@ -1,7 +1,6 @@
 'use client'
 
 import UButton from './ui/UButton'
-import Link from 'next/link'
 import UTextInput from './ui/UTextInput'
 import UCheckbox from './ui/UCheckbox'
 import { useForm } from '@/app/hooks/useForm'
@@ -86,9 +85,7 @@ const GetSubscription = () => {
                 >
                   <span className="text-xs font-normal text-white">
                     Ознакомлен (на) и согласен (на) на обработку моих
-                    <Link className="text-gradient ml-1 text-xs" href="/privacy-policy">
-                      персональных данных
-                    </Link>
+                    <span className="text-gradient ml-1 text-xs">персональных данных</span>
                   </span>
                 </UCheckbox>
               </div>
