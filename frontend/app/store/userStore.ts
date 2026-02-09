@@ -27,11 +27,10 @@ const useUserStore = create<UserStore>()(
       // синхронные действия
       setUser: user => set({ user }),
       setAuthenticated: isAuthenticated => set({ isAuthenticated }),
-      logout: () =>
-        set({
-          isAuthenticated: false,
-          user: null,
-        }),
+      logout: () => {
+        set({ isAuthenticated: false, user: null })
+        useUserStore.persist.clearStorage()
+      },
     }),
 
     //! асинхронщина?

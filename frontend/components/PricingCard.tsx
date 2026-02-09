@@ -33,8 +33,8 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships }) => {
           index === 0
             ? 'bg-light-gray'
             : index === 1
-              ? 'bg-[url(/images/PricingCardMediumBackground.svg)] bg-cover bg-center'
-              : 'bg-[url(/images/PricingCardPremiumBackground.svg)] bg-cover bg-center'
+              ? 'bg-[url(/images/PricingCardMediumBackground.png)] bg-cover bg-center'
+              : 'bg-[url(/images/PricingCardPremiumBackground.png)] bg-cover bg-center'
 
         const headingColor = index === 0 ? 'text-black' : 'text-white'
         const textColor = index === 0 ? 'text-dark-gray' : 'text-white'

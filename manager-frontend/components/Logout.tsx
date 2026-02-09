@@ -2,6 +2,7 @@ import { useRouter } from 'next/navigation'
 import UButton from './ui/UButton'
 import { IoExitOutline } from 'react-icons/io5'
 import useUserStore from '@/app/store/userStore'
+import { signOut } from 'next-auth/react'
 
 const Logout = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -9,18 +10,16 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      // бекенд чистит куки
       await fetch(`${API_URL}/auth/logout/`, {
         method: 'POST',
         credentials: 'include',
       })
 
-      // чистим стор
+      await signOut({ redirect: false })
+
       useUserStore.getState().logout()
 
-      // редирект
-      router.push('/')
-      router.refresh() // обновляем страницу чтобы обновить стейты
+      router.replace('/login')
     } catch (error) {
       console.error('Logout error:', error)
     }
