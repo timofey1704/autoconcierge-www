@@ -1,29 +1,25 @@
 export const accountTypeToDisplayName = {
-  headOfficeManager: 'Руководитель ГО',
-  headServiceCenterDepartment: 'Начальник отдела ЦУ',
-  specialist: 'Специалист ЦУ',
+  supervisor: 'Руководитель',
+  manager: 'Менеджер',
 } as const
 
 // для бекенда
 export const displayNameToAccountType: Record<string, keyof typeof accountTypeToDisplayName> = {
-  'Руководитель ГО': 'headOfficeManager',
-  'Начальник отдела ЦУ': 'headServiceCenterDepartment',
-  'Специалист ЦУ': 'specialist',
+  'Начальник отдела ЦУ': 'supervisor',
+  'Специалист ЦУ': 'manager',
 }
 
 export const getAccountTypeStyles = (accountType: string) => {
   switch (accountType.toLowerCase()) {
-    case 'headOfficeManager':
-      return 'bg-gray-400 text-white'
-    case 'headServiceCenterDepartment':
+    case 'supervisor':
       return 'bg-orange/70 text-white'
-    case 'specialist':
+    case 'manager':
       return 'bg-blue-500 text-white'
     default:
       return 'bg-gray-200'
   }
 }
 
-// 1. Руководитель ГО,
-// 2. Начальник отдела ЦУ
-// 3. Специалист ЦУ
+//fix - 09.02.2025
+// 1. Руководитель,
+// 2. Менеджер

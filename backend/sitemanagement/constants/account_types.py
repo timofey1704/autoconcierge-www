@@ -5,7 +5,6 @@ account_types = [
 ]
 
 manager_account_types = [
-    ("headOfficeManager", "Руководитель ГО"),
-    ("headServiceCenterDepartment", "Начальник отдела ЦУ"),
-    ("specialist", "Специалист ЦУ"),
+    ("supervisor", "Руководитель"),
+    ("manager", "Менеджер"),
 ]
