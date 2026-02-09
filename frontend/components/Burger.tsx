@@ -65,6 +65,13 @@ const Burger = ({ isOpen, setIsOpen }: BurgerProps) => {
             FAQ
           </Scroll>
           <Link href="login">Вход</Link>
+          <a
+            href="https://manager.ids-help.by/login"
+            className="external-link text-black"
+            draggable={false}
+          >
+            Менеджер
+          </a>
         </div>
       </div>
     </>

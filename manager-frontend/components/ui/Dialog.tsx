@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import UButton from './UButton'
 import { DialogProps } from '@/app/types'
+import { SafeHTMLContent } from './safeHTMLContent'
 
 export const Dialog = ({
   isOpen,
@@ -47,7 +48,7 @@ export const Dialog = ({
           </svg>
         </button>
         <h2 className="mb-4 text-xl! font-semibold">{title}</h2>
-        <div className="mb-6">{description}</div>
+        <SafeHTMLContent content={description} />
 
         <div className="flex w-full gap-3">
           {showCancel && (

@@ -51,11 +51,11 @@ const Header = () => {
               FAQ
             </Scroll>
             <a
-              href="https://manager.ids-help.by/main"
+              href="https://manager.ids-help.by/login"
               className="external-link text-white"
               draggable={false}
             >
-              Менеджеру
+              Менеджер
             </a>
           </div>
 
