@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-// import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useUserStore from '@/app/store/userStore'
 import Loader from '@/components/ui/Loader'
@@ -10,8 +9,8 @@ import showToast from '@/components/ui/showToast'
 import { signIn } from 'next-auth/react'
 import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
-import bgImage from '../../../../public/images/auth/bg-image.png'
-import bmw from '../../../../public/images/auth/bmw.svg'
+import bgImage from '../../../../public/images/auth/bg-image.jpg'
+import bmw from '../../../../public/images/auth/manager_login_cab.jpg'
 
 const validationRules = {
   email: { required: true, minLength: 13 },
@@ -62,8 +61,6 @@ const LoginForm = () => {
             return
           }
 
-          // showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1000 })
-          // Редиректим туда, откуда пришли (или на /main по умолчанию)
           router.push(decodeURIComponent(callbackUrl))
         } catch {
           showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
@@ -87,7 +84,9 @@ const LoginForm = () => {
             <div className="flex flex-col gap-8 md:flex-row">
               <div className="flex-1 space-y-6">
                 <div className="space-y-2">
-                  <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">Добро пожаловать</h1>
+                  <h1 className="text-3xl font-bold text-gray-900 md:text-4xl">
+                    Кабинет менеджера
+                  </h1>
                   <p className="text-sm text-gray-600 md:text-base">
                     Войдите в свой аккаунт, чтобы продолжить
                   </p>
@@ -135,27 +134,11 @@ const LoginForm = () => {
                   <Image
                     src={bmw}
                     alt="bmw"
-                    className="h-auto w-full object-contain drop-shadow-2xl"
+                    className="h-auto w-full rounded-2xl object-contain drop-shadow-2xl"
                   />
                 </div>
               </div>
             </div>
-
-            {/* <div className="flex items-center gap-4">
-              <div className="flex-1 border-t border-gray-300" />
-              <span className="shrink-0 text-sm text-gray-500">или</span>
-              <div className="flex-1 border-t border-gray-300" />
-            </div> */}
-
-            {/* <div className="text-center text-sm md:text-base">
-              <span className="text-gray-600">Впервые у нас? </span>
-              <Link
-                href="/register"
-                className="font-semibold text-blue-600 transition-colors duration-200 hover:text-blue-700 hover:underline"
-              >
-                Зарегистрироваться
-              </Link>
-            </div> */}
           </form>
         </div>
       </FormProvider>

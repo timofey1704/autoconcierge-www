@@ -10,8 +10,8 @@ import showToast from '@/components/ui/showToast'
 import { signIn } from 'next-auth/react'
 import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
-import bgImage from '../../../public/images/auth/bg-image.png'
-import bmw from '../../../public/images/auth/bmw.svg'
+import bgImage from '../../../public/images/auth/bg-image.jpg'
+import bmw from '../../../public/images/auth/bmw.jpg'
 
 const validationRules = {
   phone_number: { required: true, minLength: 13 },
@@ -130,7 +130,7 @@ const LoginPage = () => {
                   <Image
                     src={bmw}
                     alt="bmw"
-                    className="h-auto w-full object-contain drop-shadow-2xl"
+                    className="h-auto w-full rounded-2xl object-contain drop-shadow-2xl"
                   />
                 </div>
               </div>
