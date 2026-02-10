@@ -7,7 +7,7 @@ import { useForm } from '@/app/hooks/useForm'
 import showToast from './ui/showToast'
 
 const validationRules = {
-  phone_number: { required: true },
+  phone_number_subscription: { required: true },
   privacy_policy: { required: true },
 }
 

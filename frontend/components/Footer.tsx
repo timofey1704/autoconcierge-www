@@ -126,7 +126,7 @@ const Footer = () => {
       <hr className="h-0.5 rotate-180 border-0 bg-(image:--color-gradient)" />
 
       <div className="flex flex-wrap justify-between gap-2.5 pt-10 lg:pt-5">
-        <p>Все права защищены © 2025</p>
+        <p>Все права защищены © {new Date().getFullYear()}</p>
       </div>
     </footer>
   )
