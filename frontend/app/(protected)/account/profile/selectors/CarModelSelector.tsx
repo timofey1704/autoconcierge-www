@@ -4,6 +4,7 @@ import Selector, { Option as SelectorOption } from '@/components/ui/Selector'
 export interface CarModel {
   id: number
   name: string
+  brand: number
 }
 
 interface CarModelResponse {
@@ -30,6 +31,7 @@ interface CarModelSelectorProps {
   handleChange: (e: CarModelChangeEvent) => void
   label?: string
   tooltip?: string | React.ReactNode
+  brandId?: number | null
   placeholder?: string
   isRequired?: boolean
 }
@@ -39,6 +41,7 @@ const CarModelSelector: React.FC<CarModelSelectorProps> = ({
   value,
   handleChange,
   label,
+  brandId,
   tooltip,
   placeholder,
   isRequired,
@@ -54,6 +57,7 @@ const CarModelSelector: React.FC<CarModelSelectorProps> = ({
     return {
       id: option.id,
       name: option.value,
+      brand: brandId || 0,
     }
   }
 
@@ -94,9 +98,17 @@ const CarModelSelector: React.FC<CarModelSelectorProps> = ({
       label={label}
       tooltip={tooltip}
       placeholder={placeholder}
-      endpoint="/account/dictionaries/get-models/"
+      endpoint={brandId ? `/account/dictionaries/get-models/` : undefined}
       mapDataToOptions={mapCarTyCaroOption}
       isRequired={isRequired}
+      config={{
+        params: {
+          brand: brandId || undefined,
+        },
+        queryOptions: {
+          enabled: !!brandId, // включаем запрос только если выбран бренд
+        },
+      }}
     />
   )
 }

@@ -4,6 +4,7 @@ import Selector, { Option as SelectorOption } from '@/components/ui/Selector'
 export interface CarBodyType {
   id: number
   name: string
+  model: number
 }
 
 interface CarBodyTypeResponse {
@@ -30,6 +31,7 @@ interface CarBodyTypeSelectorProps {
   handleChange: (e: CarBodyTypeChangeEvent) => void
   label?: string
   tooltip?: string | React.ReactNode
+  modelId?: number | null
   placeholder?: string
   isRequired?: boolean
 }
@@ -39,6 +41,7 @@ const CarBodyTypeSelector: React.FC<CarBodyTypeSelectorProps> = ({
   value,
   handleChange,
   label,
+  modelId,
   tooltip,
   placeholder,
   isRequired,
@@ -54,6 +57,7 @@ const CarBodyTypeSelector: React.FC<CarBodyTypeSelectorProps> = ({
     return {
       id: option.id,
       name: option.value,
+      model: modelId || 0,
     }
   }
 
@@ -94,9 +98,17 @@ const CarBodyTypeSelector: React.FC<CarBodyTypeSelectorProps> = ({
       label={label}
       tooltip={tooltip}
       placeholder={placeholder}
-      endpoint="/account/dictionaries/get-body-types/"
+      endpoint={modelId ? `/account/dictionaries/get-body-types/` : undefined}
       mapDataToOptions={mapCarTyCaroOption}
       isRequired={isRequired}
+      config={{
+        params: {
+          model: modelId || undefined,
+        },
+        queryOptions: {
+          enabled: !!modelId, // включаем запрос только если выбран бренд авто
+        },
+      }}
     />
   )
 }
