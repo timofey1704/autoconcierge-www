@@ -16,7 +16,7 @@ const FAQ: React.FC<FAQProps> = ({ faqs, id }) => {
         </h2>
         <div className="mt-auto max-w-md text-sm text-gray-600 sm:text-lg lg:text-right">
           Если не нашли ответ на свой вопрос — всегда можно позвонить на{' '}
-          <a href="tel:+375801100080" className="text-gradient font-semibold transition-colors">
+          <a href="tel:88011008080" className="text-gradient font-semibold transition-colors">
             8 (801) 100-80-80
           </a>{' '}
           и проконсультироваться.

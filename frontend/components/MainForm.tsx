@@ -9,7 +9,6 @@ import UCheckbox from './ui/UCheckbox'
 import CarImage from '../public/images/bg_car.jpg'
 import CheckIcon from '../public/icons/Check Circle Icon.svg'
 import { advantages } from '@/app/constants/advantages'
-import Link from 'next/link'
 import showToast from './ui/showToast'
 import ThankYouPopup from './popups/ThankYouPopup'
 
