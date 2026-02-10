@@ -104,7 +104,7 @@ const Footer = () => {
             </div>
           </div>
           <div className="flex flex-col flex-wrap justify-start gap-5 pt-10 md:flex-row md:justify-between lg:flex-row lg:justify-between lg:gap-10 xl:justify-end xl:pt-26.5">
-            <Scroll moveTo="services" className="internal-link text-white">
+            <Scroll moveTo="pricing" className="internal-link text-white">
               Пакеты услуг
             </Scroll>
             <Scroll moveTo="how-it-works" className="internal-link text-white">
