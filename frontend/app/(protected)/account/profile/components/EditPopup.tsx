@@ -173,6 +173,7 @@ const EditPopup = ({ car, onClose, onSuccess }: EditPopupProps) => {
                 handleChange={handleChange}
                 label="Модель"
                 placeholder="Выберите модель автомобиля"
+                brandId={values.brand?.id}
               />
 
               <CarBodyTypeSelector
@@ -181,6 +182,7 @@ const EditPopup = ({ car, onClose, onSuccess }: EditPopupProps) => {
                 handleChange={handleChange}
                 label="Кузов"
                 placeholder="Выберите кузов автомобиля"
+                modelId={values.model?.id}
               />
 
               <YearSelector

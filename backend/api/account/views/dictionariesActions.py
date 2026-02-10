@@ -1,7 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.decorators import action
 from rest_framework.response import Response
-
+from rest_framework import status
 from dictionaries.models import Cities, Brand, Model, BodyType, Colors
 from api.utils.pagination import StandardResultsSetPagination
 
@@ -34,14 +34,22 @@ class DictionariesView(ViewSet):
     @action(detail=False, methods=['get'])
     @handle_exceptions
     def get_models(self, request):
-        models = Model.objects.all()
+        brand = request.query_params.get('brand')
+        if not brand:
+            return Response({"error": "brand parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
+ 
+        models = Model.objects.filter(brand_id=brand)
         serializer = ModelSerializer(models, many=True)
-        return Response(serializer.data)
-    
+        return Response(serializer.data)    
+
     @action(detail=False, methods=['get'])
     @handle_exceptions
     def get_body_types(self, request):
-        body_types = BodyType.objects.all()
+        model = request.query_params.get('model')
+        if not model:
+            return Response({"error": "model parameter is required"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        body_types = BodyType.objects.filter(model_id=model)
         serializer = BodyTypeSerializer(body_types, many=True)
         return Response(serializer.data)
     
