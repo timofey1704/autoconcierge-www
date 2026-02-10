@@ -158,7 +158,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
       </div>
       <div className="w-full rounded-2xl bg-white p-2 shadow md:w-64">
         <a
-          href="https://google.com"
+          href="https://tawk.to/chat/6989e074d41d8f1c3889ef8c/1jh199iqm"
           className={`${
             pathname === '/support'
               ? 'border-orange translate-x-2 rounded-l-lg border-r-4 bg-gray-100 text-black'
