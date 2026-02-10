@@ -36,7 +36,7 @@ class Brand(models.Model):
         return self.name
     
 class Model(models.Model):
-    name = models.CharField(max_length=50, verbose_name="Название модели", help_text="например: 5-series")
+    name = models.CharField(max_length=255, verbose_name="Название модели", help_text="например: 5-series")
     brand = models.ForeignKey(
         Brand,
         on_delete=models.CASCADE,
