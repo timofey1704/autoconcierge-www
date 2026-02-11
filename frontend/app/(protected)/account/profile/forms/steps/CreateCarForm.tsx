@@ -272,6 +272,15 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
                 />
               </div>
             </form>
+            <div className="w-full text-right">
+              <a
+                className="cursor-pointer hover:text-blue-700 underline"
+                href="https://tawk.to/chat/6989e074d41d8f1c3889ef8c/1jh199iqm"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Моего автомобиля нет в списке"
+              >Моего автомобиля нет в списке</a>
+            </div>
             <div className="w-full md:px-0.5">
               <button
                 onClick={handleSubmit}
