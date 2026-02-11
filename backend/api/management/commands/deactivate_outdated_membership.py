@@ -29,13 +29,13 @@ class Command(BaseCommand):
             if not has_active_subscription:
                 # если нет активных подписок - переводим на Light
                 old_type = profile.account_type
-                profile.account_type = 'light'
+                profile.account_type = 'free'
                 profile.save()
                 updated_count += 1
                 
                 self.stdout.write(
                     self.style.WARNING(
-                        f'Пользователь {profile.user.username} переведен с тарифа {old_type} на Light'
+                        f'Пользователь {profile.user.username} переведен с тарифа {old_type} на Free'
                     )
                 )
 
