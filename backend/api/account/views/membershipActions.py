@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ViewSet
 
 from api.utils.decorators import handle_exceptions
-from sitemanagement.models import Membership, Tranasctions
+from sitemanagement.models import Membership, Transactions
 from api.account.serializers.membershipSerializers import MembershipSerializer
 from api.models import UserProfile
 
@@ -52,7 +52,7 @@ class MembershipView(ViewSet):
         subscription_start = now + timedelta(days=1)  # активация через 24 часа
         subscription_end = subscription_start + relativedelta(months=1)  # 1 календарный месяц с момента активации
         
-        if Tranasctions.objects.filter(request_id=request_id).exists():
+        if Transactions.objects.filter(request_id=request_id).exists():
             return Response(
                 {'error': 'Tracking ID already exists'}, 
                 status=status.HTTP_409_CONFLICT
@@ -123,7 +123,7 @@ class NotificationView(APIView):
                 logger.error('No tracking_id in notification')
                 return Response({'status': 'error', 'message': 'No tracking_id'}, status=status.HTTP_400_BAD_REQUEST)
             
-            transaction = Tranasctions.objects.filter(
+            transaction = Transactions.objects.filter(
                 request_id=tracking_id,
                 status='pending'
             ).first()

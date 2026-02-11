@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from sitemanagement.constants.account_types import account_types
-from sitemanagement.models import Feature, Membership, Tranasctions
+from sitemanagement.models import Feature, Membership, Transactions
 
 class FeatureSerializer(serializers.ModelSerializer):
     class Meta:
@@ -39,7 +39,7 @@ class MembershipPlansSerializer(serializers.ModelSerializer):
             return None
         
         # находим последнюю завершенную транзакцию для этого пользователя и тарифа
-        transaction = Tranasctions.objects.filter(
+        transaction = Transactions.objects.filter(
             user=request.user,
             membership=obj,
             status='completed'

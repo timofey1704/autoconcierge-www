@@ -2,7 +2,7 @@ from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.db import transaction
 
-from sitemanagement.models import Tranasctions
+from sitemanagement.models import Transactions
 from api.models import UserProfile
 
 
@@ -12,7 +12,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         now = timezone.now()
 
-        transactions = Tranasctions.objects.select_related(
+        transactions = Transactions.objects.select_related(
             'user',
             'membership'
         ).filter(

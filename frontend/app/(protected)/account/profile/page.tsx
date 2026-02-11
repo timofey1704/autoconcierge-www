@@ -58,11 +58,13 @@ const ProfilePage = () => {
     return 'Добавить автомобиль'
   }
 
+  const userName = `${user?.firstName ?? ''} ${user?.surname ?? ''}`.trim() || 'Пользователь'
+
   return (
     <Suspense fallback={<Loader />}>
       <div>
         <h1 className="text-[32px]!">
-          {getGreetingByTime()}, {user?.firstName} {user?.surname}
+          {getGreetingByTime()}, {userName}
         </h1>
         <TabsContainer
           tabs={TABS}

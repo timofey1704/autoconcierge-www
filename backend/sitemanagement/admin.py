@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.utils import timezone
+from django.urls import reverse
+from django.utils.html import format_html
+
 from sitemanagement.models import *
 from sitemanagement.forms.batchQRform import BatchQRCodeForm 
 
@@ -14,6 +17,46 @@ class QRCodeAdmin(admin.ModelAdmin):
     readonly_fields = ("code", "image", "created_at", "user", "is_selled", "is_active", "is_printed", "is_deployed", "is_selled_timestamp", "is_active_timestamp", "active_before", "is_printed_timestamp", "is_deployed_timestamp", "selled_by", "status", "is_used")
     actions = ['print_selected_qr_codes']
     change_list_template = 'admin/api/qrcode_changelist.html'
+    fieldsets = (
+    ('Основная информация', {
+        'fields': (
+            'code',
+            'partner',
+            'account_type',
+            'user',
+            'status',
+            'image',
+            'created_at',
+        )
+    }),
+    ('Этап 1: Производство', {
+        'fields': (
+            'is_printed',
+            'is_printed_timestamp',
+        )
+    }),
+    ('Этап 2: Отгрузка', {
+        'fields': (
+            'is_deployed',
+            'is_deployed_timestamp',
+        )
+    }),
+    ('Этап 3: Продажа', {
+        'fields': (
+            'is_selled',
+            'selled_by',
+            'is_selled_timestamp',
+        )
+    }),
+    ('Этап 4: Активация клиентом', {
+        'fields': (
+            'is_active',
+            'is_active_timestamp',
+            'is_used',
+            'active_before',
+        )
+    }),
+    )
     
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = list(self.readonly_fields)
@@ -216,6 +259,46 @@ class CarAdmin(admin.ModelAdmin):
     list_display = ("vin_code", "qr_code", "user")
     list_filter = ("user", )
     search_fields = ("vin_code", "qr_code", "user")
+    def get_readonly_fields(self, request, obj=None):
+        all_fields = [field.name for field in self.model._meta.fields]
+        # is_deleted можно менять
+        exclude_fields = ['is_deleted'] 
+        return [f for f in all_fields if f not in exclude_fields]
+    
+    fieldsets = (
+    ('Информация об авто', {
+        'fields': (
+            'vin_code',
+            'licence_plate',
+            'qr_code',
+        )
+    }),
+    ('Владелец', {
+        'fields': (
+            'user',
+            'is_deleted',
+        )
+    }),
+    ('Марка и модель', {
+        'fields': (
+            'brand',
+            'model',
+        )
+    }),
+    ('Технические характеристики', {
+        'fields': (
+            'body_type',
+            'color',
+            'year_built',
+        )
+    }),
+    ('Лизинг и фото', {
+        'fields': (
+            'lising_company',
+            'image',
+        )
+    }),
+    )
     
 @admin.register(Membership)
 class MembershipAdmin(admin.ModelAdmin):
@@ -239,8 +322,20 @@ class LeadsAdmin(admin.ModelAdmin):
     list_display = ("phone_number", )
     readonly_fields = ("phone_number", )
     
-@admin.register(Tranasctions)
+@admin.register(Transactions)
 class TransactionsAdmin(admin.ModelAdmin):
-    list_display = ("user", "membership", "status")
-    list_filter = ("membership", "status")
-    search_fields = ("user", "membership")
+    list_display = ("user", "membership", "status", "amount", "created_at")
+    list_filter = ("membership", "status", "created_at")
+    search_fields = ("user__username", "user__email", "membership__plan")
+    
+    def get_readonly_fields(self, request, obj=None):
+        readonly_fields = [field.name for field in self.model._meta.fields]
+        return readonly_fields
+    
+    fieldsets = (
+        (None, {
+            'fields': ('user', 'membership', 'amount',
+                      'auto_renewal', 'status', 'request_id', 'bepaid_id',
+                      'created_at', 'subscription_start', 'subscription_end')
+        }),
+    )

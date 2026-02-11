@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from django.db.models import Q
-from sitemanagement.models import Tranasctions
+from sitemanagement.models import Transactions
 
 class Command(BaseCommand):
     help = 'Проверка и обновление статуса подписки пользователей'
@@ -10,7 +10,7 @@ class Command(BaseCommand):
         now = timezone.now()
         
         # получаем активные транзакции с истекшим сроком подписки
-        expired_transactions = Tranasctions.objects.filter(
+        expired_transactions = Transactions.objects.filter(
             Q(status='completed') &
             Q(subscription_end__lt=now)  # подписка истекла
         ).select_related('user', 'user__userprofile')
@@ -20,7 +20,7 @@ class Command(BaseCommand):
             profile = transaction.user.userprofile
             
             # проверяем нет ли более новых активных транзакций
-            has_active_subscription = Tranasctions.objects.filter(
+            has_active_subscription = Transactions.objects.filter(
                 user=transaction.user,
                 status='completed',
                 subscription_end__gt=now

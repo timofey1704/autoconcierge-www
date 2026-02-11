@@ -247,7 +247,7 @@ class Leads(models.Model):
     def __str__(self):
         return self.phone_number
     
-class Tranasctions(models.Model):
+class Transactions(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     membership = models.ForeignKey(Membership, on_delete=models.PROTECT, verbose_name='Тарифный план')
     amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Сумма')

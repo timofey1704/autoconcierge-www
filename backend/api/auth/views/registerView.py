@@ -2,6 +2,8 @@ from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 import traceback
 
 from django.db.utils import IntegrityError
@@ -12,10 +14,9 @@ from api.auth.serializers.userResponseSerializer import UserResponseSerializer
 from api.auth.serializers.registerSerializer import ClientRegisterSerializer
 
 from api.utils.cookiesSetter import AuthBaseViewSet
-from api.utils.smsVerification import send_verification_code
-from api.utils.redisClient import redis_client
-from sitemanagement.models import QRCode, Car
-
+# from api.utils.smsVerification import send_verification_code
+# from api.utils.redisClient import redis_client
+from sitemanagement.models import QRCode, Transactions, Membership
 
 class RegisterViewSet(AuthBaseViewSet):
     """Регистрация клиента"""
@@ -69,6 +70,10 @@ class RegisterViewSet(AuthBaseViewSet):
         # verification_code = request.data.get('verification_code')   # !! ВРЕМЕННО ОТКЛЮЧЕНО
         qr_code = request.data.get('qr_code')
         vin_code = request.data.get('vin_code')
+        
+        now = timezone.now()
+        subscription_start = now + timedelta(days=1)  # активация через 24 часа
+        subscription_end = subscription_start + relativedelta(months=1)  # 1 календарный месяц с момента активации
         
         print(f"[REGISTER] phone_number: {phone_number}")
         print(f"[REGISTER] qr_code: {qr_code}")
@@ -128,6 +133,22 @@ class RegisterViewSet(AuthBaseViewSet):
                         account_type = account_type_mapping.get(qr_code_obj.account_type, 'light')
                         user_profile.client_account_type = account_type
                         user_profile.save()
+                        
+                        # получаем объект Membership для создания транзакции
+                        membership = Membership.objects.get(plan=account_type)
+                        
+                        #создаем транзакцию с нулевой оплатой
+                        Transactions.objects.create(
+                            user=user,
+                            membership=membership,
+                            amount=0,
+                            auto_renewal=False,
+                            status='completed',
+                            request_id='initial',
+                            bepaid_id=None,
+                            subscription_start=subscription_start,
+                            subscription_end=subscription_end
+                        )
                     
                     # # создаем машину если указан VIN код        
                     # if vin_code:

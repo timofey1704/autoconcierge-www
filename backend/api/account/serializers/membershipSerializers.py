@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from sitemanagement.models import Tranasctions, Membership
+from sitemanagement.models import Transactions, Membership
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -10,5 +10,5 @@ class MembershipSerializer(serializers.ModelSerializer):
     membership = serializers.PrimaryKeyRelatedField(queryset=Membership.objects.all())
 
     class Meta:
-        model = Tranasctions
+        model = Transactions
         fields = ('id', 'user', 'membership', 'amount', 'auto_renewal', 'status', 'request_id', 'created_at', 'subscription_start', 'subscription_end')
