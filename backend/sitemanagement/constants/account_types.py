@@ -1,4 +1,5 @@
 account_types = [
+    ("free", "Нет подписки"),
     ("light", "Light"),
     ("medium", "Medium"),
     ('premium', "Premium"),
