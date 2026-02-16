@@ -27,7 +27,7 @@ class Command(BaseCommand):
             ).exists()
             
             if not has_active_subscription:
-                # если нет активных подписок - переводим на Light
+                # если нет активных подписок - переводим на бесплатный
                 old_type = profile.account_type
                 profile.account_type = 'free'
                 profile.save()

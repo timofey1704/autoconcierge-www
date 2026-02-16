@@ -73,7 +73,7 @@ class RegisterViewSet(AuthBaseViewSet):
         
         now = timezone.now()
         subscription_start = now + timedelta(days=1)  # активация через 24 часа
-        subscription_end = subscription_start + relativedelta(months=1)  # 1 календарный месяц с момента активации
+        subscription_end = subscription_start + relativedelta(months=12)  # 1 календарный год с момента активации
         
         print(f"[REGISTER] phone_number: {phone_number}")
         print(f"[REGISTER] qr_code: {qr_code}")

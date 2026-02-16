@@ -58,7 +58,7 @@ const PricingCard: React.FC<PricingCardProps> = ({ memberships, user_account_typ
             <div className="flex w-full flex-col gap-2">
               <h5 className={`${headingColor} flex-1 text-[20px]!`}>{membership.plan}</h5>
               <h5 className={`${headingColor} text-[40px]! whitespace-nowrap`}>
-                {membership.price} <span className={`${headingColor} text-xl!`}>BYN / месяц</span>
+                {membership.price} <span className={`${headingColor} text-xl!`}>BYN / год</span>
               </h5>
             </div>
 
