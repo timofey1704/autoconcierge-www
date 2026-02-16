@@ -42,9 +42,9 @@ class QRVerifier(APIView):
         # непроданный код для менеджера - показываем форму продажи
         if not qr_code.is_selled and is_manager:
             account_type_display = {
-                'L': 'Light',
-                'M': 'Medium',
-                'P': 'Premium'
+                'L': 'Стартовый',
+                'M': 'Оптимальный',
+                'P': 'Премиум'
             }.get(qr_code.account_type, qr_code.account_type)
             
             imageURL = f"{settings.BASE_URL}{qr_code.image.url}" if qr_code.image else None
