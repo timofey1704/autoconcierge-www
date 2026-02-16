@@ -82,7 +82,7 @@ class QRCode(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
     account_type = models.CharField(
         max_length=1, 
-        choices=[('L', 'Light'), ('M', 'Medium'), ('P', 'Premium')], 
+        choices=[('L', 'Стартовый'), ('M', 'Оптимальный'), ('P', 'Премиум')], 
         default='L',
         verbose_name='Тарифный план',
         help_text='Тип тарифного плана (L/M/P) - влияет на генерацию кода'

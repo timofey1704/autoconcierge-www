@@ -15,6 +15,11 @@ export async function POST(req: NextRequest) {
     const { plan, description, tracking_id, email, timeActivation } = data
     const { amount } = data
 
+    // проверка обязательных полей
+    if (!email) {
+      return Response.json({ error: 'Email is required' }, { status: 400 })
+    }
+
     // 1. создаем транзакцию в бекенде
     const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/payments/`, {
       method: 'POST',
@@ -27,6 +32,7 @@ export async function POST(req: NextRequest) {
 
     if (!backendResponse.ok) {
       const errorText = await backendResponse.text()
+      console.error('❌ Backend error:', backendResponse.status, errorText)
       return Response.json({ error: errorText }, { status: backendResponse.status })
     }
 

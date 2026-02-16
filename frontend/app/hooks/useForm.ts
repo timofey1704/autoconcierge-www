@@ -97,6 +97,7 @@ export function useForm<T extends Record<string, FormValue>>(
   }
 
   const fieldNames: { [key: string]: string } = {
+    firstName: 'Имя',
     phone_number: 'Номер телефона',
     password: 'Пароль',
     privacy_accepted: 'Политика конфиденциальности',

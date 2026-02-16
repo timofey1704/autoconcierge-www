@@ -19,7 +19,7 @@ class DashboardViewSet(ViewSet):
         Получить все QR-коды, проданные текущим менеджером
         
         Query параметры:
-        - membership_type: L (Light), M (Medium), P (Premium) - можно передать несколько через запятую
+        - membership_type: L (Стартовый), M (Оптимальный), P (Премиум) - можно передать несколько через запятую
         - is_active: true/false - фильтр по статусу активации клиентом
         - search: поиск по ФИО клиента, номеру телефона или коду QR
         - sort_by: поле для сортировки (last_activity, client_name, membership_type)

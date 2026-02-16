@@ -1,16 +1,16 @@
 export const accountTypeToDisplayName = {
   free: 'Без подписки',
-  light: 'Light',
-  medium: 'Medium',
-  premium: 'Premium',
+  light: 'Стартовый',
+  medium: 'Оптимальный',
+  premium: 'Премиум',
 } as const
 
-// для бекенда
+// для бекенда (конвертация отображаемого имени во внутреннее)
 export const displayNameToAccountType: Record<string, keyof typeof accountTypeToDisplayName> = {
-  free: 'free',
-  Light: 'light',
-  Medium: 'medium',
-  Premium: 'premium',
+  'Без подписки': 'free',
+  Стартовый: 'light',
+  Оптимальный: 'medium',
+  Премиум: 'premium',
 }
 
 export const getAccountTypeStyles = (accountType: string) => {

@@ -35,6 +35,7 @@ class MembershipView(ViewSet):
         try:
             membership = Membership.objects.get(plan=plan)
         except Membership.DoesNotExist:
+            logger.error(f"❌ Membership not found for plan: {plan}")
             return Response({
                 'success': False,
                 'message': 'Тарифный план не найден'
@@ -74,11 +75,9 @@ class MembershipView(ViewSet):
             'auto_renewal': request.data.get('auto_renewal', False)
         }
         
-        logger.info(f"Transaction created - start: {subscription_start}, end: {subscription_end}")
-        
         serializer = MembershipSerializer(data=transaction_data)
         if not serializer.is_valid():
-            logger.error(f"Serializer validation errors: {serializer.errors}")
+            logger.error(f"❌ Serializer validation errors: {serializer.errors}")
             return Response({
                 'success': False,
                 'message': 'Ошибка валидации данных',
