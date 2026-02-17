@@ -1,10 +1,10 @@
 export const membershipTypes = [
-    { value: 'L', label: 'Light'},
-    { value: 'M', label: 'Medium'},
-    { value: 'P', label: 'Premium'}
+  { value: 'L', label: 'Стартовый' },
+  { value: 'M', label: 'Оптимальный' },
+  { value: 'P', label: 'Премиум' },
 ]
 
 export const statusTypes = [
-    { value: true, label: 'Активирован'},
-    { value: false, label: 'Не активирован'}
+  { value: true, label: 'Активирован' },
+  { value: false, label: 'Не активирован' },
 ]

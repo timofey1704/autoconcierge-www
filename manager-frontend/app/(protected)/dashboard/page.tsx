@@ -11,7 +11,6 @@ import { useDebounce } from '@/app/hooks/useDebounce'
 import UMultiSelect from '@/components/ui/UMultiSelect'
 import { membershipTypes, statusTypes } from '@/app/constants/multiselectOptions'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
-import ClearFiltersIcon from '../../../public/icons/clearFilters.svg'
 import UButton from '@/components/ui/UButton'
 
 const TABLE_PAGE_SIZE = 7
@@ -27,11 +26,11 @@ const StatisticsPage = () => {
 
   const debouncedSearch = useDebounce(search, 400)
 
-  // Преобразуем значения фильтров для бекенда
+  // преобразуем значения фильтров для бекенда
   const membershipTypeParam = membership.length > 0 ? membership.join(',') : undefined
   const isActiveParam = status.length === 1 ? String(status[0]) : undefined
 
-  // Обработчики изменения фильтров с автоматическим сбросом страницы
+  // обработчики изменения фильтров с автоматическим сбросом страницы
   const handleMembershipChange = (value: MembershipValue[]) => {
     setMembership(value)
     setTablePage(1)
@@ -134,7 +133,7 @@ const StatisticsPage = () => {
               handleChange={setMembership}
               options={membershipTypes}
               placeholder="Тип пакета услуг"
-              className="w-full min-w-57 max-w-80 lg:max-w-65"
+              className="w-full max-w-80 min-w-57 lg:max-w-65"
             />
             <UMultiSelect<StatusValue>
               name="status"
@@ -142,17 +141,17 @@ const StatisticsPage = () => {
               handleChange={setStatus}
               options={statusTypes}
               placeholder="Статус активации"
-              className="w-full min-w-60 max-w-80 lg:max-w-65"
+              className="w-full max-w-80 min-w-60 lg:max-w-65"
             />
             <UButton
               type="button"
               onClick={() => {
-                setMembership([]);
-                setStatus([]);
-                setTablePage(1);
+                setMembership([])
+                setStatus([])
+                setTablePage(1)
               }}
               text="Очистить"
-              className="w-auto h-full py-2 text-blue text-[16px] underline border-none outline-none"
+              className="text-blue h-full w-auto border-none py-2 text-[16px] underline outline-none"
             />
           </div>
           <UTextInput

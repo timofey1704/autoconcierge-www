@@ -76,7 +76,7 @@ const LoginForm = () => {
     <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden from-gray-900 via-gray-800 to-gray-900">
       <Image src={bgImage} alt="bg" fill className="object-cover" />
       <FormProvider>
-        <div className="z-10 w-full max-w-4xl">
+        <div className="z-10 w-full max-w-4xl p-4">
           <form
             onSubmit={handleSubmit}
             className="flex flex-col gap-8 rounded-2xl bg-white/95 p-8 shadow-2xl backdrop-blur-sm md:p-12"
