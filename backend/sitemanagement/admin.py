@@ -3,8 +3,6 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template.response import TemplateResponse
 from django.urls import path
 from django.utils import timezone
-from django.urls import reverse
-from django.utils.html import format_html
 
 from sitemanagement.models import *
 from sitemanagement.forms.batchQRform import BatchQRCodeForm 

@@ -8,7 +8,6 @@ from api.utils.decorators import handle_exceptions
 from sitemanagement.models import QRCode
 from api.account.serializers.dashboardSerializer import DashboardSerializer
 
-
 class DashboardViewSet(ViewSet):
     permission_classes = [IsAuthenticated]
     

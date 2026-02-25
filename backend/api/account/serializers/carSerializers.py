@@ -2,7 +2,6 @@ from rest_framework import serializers
 from sitemanagement.models import Car
 from django.conf import settings
 
-
 class CarCreateSerializer(serializers.ModelSerializer):
     """Сериализатор для создания автомобиля"""
     
@@ -19,7 +18,6 @@ class CarCreateSerializer(serializers.ModelSerializer):
             'image',
         ]
         # !lising_company берется из QR кода автоматически в вью
-
 
 class CarSerializer(serializers.ModelSerializer):
     """Сериализатор для чтения данных автомобиля"""

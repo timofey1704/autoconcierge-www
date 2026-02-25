@@ -9,7 +9,6 @@ from rest_framework import status
 
 from django.utils import timezone
 
-
 from api.utils.decorators import handle_exceptions
 from api.account.serializers.carSerializers import CarSerializer, CarCreateSerializer
 
