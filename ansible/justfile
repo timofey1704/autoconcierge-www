@@ -1,8 +1,0 @@
-
-run INVENTORY PLAYBOOK:
-  ansible-playbook -i inventory/{{ INVENTORY }}.yaml playbooks/{{ PLAYBOOK }}.yaml
-
-facts INVENTORY:
-  ansible -i inventory/{{ INVENTORY }}.yaml autoconcierge -m ansible.builtin.setup
-
-prod PLAYBOOK: (run "prod" PLAYBOOK)

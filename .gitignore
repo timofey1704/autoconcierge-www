@@ -67,6 +67,7 @@ local/
 
 # Системные файлы
 .DS_Store
+ansible/
 Thumbs.db
 
 # Базы данных SQLite
@@ -77,6 +78,7 @@ database
 staticfiles/
 /media/
 !/frontend/media/
+!/dashboard-frontend/media/
 
 # Миграции
 */migrations/*.pyc
@@ -89,5 +91,3 @@ staticfiles/
 # Docker файлы
 *.pid
 docker-compose.override.yml
-
-.DS_Store
