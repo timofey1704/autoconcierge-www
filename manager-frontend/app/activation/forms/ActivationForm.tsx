@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
+import useUserStore from '@/app/store/userStore'
 import { useClientFetch } from '@/app/hooks/useClientFetch'
 import Loader from '@/components/ui/Loader'
 import { getProxiedImageUrl } from '@/lib/imageProxy'
@@ -40,7 +40,7 @@ interface SellResponse {
 const ActivationForm = () => {
   const params = useSearchParams()
   const code = params.get('ref')
-  const { data: session, status: sessionStatus } = useSession()
+  const { user, isAuthChecked } = useUserStore()
   const [qrData, setQrData] = useState<QRData | null>(null)
   const [error, setError] = useState<string>('')
   const [isRedirecting, setIsRedirecting] = useState(false)
@@ -95,13 +95,13 @@ const ActivationForm = () => {
   useEffect(() => {
     if (!code) return
 
-    // ждем сессию
-    if (sessionStatus === 'loading') {
+    // ждем проверки авторизации
+    if (!isAuthChecked) {
       return
     }
 
     // неавторизованный пользователь - используем паблик для редиректа
-    if (!session && sessionStatus === 'unauthenticated' && code) {
+    if (!user && isAuthChecked && code) {
       setIsInitialized(true)
       const redirectUser = async () => {
         try {
@@ -135,12 +135,12 @@ const ActivationForm = () => {
     }
 
     // авторизованный пользователь - используем защищенный API
-    if (session && sessionStatus === 'authenticated' && code) {
+    if (user && isAuthChecked && code) {
       setIsInitialized(true)
       checkQR({ code })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, session, sessionStatus])
+  }, [code, user, isAuthChecked])
 
   const handleSell = () => {
     if (code) {

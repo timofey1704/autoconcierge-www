@@ -15,6 +15,7 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
   const { data: cars, isLoading, error, refetch } = useClientFetch<Car[]>('/account/cars/')
   const [deletingCarId, setDeletingCarId] = useState<number | null>(null)
   const [editingCar, setEditingCar] = useState<Car | null>(null)
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   // уведомляем родителя о загрузке машин
   useEffect(() => {
@@ -45,8 +46,10 @@ const ExistedCars = ({ onOpenCreateForm, onCarsLoad }: ExistedCarsProps) => {
     try {
       setDeletingCarId(carId)
 
-      const response = await fetch('/api/account/profile/cars/delete', {
+      const response = await fetch(`${apiUrl}/account/delete-car/${carId}`, {
         method: 'PATCH',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: carId }),
       })
 

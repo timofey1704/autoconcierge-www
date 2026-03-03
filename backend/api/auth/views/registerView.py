@@ -166,8 +166,7 @@ class RegisterViewSet(AuthBaseViewSet):
                     
                     response = Response(
                         {
-                            "access": str(refresh.access_token),
-                            "refresh": str(refresh),
+                            "message": "Успешная регистрация",
                             "user": user_data
                         }, 
                         status=status.HTTP_201_CREATED

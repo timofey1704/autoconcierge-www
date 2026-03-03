@@ -1,12 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useUserStore from '@/app/store/userStore'
 import Loader from '@/components/ui/Loader'
 import { useForm } from '@/app/hooks/useForm'
 import showToast from '@/components/ui/showToast'
-import { signIn } from 'next-auth/react'
 import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
 import bgImage from '../../../../public/images/auth/bg-image.jpg'
@@ -20,26 +19,22 @@ const validationRules = {
 const LoginForm = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const { isAuthenticated } = useUserStore()
-  const [isLoading, setIsLoading] = useState(true)
+  const { user, isAuthChecked } = useUserStore()
 
   // получаем URL для редиректа после логина
   const callbackUrl = searchParams.get('callbackUrl') || '/main'
 
   useEffect(() => {
-    // проверяем логин
-    if (isAuthenticated) {
-      // редиректим туда, откуда пришли (или на /main по умолчанию)
+    if (!isAuthChecked) return
+
+    if (user) {
       router.replace(decodeURIComponent(callbackUrl))
-      return
     }
+  }, [isAuthChecked, user])
 
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 300)
-
-    return () => clearTimeout(timer)
-  }, [isAuthenticated, router, callbackUrl])
+  if (!isAuthChecked) {
+    return <Loader />
+  }
 
   const { values, isVisible, handleChange, handleSubmit, togglePasswordVisibility, FormProvider } =
     useForm(
@@ -50,27 +45,37 @@ const LoginForm = () => {
       validationRules,
       async values => {
         try {
-          const result = await signIn('credentials', {
-            email: values.email,
-            password: values.password,
-            redirect: false,
+          const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+          const loginRes = await fetch(`${API_URL}/auth/login/manager/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify(values),
           })
 
-          if (result?.error) {
-            showToast({ type: 'error', message: result.error })
+          if (!loginRes.ok) {
+            const error = await loginRes.json()
+            showToast({ type: 'error', message: error.error })
             return
           }
 
-          router.push(decodeURIComponent(callbackUrl))
+          const userRes = await fetch(`${API_URL}/auth/manager/`, {
+            credentials: 'include',
+          })
+
+          const user = await userRes.json()
+          useUserStore.getState().setUser(user)
+
+          showToast({ type: 'success', message: 'Авторизация успешна!' })
+          router.replace(decodeURIComponent(callbackUrl))
         } catch {
           showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
         }
       }
     )
-
-  if (isLoading) {
-    return <Loader />
-  }
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden from-gray-900 via-gray-800 to-gray-900">

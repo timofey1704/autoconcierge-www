@@ -31,6 +31,7 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string>('')
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const { values, handleChange, handleSubmit, FormProvider } = useForm(
     {
@@ -83,9 +84,10 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
           console.log('No file found in selectedFile state')
         }
 
-        const response = await fetch('/api/account/profile/cars', {
+        const response = await fetch(`${apiUrl}/account/create-car/`, {
           method: 'POST',
-          body: formData, // FormData автоматически установит правильный Content-Type
+          credentials: 'include',
+          body: formData,
         })
 
         if (!response.ok) {
@@ -274,12 +276,14 @@ const CreateCarForm: React.FC<CreateCarFormProps> = ({ onClose, initialQRData })
             </form>
             <div className="w-full text-right">
               <a
-                className="cursor-pointer hover:text-blue-700 underline"
+                className="cursor-pointer underline hover:text-blue-700"
                 href="https://tawk.to/chat/6989e074d41d8f1c3889ef8c/1jh199iqm"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Моего автомобиля нет в списке"
-              >Моего автомобиля нет в списке</a>
+              >
+                Моего автомобиля нет в списке
+              </a>
             </div>
             <div className="w-full md:px-0.5">
               <button

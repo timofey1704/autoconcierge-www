@@ -1,6 +1,5 @@
 import { useQuery, useMutation, UseQueryOptions, UseMutationOptions } from '@tanstack/react-query'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import { useSession } from 'next-auth/react'
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE'
 
@@ -25,8 +24,13 @@ interface MutationResult<TData, TVariables, TError> {
   data: TData | undefined
 }
 
-// флаг для отслеживания первой 401 ошибки
-let hasRefreshed = false
+async function tryRefreshToken(apiUrl: string): Promise<boolean> {
+  const res = await fetch(`${apiUrl}/login/refresh/`, {
+    method: 'POST',
+    credentials: 'include',
+  })
+  return res.ok
+}
 
 export function useClientFetch<TData = unknown, TVariables = undefined, TError = AxiosError>(
   url: string,
@@ -35,40 +39,23 @@ export function useClientFetch<TData = unknown, TVariables = undefined, TError =
   ? QueryResult<TData, TError>
   : MutationResult<TData, TVariables, TError> {
   const { method = 'GET', config = {}, queryOptions = {}, mutationOptions = {} } = options
-  const { data: session } = useSession()
 
   const API_URL = process.env.NEXT_PUBLIC_API_URL
   const fullUrl = url.startsWith('http') ? url : `${API_URL}${url}`
 
-  // обработчик 401 ошибки
-  const handle401Error = (error: AxiosError) => {
-    if (error.response?.status === 401 && !hasRefreshed) {
-      hasRefreshed = true
-      window.location.reload()
-      return
-    }
-    throw error
-  }
-
-  // добавляем токен в заголовки -- нужно чтобы хук получал данные закрытые под авторизацию
-  const headers = {
-    ...config.headers,
-    Authorization: session?.accessToken ? `Bearer ${session.accessToken}` : undefined,
-  }
+  // авторизация через JWT в httpOnly cookie (withCredentials: true)
+  const axiosConfig = { ...config, headers: config.headers, withCredentials: true }
 
   // всегда вызываем оба хука
   const query = useQuery<TData, TError>({
     queryKey: [url, config.params],
     queryFn: async () => {
-      try {
-        const response = await axios.get(fullUrl, { ...config, headers })
-        return response.data
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          handle401Error(error) // если 401 ошибка первый раз, то перезагружаем страницу
-        }
-        throw error
-      }
+      const run = () => axios.get(fullUrl, axiosConfig)
+      const res = await run().catch(async (err: AxiosError) => {
+        if (err.response?.status === 401 && (await tryRefreshToken(API_URL!))) return run()
+        throw err
+      })
+      return res.data
     },
     ...queryOptions,
     // отключаем автоматическое выполнение для мутаций
@@ -77,21 +64,18 @@ export function useClientFetch<TData = unknown, TVariables = undefined, TError =
 
   const mutation = useMutation<TData, TError, TVariables>({
     mutationFn: async (variables: TVariables) => {
-      try {
-        const response = await axios({
+      const doRequest = () =>
+        axios({
           method: method.toLowerCase(),
           url: fullUrl,
           data: variables,
-          ...config,
-          headers,
+          ...axiosConfig,
         })
-        return response.data
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          handle401Error(error)
-        }
-        throw error
-      }
+      const res = await doRequest().catch(async (err: AxiosError) => {
+        if (err.response?.status === 401 && (await tryRefreshToken(API_URL!))) return doRequest()
+        throw err
+      })
+      return res.data
     },
     ...mutationOptions,
   })

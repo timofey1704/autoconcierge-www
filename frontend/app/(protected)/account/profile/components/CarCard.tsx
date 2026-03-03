@@ -13,18 +13,17 @@ interface CarCardProps {
 }
 
 const CarCard: React.FC<CarCardProps> = ({ car, onEdit, onDelete, isDeleting }) => {
-
   return (
-    <div className="rounded-2xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md md:p-6 relative">
+    <div className="relative rounded-2xl bg-white p-4 shadow-sm transition-all duration-200 hover:shadow-md md:p-6">
       {isDeleting && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white bg-opacity-80 rounded-2xl z-10">
+        <div className="bg-opacity-80 absolute inset-0 z-10 flex items-center justify-center rounded-2xl bg-white">
           <div className="flex flex-col items-center gap-2">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
+            <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-700"></div>
             <span className="text-sm text-gray-600">Удаление...</span>
           </div>
         </div>
       )}
-      
+
       <div className="mb-4 flex items-center justify-between">
         <h4 className="text-lg font-semibold text-gray-900">
           {car.brand} {car.model}
@@ -46,13 +45,7 @@ const CarCard: React.FC<CarCardProps> = ({ car, onEdit, onDelete, isDeleting }) 
             className="cursor-pointer transition-opacity hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-50"
             aria-label="Удалить"
           >
-            <Image
-              src={DeleteIcon}
-              alt="Delete"
-              width={24}
-              height={24}
-              className="md:h-8 md:w-8"
-            />
+            <Image src={DeleteIcon} alt="Delete" width={24} height={24} className="md:h-8 md:w-8" />
           </button>
         </div>
       </div>

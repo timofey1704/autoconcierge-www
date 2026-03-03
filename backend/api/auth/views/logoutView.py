@@ -8,9 +8,7 @@ class LogoutView(APIView):
     def post(self, request):
         response = Response({'message': 'Logged out'}, status=status.HTTP_200_OK)
         
-        # чистим куки и sessionID
-        response.delete_cookie('access_token')
-        response.delete_cookie('refresh_token')
-        response.delete_cookie('sessionid') 
-        
-        return response
+        # чистим куки (те же samesite/secure, что при установке; max_age=0 = удаление)
+        response.set_cookie('access_token', '', max_age=0, path='/', samesite='None', secure=True)
+        response.set_cookie('refresh_token', '', max_age=0, path='/', samesite='None', secure=True)
+        response.delete_cookie('sessionid', path='/') 

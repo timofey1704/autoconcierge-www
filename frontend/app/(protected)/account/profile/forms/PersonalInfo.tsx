@@ -31,11 +31,11 @@ const PersonalInfo = () => {
     validationRules,
     async values => {
       try {
-        const response = await fetch('/api/account/profile', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        const response = await fetch(`${apiUrl}/account/change-profile-data/`, {
           method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-          },
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...values,
             city: values.city?.id || null,

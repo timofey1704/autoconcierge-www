@@ -1,7 +1,6 @@
 import { useRouter } from 'next/navigation'
 import { IoExitOutline } from 'react-icons/io5'
 import useUserStore from '@/app/store/userStore'
-import { signOut } from 'next-auth/react'
 
 const Logout = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -9,21 +8,18 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout/`, {
+      await fetch(`${API_URL}/logout/`, {
         method: 'POST',
         credentials: 'include',
       })
 
-      await signOut({ redirect: false })
-
       useUserStore.getState().logout()
 
-      router.replace('/main')
+      router.replace('/login')
     } catch (error) {
       console.error('Logout error:', error)
     }
   }
-
   return (
     <button
       onClick={handleLogout}

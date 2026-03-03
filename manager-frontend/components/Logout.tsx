@@ -1,8 +1,7 @@
 import { useRouter } from 'next/navigation'
-import UButton from './ui/UButton'
 import { IoExitOutline } from 'react-icons/io5'
 import useUserStore from '@/app/store/userStore'
-import { signOut } from 'next-auth/react'
+import Button from './ui/UButton'
 
 const Logout = () => {
   const API_URL = process.env.NEXT_PUBLIC_API_URL
@@ -10,12 +9,10 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/auth/logout/`, {
+      await fetch(`${API_URL}/logout/`, {
         method: 'POST',
         credentials: 'include',
       })
-
-      await signOut({ redirect: false })
 
       useUserStore.getState().logout()
 
@@ -26,7 +23,7 @@ const Logout = () => {
   }
 
   return (
-    <UButton
+    <Button
       text="Выйти из аккаунта"
       leftIcon={<IoExitOutline className="mr-1 h-5 w-5" />}
       className="flex w-full items-center rounded-lg px-4 py-4 font-medium text-gray-600 transition-colors hover:bg-gray-100"

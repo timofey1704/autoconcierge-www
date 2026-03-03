@@ -71,6 +71,7 @@ const SubmitPopup = ({ membership, onClose }: SubmitPopupProps) => {
 
     const response = await fetch('/api/account/payments', {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
       },

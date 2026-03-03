@@ -25,6 +25,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
   const pathname = usePathname()
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string>(getProxiedImageUrl(user?.image) || '')
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
   const handlePhotoChange = () => {
     fileInputRef.current?.click()
@@ -52,8 +53,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ user, navigation }) => 
       // загружаем на сервер
       const response = await uploadImage<ProfileImageResponse>(
         file,
-        '/api/account/profile/update-image',
-        'PATCH'
+        `${apiUrl}/account/change-profile-data/`
       )
 
       if (response.user?.image) {

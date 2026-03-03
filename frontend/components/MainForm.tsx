@@ -22,6 +22,7 @@ const validationRules = {
 
 const MainForm = () => {
   const [isThankYouPopupOpen, setIsThankYouPopupOpen] = useState(false)
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
 
   const {
     values,
@@ -42,18 +43,21 @@ const MainForm = () => {
     validationRules,
     async values => {
       try {
-        const response = await fetch('/api/register/verify', {
+        const registerRes = await fetch(`${API_URL}/auth/register/verify/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            phone_number: values.phone_number,
-            vin_code: values.vin_code,
-            qr_code: values.qr_code,
-            password: values.password,
-            privacy_accepted: values.privacy_accepted,
-          }),
+          credentials: 'include',
+          body: JSON.stringify(values),
+        })
+        if (!registerRes.ok) {
+          const error = await registerRes.json()
+          throw new Error(error.error || 'Ошибка при отправке данных')
+        }
+
+        const response = await fetch(`${API_URL}/auth/user/`, {
+          credentials: 'include',
         })
         if (!response.ok) {
           const error = await response.json()

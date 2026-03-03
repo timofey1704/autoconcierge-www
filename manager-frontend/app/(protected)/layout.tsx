@@ -3,7 +3,6 @@
 import { useEffect, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import AccountSidebar from '@/components/AccountSidebar'
 import Loader from '@/components/ui/Loader'
 import useUserStore from '@/app/store/userStore'
@@ -14,28 +13,32 @@ function AuthGuard() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
-  const { isAuthenticated, user } = useUserStore()
+  const { isAuthChecked, user } = useUserStore()
 
   useEffect(() => {
-    if (!isAuthenticated || !user) {
+    if (!isAuthChecked || !user) {
       // cохраняем текущий URL для редиректа после логина
       const currentUrl = pathname + (searchParams.toString() ? `?${searchParams.toString()}` : '')
       const encodedCallback = encodeURIComponent(currentUrl)
       router.replace(`/login?callbackUrl=${encodedCallback}`)
     }
-  }, [isAuthenticated, user, router, pathname, searchParams])
+  }, [isAuthChecked, user, router, pathname, searchParams])
 
   return null
 }
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
-  const { status } = useSession()
-  const { isAuthenticated, user } = useUserStore()
+  const router = useRouter()
+  const { user, isAuthChecked } = useUserStore()
 
-  // показываем лоадер пока:
-  // 1. Сессия загружается (status === "loading")
-  // 2. Или пользователь не аутентифицирован
-  if (status === 'loading' || !isAuthenticated || !user) {
+  useEffect(() => {
+    if (!isAuthChecked || !user) {
+      router.replace('/login')
+      return
+    }
+  }, [isAuthChecked, user, router])
+
+  if (!isAuthChecked || !user) {
     return <Loader />
   }
 

@@ -3,49 +3,30 @@ from rest_framework.views import APIView
 
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-import traceback
 
-from django.conf import settings
-from datetime import datetime
+from django.contrib.auth.models import User
 
-class RefreshTokenView(APIView):
+from api.utils.cookiesSetter import set_auth_cookies
+
+class RefreshTokenCookieView(APIView):
+    """Refresh по cookie refresh_token. Возвращает ответ с новыми access/refresh в Set-Cookie (для продления сессии)."""
     def post(self, request):
-        try:
-            refresh_token = request.data.get('refresh')
-            
-            if not refresh_token:
-                return Response(
-                    {'error': 'Refresh token is required'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-            try:
-                token = RefreshToken(refresh_token)
-
-                # точное время истечения токена
-                expires_at = datetime.now() + settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME']
-                
-                response_data = {
-                    'access': str(token.access_token),
-                    'refresh': str(token),
-                    'expires_at': datetime.timestamp(expires_at)
-                }
-                
-                return Response(response_data)
-                
-            except Exception as e:
-                # логируем ошибки
-               
-                print(f"Token refresh error: {str(e)}")
-                print(traceback.format_exc())
-                
-                return Response(
-                    {'error': f'Invalid refresh token: {str(e)}'}, 
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-        except Exception as e:
+        refresh_token_str = request.COOKIES.get('refresh_token')
+        if not refresh_token_str:
             return Response(
-                {'error': f'Token refresh failed: {str(e)}'}, 
-                status=status.HTTP_400_BAD_REQUEST
+                {'error': 'Refresh token cookie required'},
+                status=status.HTTP_401_UNAUTHORIZED
             )
+        try:
+            old_refresh = RefreshToken(refresh_token_str)
+            user_id = old_refresh.get('user_id')
+            user = User.objects.get(pk=user_id)
+        except (Exception, User.DoesNotExist):
+            return Response(
+                {'error': 'Invalid or expired refresh token'},
+                status=status.HTTP_401_UNAUTHORIZED
+            )
+        new_refresh = RefreshToken.for_user(user)
+        response = Response({'message': 'Token refreshed'}, status=status.HTTP_200_OK)
+        set_auth_cookies(response, new_refresh)
+        return response

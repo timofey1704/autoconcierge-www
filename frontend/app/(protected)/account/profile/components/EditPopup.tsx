@@ -72,8 +72,10 @@ const EditPopup = ({ car, onClose, onSuccess }: EditPopupProps) => {
           formData.append('image', selectedFile)
         }
 
-        const response = await fetch('/api/account/profile/cars/edit', {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL
+        const response = await fetch(`${apiUrl}/account/edit-car/${car.id}/`, {
           method: 'PATCH',
+          credentials: 'include',
           body: formData,
         })
 

@@ -1,15 +1,8 @@
 import { NextRequest } from 'next/server'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '@/lib/auth'
+import { backendHeaders } from '@/lib/utils/backendFetch'
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions)
-
-    if (!session) {
-      return Response.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     const data = await req.json()
 
     const { plan, description, tracking_id, email, timeActivation } = data
@@ -20,15 +13,16 @@ export async function POST(req: NextRequest) {
       return Response.json({ error: 'Email is required' }, { status: 400 })
     }
 
-    // 1. создаем транзакцию в бекенде
+    // 1. создаем транзакцию в бекенде (JWT из cookie)
     const backendResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/account/payments/`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${session.accessToken}`,
-      },
+      headers: backendHeaders(req, { 'Content-Type': 'application/json' }),
       body: JSON.stringify({ plan, tracking_id, timeActivation }),
     })
+
+    if (backendResponse.status === 401) {
+      return Response.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     if (!backendResponse.ok) {
       const errorText = await backendResponse.text()

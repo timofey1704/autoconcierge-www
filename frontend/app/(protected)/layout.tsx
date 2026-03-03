@@ -9,16 +9,16 @@ import useUserStore from '@/app/store/userStore'
 
 export default function ProtectedLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
-  const { isAuthenticated, user } = useUserStore()
+  const { user, isAuthChecked } = useUserStore()
 
   useEffect(() => {
-    if (!isAuthenticated || !user) {
+    if (!isAuthChecked || !user) {
       router.replace('/login')
+      return
     }
-  }, [isAuthenticated, user, router])
+  }, [isAuthChecked, user, router])
 
-  // показываем лоадер пока не загружены данные менеджера
-  if (!isAuthenticated || !user) {
+  if (!isAuthChecked || !user) {
     return <Loader />
   }
 

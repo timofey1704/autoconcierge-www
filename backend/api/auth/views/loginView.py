@@ -32,7 +32,7 @@ class LoginViewSet(AuthBaseViewSet):
                     status=status.HTTP_404_NOT_FOUND
                 )
             
-            # Проверяем, что это клиент, а не менеджер
+            # проверяем, что это клиент, а не менеджер
             if user_profile.user_type != 'client':
                 return Response(
                     {"error": "Неверные учетные данные"},
@@ -46,17 +46,14 @@ class LoginViewSet(AuthBaseViewSet):
                 )
             
             refresh = RefreshToken.for_user(user)
-            
+
             user_data = UserResponseSerializer(user).data
-            
+
             response = Response({
                 "message": "Успешная авторизация",
-                "access": str(refresh.access_token),
-                "refresh": str(refresh),
                 "user": user_data
             }, status=status.HTTP_200_OK)
-            
-            # сеттим куки
+
             return self._set_auth_cookies(response, refresh)
                 
         except Exception as e:
