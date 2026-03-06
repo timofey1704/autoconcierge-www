@@ -9,7 +9,7 @@ const Logout = () => {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${API_URL}/logout/`, {
+      await fetch(`${API_URL}/auth/logout/`, {
         method: 'POST',
         credentials: 'include',
       })

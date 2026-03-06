@@ -10,27 +10,48 @@ import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
 import bgImage from '../../../../public/images/auth/bg-image.jpg'
 import bmw from '../../../../public/images/auth/manager_login_cab.jpg'
+import { useClientFetch } from '@/app/hooks/useClientFetch'
+import type { User } from '@/app/types'
+import type { AxiosError } from 'axios'
 
 const validationRules = {
   email: { required: true, minLength: 13 },
   password: { required: true },
 }
 
+type LoginPayload = { email: string; password: string }
+type LoginResponse = { message: string; user: User }
+
 const LoginForm = () => {
   const router = useRouter()
+  const { user, isAuthChecked, setUser } = useUserStore()
   const searchParams = useSearchParams()
-  const { user, isAuthChecked } = useUserStore()
 
   // получаем URL для редиректа после логина
   const callbackUrl = searchParams.get('callbackUrl') || '/main'
 
+  const { mutate: login, isLoading: isLoggingIn } = useClientFetch<
+    LoginResponse,
+    LoginPayload,
+    AxiosError<{ error?: string }>
+  >('/auth/login/manager/', {
+    method: 'POST',
+    mutationOptions: {
+      onSuccess: data => {
+        setUser(data.user)
+        router.replace(decodeURIComponent(callbackUrl))
+      },
+      onError: error => {
+        const message = error.response?.data?.error ?? 'Ошибка при входе'
+        showToast({ type: 'error', message })
+      },
+    },
+  })
+
   useEffect(() => {
     if (!isAuthChecked) return
-
-    if (user) {
-      router.replace(decodeURIComponent(callbackUrl))
-    }
-  }, [isAuthChecked, user])
+    if (user) router.replace(decodeURIComponent(callbackUrl))
+  }, [isAuthChecked, user, router])
 
   if (!isAuthChecked) {
     return <Loader />
@@ -44,36 +65,7 @@ const LoginForm = () => {
       },
       validationRules,
       async values => {
-        try {
-          const API_URL = process.env.NEXT_PUBLIC_API_URL
-
-          const loginRes = await fetch(`${API_URL}/auth/login/manager/`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(values),
-          })
-
-          if (!loginRes.ok) {
-            const error = await loginRes.json()
-            showToast({ type: 'error', message: error.error })
-            return
-          }
-
-          const userRes = await fetch(`${API_URL}/auth/manager/`, {
-            credentials: 'include',
-          })
-
-          const user = await userRes.json()
-          useUserStore.getState().setUser(user)
-
-          showToast({ type: 'success', message: 'Авторизация успешна!' })
-          router.replace(decodeURIComponent(callbackUrl))
-        } catch {
-          showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
-        }
+        login(values)
       }
     )
 
@@ -128,9 +120,10 @@ const LoginForm = () => {
 
                 <button
                   type="submit"
+                  disabled={isLoggingIn}
                   className="w-full rounded-xl bg-linear-to-r from-blue-600 to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-blue-700 hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
                 >
-                  Войти
+                  {isLoggingIn ? 'Вход...' : 'Войти'}
                 </button>
               </div>
 

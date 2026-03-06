@@ -11,24 +11,45 @@ import UTextInput from '@/components/ui/UTextInput'
 import Image from 'next/image'
 import bgImage from '../../../public/images/auth/bg-image.jpg'
 import bmw from '../../../public/images/auth/bmw.jpg'
+import { useClientFetch } from '@/app/hooks/useClientFetch'
+import type { User } from '@/app/types'
+import type { AxiosError } from 'axios'
 
 const validationRules = {
   phone_number: { required: true, minLength: 13 },
   password: { required: true },
 }
 
+type LoginPayload = { phone_number: string; password: string }
+type LoginResponse = { message: string; user: User }
+
 const LoginPage = () => {
   const router = useRouter()
-  const { user, isAuthChecked } = useUserStore()
-  const API_URL = process.env.NEXT_PUBLIC_API_URL
+  const { user, isAuthChecked, setUser } = useUserStore()
+
+  const { mutate: login, isLoading: isLoggingIn } = useClientFetch<
+    LoginResponse,
+    LoginPayload,
+    AxiosError<{ error?: string }>
+  >('/auth/login/', {
+    method: 'POST',
+    mutationOptions: {
+      onSuccess: data => {
+        setUser(data.user)
+        showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1500 })
+        router.replace('/account/profile')
+      },
+      onError: error => {
+        const message = error.response?.data?.error ?? 'Ошибка при входе'
+        showToast({ type: 'error', message })
+      },
+    },
+  })
 
   useEffect(() => {
     if (!isAuthChecked) return
-
-    if (user) {
-      router.replace('/account/profile')
-    }
-  }, [isAuthChecked, user])
+    if (user) router.replace('/account/profile')
+  }, [isAuthChecked, user, router])
 
   if (!isAuthChecked) {
     return <Loader />
@@ -42,34 +63,7 @@ const LoginPage = () => {
       },
       validationRules,
       async values => {
-        try {
-          const loginRes = await fetch(`${API_URL}/auth/login/`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            credentials: 'include',
-            body: JSON.stringify(values),
-          })
-
-          if (!loginRes.ok) {
-            const error = await loginRes.json()
-            showToast({ type: 'error', message: error.error })
-            return
-          }
-
-          const userRes = await fetch(`${API_URL}/auth/user/`, {
-            credentials: 'include',
-          })
-
-          const user = await userRes.json()
-          useUserStore.getState().setUser(user)
-
-          showToast({ type: 'success', message: 'Авторизация успешна!' })
-          router.replace('/account/profile')
-        } catch {
-          showToast({ type: 'error', message: 'Ошибка при входе в аккаунт' })
-        }
+        login(values)
       }
     )
 
@@ -122,9 +116,10 @@ const LoginPage = () => {
 
                 <button
                   type="submit"
+                  disabled={isLoggingIn}
                   className="w-full rounded-xl bg-linear-to-r from-blue-600 to-blue-700 py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-200 hover:cursor-pointer hover:from-blue-700 hover:to-blue-800 hover:shadow-xl focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:scale-[0.98]"
                 >
-                  Войти
+                  {isLoggingIn ? 'Вход...' : 'Войти'}
                 </button>
               </div>
 
