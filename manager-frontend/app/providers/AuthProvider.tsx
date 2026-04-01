@@ -1,35 +1,24 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import useUserStore from '../store/userStore'
+import { useClientFetch } from '../hooks/useClientFetch'
+import { User } from '../types'
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { setUser, setAuthChecked, logout } = useUserStore()
-  const [loading, setLoading] = useState(true)
+  const { data, isLoading } = useClientFetch<User>('/auth/manager/', {
+    queryOptions: { retry: false }, // не пытаемся повторно запросить данные при ошибке
+  })
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/manager/`, {
-          credentials: 'include',
-        })
+    if (isLoading) return
+    if (data) setUser(data)
+    else logout()
+    setAuthChecked(true)
+  }, [isLoading, data, setUser, logout, setAuthChecked])
 
-        if (!res.ok) throw new Error()
-
-        const userData = await res.json()
-        setUser(userData)
-      } catch {
-        logout()
-      } finally {
-        setAuthChecked(true)
-        setLoading(false)
-      }
-    }
-
-    checkAuth()
-  }, [setUser, logout])
-
-  if (loading) return null
+  if (isLoading) return null
 
   return <>{children}</>
 }

@@ -36,7 +36,6 @@ const LoginPage = () => {
     mutationOptions: {
       onSuccess: data => {
         setUser(data.user)
-        showToast({ type: 'success', message: 'Авторизация успешна!', duration: 1500 })
         router.replace('/account/profile')
       },
       onError: error => {
@@ -45,15 +44,6 @@ const LoginPage = () => {
       },
     },
   })
-
-  useEffect(() => {
-    if (!isAuthChecked) return
-    if (user) router.replace('/account/profile')
-  }, [isAuthChecked, user, router])
-
-  if (!isAuthChecked) {
-    return <Loader />
-  }
 
   const { values, isVisible, handleChange, handleSubmit, togglePasswordVisibility, FormProvider } =
     useForm(
@@ -66,6 +56,20 @@ const LoginPage = () => {
         login(values)
       }
     )
+
+  useEffect(() => {
+    if (!isAuthChecked) return
+    if (user) router.replace('/account/profile')
+  }, [isAuthChecked, user, router])
+
+  if (!isAuthChecked) {
+    return <Loader />
+  }
+
+  // уже залогинен — редирект в аккаунт, не показываем форму
+  if (user) {
+    return <Loader />
+  }
 
   return (
     <div className="relative flex min-h-screen w-full items-center justify-center overflow-hidden from-gray-900 via-gray-800 to-gray-900">

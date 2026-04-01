@@ -57,6 +57,11 @@ const LoginForm = () => {
     return <Loader />
   }
 
+  // уже залогинен — редирект в аккаунт, не показываем форму
+  if (user) {
+    return <Loader />
+  }
+
   const { values, isVisible, handleChange, handleSubmit, togglePasswordVisibility, FormProvider } =
     useForm(
       {
