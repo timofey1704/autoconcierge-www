@@ -27,7 +27,7 @@ dev = [
     "ipython>=9.8.0",
     "isort>=7.0.0",
     "pycodestyle>=2.14.0",
-    "pytest>=9.0.2",
+    "pytest>=9.0.3",
     "pytest-django>=4.11.1",
     "ruff>=0.14.9",
 ]
