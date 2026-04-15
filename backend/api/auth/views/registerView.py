@@ -14,86 +14,26 @@ from api.auth.serializers.userResponseSerializer import UserResponseSerializer
 from api.auth.serializers.registerSerializer import ClientRegisterSerializer
 
 from api.utils.cookiesSetter import AuthBaseViewSet
-# from api.utils.smsVerification import send_verification_code
-# from api.utils.redisClient import redis_client
 from sitemanagement.models import QRCode, Transactions, Membership
 
 class RegisterViewSet(AuthBaseViewSet):
     """Регистрация клиента"""
     
-    @action(detail=False, methods=['post'], url_path="send-verification")
-    def send_verification_code(self, request):
-        """Отправка кода верификации на номер телефона (ВРЕМЕННО ОТКЛЮЧЕНО)"""
-        phone_number = request.data.get('phone_number')
-        
-        # !! ВРЕМЕННО ОТКЛЮЧЕНО: пока нет SMS провайдера
-        # возвращаем успешный ответ без реальной отправки SMS
-        return Response(
-            {"message": "Код верификации отправлен (dev mode - SMS отключена)"},
-            status=status.HTTP_200_OK
-        )
-        
-        # !! ВРЕМЕННО ОТКЛЮЧЕНО:
-        # # проверяем можно ли отправить новый код
-        # can_send, error_message = redis_client.can_send_new_code(phone_number)
-        # if not can_send:
-        #     return Response(
-        #         {"error": error_message},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
-        # 
-        # # генерируем и отправляем код
-        # verification_code, error = send_verification_code(phone_number)
-        # 
-        # if error:
-        #     return Response(
-        #         {"error": f"Ошибка отправки кода: {error}"},
-        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        #     )
-        #     
-        # # сохраняем код в Redis
-        # if not redis_client.set_verification_code(phone_number, verification_code):
-        #     return Response(
-        #         {"error": "Ошибка сохранения кода верификации"},
-        #         status=status.HTTP_500_INTERNAL_SERVER_ERROR
-        #     )
-        # 
-        # return Response(
-        #     {"message": "Код верификации отправлен"},
-        #     status=status.HTTP_200_OK
-        # )
-
     @action(detail=False, methods=['post'], url_path="verify")
     def verify_and_register_client(self, request):
         """Верификация кода и регистрация клиента (SMS временно отключена)"""
         phone_number = request.data.get('phone_number')
-        # verification_code = request.data.get('verification_code')   # !! ВРЕМЕННО ОТКЛЮЧЕНО
         qr_code = request.data.get('qr_code')
-        vin_code = request.data.get('vin_code')
         
         now = timezone.now()
         subscription_start = now + timedelta(days=1)  # активация через 24 часа
         subscription_end = subscription_start + relativedelta(months=12)  # 1 календарный год с момента активации
-        
-        print(f"[REGISTER] phone_number: {phone_number}")
-        print(f"[REGISTER] qr_code: {qr_code}")
-        print(f"[REGISTER] vin_code: {vin_code}")
 
         if not phone_number:
             return Response(
                 {"error": "Номер телефона обязателен"},
                 status=status.HTTP_400_BAD_REQUEST
             )
-            
-        # !! ВРЕМЕННО ОТКЛЮЧЕНО: проверка кода верификации (пока нет SMS провайдера)
-        # is_valid = redis_client.verify_code(phone_number, verification_code)
-        # 
-        # if not is_valid:
-        #     print(f"Invalid verification code for phone number: {phone_number}")
-        #     return Response(
-        #         {"error": "Неверный или истекший код подтверждения"},
-        #         status=status.HTTP_400_BAD_REQUEST
-        #     )
             
         # проверяем промокод если он предоставлен
         qr_code_obj = None
@@ -149,17 +89,6 @@ class RegisterViewSet(AuthBaseViewSet):
                             subscription_start=subscription_start,
                             subscription_end=subscription_end
                         )
-                    
-                    # # создаем машину если указан VIN код        
-                    # if vin_code:
-                    #     car = Car.objects.create(vin_code=vin_code)        
-                    #     car.user = user  # type: ignore
-                    #     car.save()
-                        
-                    #     # связываем QR код с машиной если есть
-                    #     if qr_code_obj:
-                    #         qr_code_obj.car = car  # type: ignore
-                    #         qr_code_obj.save()
                     
                     refresh = RefreshToken.for_user(user) # type: ignore
                     user_data = UserResponseSerializer(user).data
