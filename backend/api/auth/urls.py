@@ -12,7 +12,6 @@ urlpatterns = [
     path('login/manager/', LoginManagerViewSet.as_view({'post': 'login_manager'}), name="login-manager"),
     path("refresh/", RefreshTokenCookieView.as_view(), name="token-refresh"),
     path("logout/", LogoutView.as_view(), name="logout"),
-    path("register/send-verification/", RegisterViewSet.as_view({'post': 'send_verification_code'}), name="send-verification"),
     path("register/verify/", RegisterViewSet.as_view({'post': 'verify_and_register_client'}), name="verify-and-register"),
     path("user/", UserDataView.as_view({'get': 'user_data'}), name="user-data"),
     path("manager/", ManagerDataView.as_view({'get': 'manager_data'}), name="manager-data"),
