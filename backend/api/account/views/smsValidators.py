@@ -97,7 +97,7 @@ class CheckCodeView(ViewSet):
         # генерируем и отправляем код
         verification_code, error = send_verification_code(phone_number)
         if error:
-            logger.error("SMS send failed for user_id=%s phone=%s: %s", request.user.id, phone_number, error)
+            logger.error("SMS send failed for user_id=%s phone=%s: %s", request.user.id, error)
             return Response(
                 {"error": "Ошибка отправки кода"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
