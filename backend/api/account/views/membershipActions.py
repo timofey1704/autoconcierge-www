@@ -145,9 +145,9 @@ class NotificationView(APIView):
             
             transaction.save()
             
-        except Exception as e:
+        except Exception:
             logger.exception('Error processing notification')
-            return Response({'status': 'error', 'message': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'error', 'message': 'Error processing notification'}, status=status.HTTP_400_BAD_REQUEST)
         
         # всегда возвращаем 200 OK чтобы bepaid не пытался отправить повторно
         return Response({'status': 'ok'}, status=status.HTTP_200_OK)

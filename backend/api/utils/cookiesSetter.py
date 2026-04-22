@@ -72,12 +72,12 @@ class AuthBaseViewSet(ViewSet):
                 
             except Exception as e:      
                 return Response(
-                    {'error': f'Invalid refresh token: {str(e)}'}, 
+                    {'error': f'Invalid refresh token'}, 
                     status=status.HTTP_400_BAD_REQUEST
                 )
 
         except Exception as e:
             return Response(
-                {'error': f'Token refresh failed: {str(e)}'}, 
+                {'error': f'Token refresh failed'}, 
                 status=status.HTTP_400_BAD_REQUEST
             )

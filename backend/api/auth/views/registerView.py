@@ -1,10 +1,11 @@
+import traceback
+import logging
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 from datetime import timedelta
 from dateutil.relativedelta import relativedelta
-import traceback
 
 from django.db.utils import IntegrityError
 from django.db import IntegrityError, transaction
@@ -15,6 +16,8 @@ from api.auth.serializers.registerSerializer import ClientRegisterSerializer
 
 from api.utils.cookiesSetter import AuthBaseViewSet
 from sitemanagement.models import QRCode, Transactions, Membership
+
+logger = logging.getLogger(__name__)
 
 class RegisterViewSet(AuthBaseViewSet):
     """Регистрация клиента"""
@@ -111,10 +114,10 @@ class RegisterViewSet(AuthBaseViewSet):
                     status=status.HTTP_400_BAD_REQUEST
                 )
             except Exception as e:
-                print(f"Unexpected error during user creation: {str(e)}")
-                print(f"Full traceback: {traceback.format_exc()}")
+                logger.error(f"Unexpected error during user creation: {str(e)}")
+                logger.error(f"Full traceback: {traceback.format_exc()}")
                 return Response(
-                    {"error": str(e)},
+                    {"error": 'При создании пользователя произошла ошибка'},
                     status=status.HTTP_400_BAD_REQUEST
                 )
         else:
