@@ -38,7 +38,7 @@ def handle_exceptions(func):
         except Http404 as e:
             # объект не найден
             logger.error(f"\n[{datetime.now()}] NOT FOUND ERROR in {func.__name__}:")
-            logger.info(f"Error details: {str(e) or 'Запрашиваемый ресурс не найден'}\n")
+            logger.info(f"Error details: 'Запрашиваемый ресурс не найден'")
             return Response(
                 {"error": "Запрашиваемый ресурс не найден"},
                 status=status.HTTP_404_NOT_FOUND
