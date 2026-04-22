@@ -78,7 +78,7 @@ class CarActionsViewSet(ViewSet):
             if 'car' in locals():
                 car.delete()
             return Response(
-                {"error": f"Ошибка при создании автомобиль: {str(e)}"},
+                {"error": f"Ошибка при создании автомобиля"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
@@ -112,7 +112,7 @@ class CarActionsViewSet(ViewSet):
         except Exception as e:
             logger.error(f"Ошибка при редактировании автомобиля: {str(e)}")
             return Response(
-                {"error": f"Ошибка при редактировании автомобиля: {str(e)}"},
+                {"error": f"Ошибка при редактировании автомобиля"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
     
@@ -140,6 +140,6 @@ class CarActionsViewSet(ViewSet):
         except Exception as e:
             logger.error(f"Ошибка при удалении автомобиля: {str(e)}")
             return Response(
-                {"error": f"Ошибка при удалении автомобиля: {str(e)}"},
+                {"error": f"Ошибка при удалении автомобиля"},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
